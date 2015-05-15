@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import static igarape.cbmsc.bombcast.BuildConfig.requireWifiUpload;
-import static igarape.cbmsc.bombcast.BuildConfig.serverUrl;
 
 /**
  * Created by fcavalcanti on 31/10/2014.
@@ -121,7 +120,8 @@ public class NetworkUtils {
             @Override
             protected Void doInBackground(Void... unused) {
                 try {
-                    MultipartUtility request = new MultipartUtility(serverUrl + url, "UTF-8", Globals.getAccessToken(context));
+                    //MultipartUtility request = new MultipartUtility(serverUrl + url, "UTF-8", Globals.getAccessToken(context));
+                    MultipartUtility request = new MultipartUtility(url, "UTF-8", Globals.getAccessToken(context));
                     String token = Globals.getAccessToken(context);
                     if (token != null) {
                         request.addHeaderField("Authorization", token);

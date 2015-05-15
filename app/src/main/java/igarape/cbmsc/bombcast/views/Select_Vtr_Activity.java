@@ -21,6 +21,7 @@ import java.util.List;
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
+import igarape.cbmsc.bombcast.utils.UploadService;
 
 /**
  * Created by barcellos on 24/02/15.
@@ -171,6 +172,18 @@ public class Select_Vtr_Activity extends Activity {
             }
         });
 
+        Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
     }
 
+    @Override
+    protected void onDestroy() {
+
+        Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        stopService(intent);
+
+        super.onDestroy();
+    }
 }

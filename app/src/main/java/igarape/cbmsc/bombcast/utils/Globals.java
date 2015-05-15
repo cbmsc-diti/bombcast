@@ -17,11 +17,14 @@ public class Globals {
     public static String TAG = Globals.class.getName();
     public static final String SENDER_ID = "319635303076";
     private static final String PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN";
+    public static final String DATA = "DATA";
     private static final String PREF_TIME_LOGIN = "PREF_TIME_LOGIN";
     private static final String PREF_USER_LOGIN = "PREF_USER_LOGIN";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     public static final String SERVER_URL = BuildConfig.serverUrl;
+    public static final String DIRECTORY_SIZE = "DIRECTORY_SIZE";
+    public static final String DIRECTORY_UPLOADED_SIZE = "DIRECTORY_UPLOADED_SIZE";
     public static final String SERVER_CBM = "https://aplicativosweb.cbm.sc.gov.br/ebm/" ;
     private static String accessToken = null;
     private static String userLogin = null;
@@ -258,17 +261,38 @@ public class Globals {
         userImage = null;
     }
 
-    public static void setDirectorySize(Long directorySize) {
+    public static void setDirectorySize(Context context,Long directorySize) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putLong(DIRECTORY_SIZE, directorySize);
+        editor.commit();
         Globals.directorySize = directorySize;
-        Globals.directoryUploadedSize = Long.valueOf(0);
+        setDirectoryUploadedSize(context, Long.valueOf(0));
     }
 
-    public static Long getDirectoryUploadedSize() {
+    public static Long getDirectoryUploadedSize(Context context) {
+
+        if (directoryUploadedSize == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
+            directoryUploadedSize = sharedPrefs.getLong(DIRECTORY_UPLOADED_SIZE, 0);
+        }
         return directoryUploadedSize;
     }
 
-    public static void setDirectoryUploadedSize(Long directoryUploadedSize) {
+    public static void setDirectoryUploadedSize(Context context,Long directoryUploadedSize) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putLong(DIRECTORY_UPLOADED_SIZE, directoryUploadedSize);
+        editor.commit();
         Globals.directoryUploadedSize = directoryUploadedSize;
+    }
+
+    public static Long getDirectorySize(Context context) {
+        if (directorySize == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
+            directorySize = sharedPrefs.getLong(DIRECTORY_SIZE, 0);
+        }
+        return directorySize;
     }
 
     public static Long getDirectorySize() {
