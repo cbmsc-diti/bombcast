@@ -109,6 +109,8 @@ public class SplashScreenActivity extends Activity {
                     regid = gcm.register(Globals.SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
                     Globals.storeRegistrationId(context, regid);
+
+                    //teste
                 }
             } catch (IOException ex) {
                 msg = "Error :" + ex.getMessage();
