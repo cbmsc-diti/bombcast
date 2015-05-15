@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/bg_dark_block">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Selecione uma viatura:"
+        android:id="@+id/tv_select_vtr"
+        android:textSize="25dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monitorar"
+        android:id="@+id/btn_next"
+        android:textSize="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/sp_vtrs"
+        android:layout_alignStart="@+id/sp_vtrs"
+        android:layout_marginBottom="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="A viatura selecionada esta sendo monitorada."
+        android:id="@+id/tv_monitorando_ok"
+        android:textSize="25dp"
+        android:visibility="invisible"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="90dp"
+        android:layout_marginLeft="30dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voltar"
+        android:id="@+id/btn_back"
+        android:textSize="25dp"
+        android:visibility="visible"
+        android:enabled="true"
+        android:layout_alignTop="@+id/btn_next"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="30dp" />
+
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sp_vtrs"
+        android:spinnerMode="dialog"
+        android:layout_below="@+id/tv_monitorando_ok"
+        android:layout_alignLeft="@+id/tv_monitorando_ok"
+        android:layout_alignStart="@+id/tv_monitorando_ok"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="12"
+        android:id="@+id/et_cel_cmt_area"
+        android:layout_below="@+id/sp_vtrs"
+        android:layout_alignLeft="@+id/sp_vtrs"
+        android:layout_alignStart="@+id/sp_vtrs"
+        android:layout_marginTop="120dp"
+        android:phoneNumber="false"
+        android:enabled="false"
+        android:hint="EX: 554891463290"
+        android:maxLength="12"
+        android:focusableInTouchMode="true"
+        android:editable="true"
+        android:text="4891463290" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar"
+        android:id="@+id/btn_edit_telefone"
+        android:enabled="true"
+        android:layout_alignBottom="@+id/et_cel_cmt_area"
+        android:layout_alignLeft="@+id/btn_back"
+        android:layout_alignStart="@+id/btn_back" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Confira abaixo se o telefone que receberá as notificações (via WhatsApp) dessa viatura está correto:"
+        android:id="@+id/tv_desc_telefone"
+        android:layout_above="@+id/btn_edit_telefone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tv_nm_cmt"
+        android:layout_below="@+id/et_cel_cmt_area"
+        android:layout_alignLeft="@+id/et_cel_cmt_area"
+        android:layout_alignStart="@+id/et_cel_cmt_area" />
+
+</RelativeLayout>
