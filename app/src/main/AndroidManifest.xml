@@ -53,18 +53,26 @@
 
         <activity
             android:name=".views.LoginActivity"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:launchMode="singleTop"
+            />
         <activity
             android:name=".views.Server_193Activity"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:launchMode="singleTop"
+            />
         <activity
             android:name=".views.Select_Vtr_Activity"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:launchMode="singleTop"
+            />
         <activity
             android:name=".views.Ocorrencia_Activity"
             android:configChanges="orientation"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:launchMode="singleTop"
+            />
         <activity
             android:name=".views.ListaDetalhesActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />

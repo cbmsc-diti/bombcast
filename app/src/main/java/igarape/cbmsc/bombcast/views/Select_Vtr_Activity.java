@@ -168,13 +168,14 @@ public class Select_Vtr_Activity extends Activity {
                 findViewById(R.id.et_cel_cmt_area).setEnabled(true);
                 ((TextView) findViewById(R.id.tv_nm_cmt)).setText("Telefone editado.");
 
+                Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
 
             }
         });
 
-        Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(intent);
+
     }
 
     @Override
