@@ -9,6 +9,8 @@ import android.util.Log;
 
 import igarape.cbmsc.bombcast.BuildConfig;
 
+import static java.net.URLEncoder.encode;
+
 /**
  * Created by fcavalcanti on 28/10/2014.
  */
@@ -233,7 +235,15 @@ public class Globals {
     }
 
     public static void setVtrSelecionada(String VtrSelecionada) {
-        Globals.VtrSelecionada = VtrSelecionada;
+
+      try {
+
+          Globals.VtrSelecionada = encode( VtrSelecionada,"ISO-8859-1");
+      }catch (Exception e){
+          e.printStackTrace();
+      }
+
+
     }
 
     public static String getVtrSelecionada() {

@@ -44,10 +44,15 @@ public class Ocorrencia_Activity extends Activity {
     public String retornoJS = "";
     TextView tv_endereco;
     protected PowerManager.WakeLock mWakeLock;
+    final Timer t = new Timer();
+    protected String count = "not";
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
 
@@ -469,18 +474,25 @@ public class Ocorrencia_Activity extends Activity {
 
 
            }else{
-               final Timer t = new Timer();
+
                final AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-               play(Ocorrencia_Activity.this, getAlarmSound2());
+               if (count == "not") {
+                   play(Ocorrencia_Activity.this, getAlarmSound2());
+               }
+
 
                builder.setTitle("CONEXÃO PERDIDA.")
                        .setNeutralButton("RETOMAR CONEXÃO", new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int id){
 
                                t.cancel();
-                               player.stop();
-
+                              try {
+                                  player.stop();
+                                }catch(Exception e){
+                                  e.printStackTrace();
+                              }
+                               count = "ok";
 
                                Processo meu = new Processo(getBaseContext());
                                meu.execute();

@@ -35,6 +35,7 @@ public class SplashScreenActivity extends Activity {
 
         Mint.initAndStartSession(SplashScreenActivity.this, "c58077d2");
 
+
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;

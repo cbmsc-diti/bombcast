@@ -117,7 +117,7 @@ public class Select_Vtr_Activity extends Activity {
 
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Comandante de area sem telefone cadastrado.")
+                builder.setMessage("Não há oficial cadastrado na escala de Comandante de Área.")
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -168,9 +168,11 @@ public class Select_Vtr_Activity extends Activity {
                 findViewById(R.id.et_cel_cmt_area).setEnabled(true);
                 ((TextView) findViewById(R.id.tv_nm_cmt)).setText("Telefone editado.");
 
-                Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startService(intent);
+                //criar acionamento para o serviço de upload
+
+               Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               startService(intent);
 
             }
         });

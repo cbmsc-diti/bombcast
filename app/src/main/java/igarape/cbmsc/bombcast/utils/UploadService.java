@@ -279,7 +279,7 @@ public class UploadService extends Service {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
             params.add(new BasicNameValuePair("date", df.format(new Date(nextVideo.lastModified()))));
-            NetworkUtils.post(getApplicationContext(), Globals.SERVER_CBM + "receive_video.php", params, nextVideo, new HttpResponseCallback() {
+            NetworkUtils.post(getBaseContext(), Globals.SERVER_CBM + "receive_video.php", params, nextVideo, new HttpResponseCallback() {
 
                 @Override
                 public void unauthorized() {
