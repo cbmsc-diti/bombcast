@@ -134,17 +134,12 @@ public class Ocorrencia_Activity extends Activity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-                builder.setMessage("VERIFIQUE SE O HOSPITAL PODE RECEBER O PACIENTE ANTES DE RESPONDER. \n \n ESSE HOSPITAL RECUSOU ATENDIMENTO À VITIMA? \n (se não possuir uma vítima nessa viatura, ou não estar em um hospital, clique em NÃO.)")
+                builder.setMessage("\n ESSE HOSPITAL RECUSOU ATENDIMENTO À VITIMA? \n (se não possuir uma vítima nessa viatura ou não estar em um hospital, clique em NÃO.)")
                         .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id){
 
-                                findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
                                 findViewById(R.id.btn_j10_i).setEnabled(false);
                                 findViewById(R.id.btn_j11_i).setEnabled(true);
-
-                                Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                stopService(intent);
 
                                 IO = Endereco[2].split("\\:");
 
@@ -261,7 +256,6 @@ public class Ocorrencia_Activity extends Activity {
                                     e.printStackTrace();
                                 }
 
-
                             }
                         });
 
@@ -271,13 +265,9 @@ public class Ocorrencia_Activity extends Activity {
 
                 findViewById(R.id.btn_j11_i).setEnabled(false);
 
-                findViewById(R.id.recBall).setVisibility(View.VISIBLE);
-
-
                 IO = Endereco[2].split("\\:");
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
-
 
                 try {
 
@@ -287,19 +277,27 @@ public class Ocorrencia_Activity extends Activity {
                     e.printStackTrace();
                 }
 
-
             }
         });
-
 
         final Button btn_j12 = (Button) findViewById(R.id.btn_j12);
         btn_j12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                stopService(intent);
+                try {
+                    Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    stopService(intent);
+                }catch( Exception e){
+                    e.printStackTrace();
+                }
+
+                findViewById(R.id.btn_play).setEnabled(false);
+                findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
+
+                findViewById(R.id.btn_stop).setEnabled(false);
+                findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
                 findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
 
                 IO = Endereco[2].split("\\:");
@@ -329,8 +327,6 @@ public class Ocorrencia_Activity extends Activity {
 
                 tv_endereco.setText("Sem ocorrência para essa viatura no momento...");
 
-
-
             }
         });
 
@@ -346,13 +342,45 @@ public class Ocorrencia_Activity extends Activity {
             }
         });
 
-
         final Button btn_mapa_ocorrencia = (Button) findViewById(R.id.btn_mapa_ocorrencia);
         btn_mapa_ocorrencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Ocorrencia_Activity.this, MapaOcorrenciaActiviy.class);
                 startActivity(intent);
+            }
+        });
+
+        final Button btn_play = (Button) findViewById(R.id.btn_play);
+        btn_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
+                findViewById(R.id.recBall).setVisibility(View.VISIBLE);
+                findViewById(R.id.btn_stop).setVisibility(View.VISIBLE);
+                findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
+                findViewById(R.id.btn_stop).setEnabled(true);
+                findViewById(R.id.btn_play).setEnabled(false);
+
+            }
+        });
+
+        final Button btn_stop = (Button) findViewById(R.id.btn_stop);
+        btn_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                stopService(intent);
+                findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
+                findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
+                findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
+                findViewById(R.id.btn_stop).setEnabled(false);
+                findViewById(R.id.btn_play).setEnabled(true);
 
             }
         });
@@ -360,9 +388,8 @@ public class Ocorrencia_Activity extends Activity {
 
 
 
+
     }
-
-
 
     public class Processo extends AsyncTask<String, String, String> {
 
@@ -396,8 +423,6 @@ public class Ocorrencia_Activity extends Activity {
 
         }
 
-
-
         @Override
         protected void onPostExecute(String result) {
 
@@ -417,17 +442,14 @@ public class Ocorrencia_Activity extends Activity {
 
                Globals.setId_Ocorrencia(IO[1]);
 
-
-
-               Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-               startService(intent);
-               findViewById(R.id.recBall).setVisibility(View.VISIBLE);
-
                findViewById(R.id.btn_j10).setEnabled(true);
                findViewById(R.id.btn_j12).setEnabled(true);
 
                findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
+               findViewById(R.id.btn_play).setEnabled(true);
+               findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
+
+
 
                play(Ocorrencia_Activity.this, getAlarmSound());
 
@@ -449,15 +471,14 @@ public class Ocorrencia_Activity extends Activity {
                    alert.show();
 
                findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
+               count = "ok";
 
            }else if((retornoHttp.equals("0"))&& (parar==false)){
-
 
                Processo meu = new Processo(getBaseContext());
 
                try {
                    new Thread().sleep(1000);
-
 
                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando "+VtrMonitorada, Toast.LENGTH_SHORT);
                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
@@ -481,7 +502,7 @@ public class Ocorrencia_Activity extends Activity {
                    play(Ocorrencia_Activity.this, getAlarmSound2());
                }
 
-
+               if (count != "ok"){
                builder.setTitle("CONEXÃO PERDIDA.")
                        .setNeutralButton("RETOMAR CONEXÃO", new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int id){
@@ -499,6 +520,7 @@ public class Ocorrencia_Activity extends Activity {
 
                            }
                        });
+               }
 
                final AlertDialog alert = builder.create();
 
@@ -516,7 +538,7 @@ public class Ocorrencia_Activity extends Activity {
                               t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
 
                           }
-                      }, 35000);
+                      }, 25000);
                     }catch(Exception e){
                       e.printStackTrace();
                   }
@@ -613,6 +635,14 @@ public class Ocorrencia_Activity extends Activity {
         Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         stopService(intent);
+
+        findViewById(R.id.btn_play).setEnabled(false);
+        findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
+
+        findViewById(R.id.btn_stop).setEnabled(false);
+        findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
+
+
 
         this.mWakeLock.release();
         parar=true;

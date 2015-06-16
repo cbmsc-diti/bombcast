@@ -75,11 +75,11 @@
         android:layout_marginTop="120dp"
         android:phoneNumber="false"
         android:enabled="false"
-        android:hint="EX: 554891463290"
         android:maxLength="12"
         android:focusableInTouchMode="true"
         android:editable="true"
-        android:text="4891463290" />
+        android:text="4891463290"
+        android:hint="Ex: 4891463290" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -111,5 +111,18 @@
         android:layout_below="@+id/et_cel_cmt_area"
         android:layout_alignLeft="@+id/et_cel_cmt_area"
         android:layout_alignStart="@+id/et_cel_cmt_area" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descarregar Videos"
+        android:enabled="false"
+        android:id="@+id/btn_upload"
+        android:textSize="25dp"
+        android:layout_above="@+id/btn_back"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp" />
 
 </RelativeLayout>

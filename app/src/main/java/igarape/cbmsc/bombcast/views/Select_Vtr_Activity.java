@@ -21,7 +21,6 @@ import java.util.List;
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
-import igarape.cbmsc.bombcast.utils.UploadService;
 
 /**
  * Created by barcellos on 24/02/15.
@@ -153,8 +152,8 @@ public class Select_Vtr_Activity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent2 = new Intent(Select_Vtr_Activity.this, Server_193Activity.class);
-                startActivity(intent2);
+                Intent intent3 = new Intent(Select_Vtr_Activity.this, Server_193Activity.class);
+                startActivity(intent3);
                 Select_Vtr_Activity.this.finish();
 
             }
@@ -168,24 +167,32 @@ public class Select_Vtr_Activity extends Activity {
                 findViewById(R.id.et_cel_cmt_area).setEnabled(true);
                 ((TextView) findViewById(R.id.tv_nm_cmt)).setText("Telefone editado.");
 
-                //criar acionamento para o serviço de upload
 
-               Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
-               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-               startService(intent);
 
             }
         });
 
+
+        final Button btn_upload = (Button) findViewById(R.id.btn_upload);
+        btn_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent2 = new Intent(Select_Vtr_Activity.this, UploadToServer.class);
+                startActivity(intent2);
+                Select_Vtr_Activity.this.finish();
+
+            }
+        });
 
     }
 
     @Override
     protected void onDestroy() {
 
-        Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        stopService(intent);
+      //  Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+      //  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      //  stopService(intent);
 
         super.onDestroy();
     }

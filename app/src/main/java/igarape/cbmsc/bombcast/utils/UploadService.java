@@ -122,8 +122,8 @@ public class UploadService extends Service {
 
         String path = FileUtils.getPath(userLogin);
 
-        uploadLocations(userLogin);
-        uploadHistories(userLogin);
+       // uploadLocations(userLogin);
+       // uploadHistories(userLogin);
 
         File dir = new File(path);
         File[] files = dir.listFiles(filter);
@@ -289,7 +289,7 @@ public class UploadService extends Service {
                 @Override
                 public void failure(int statusCode) {
                     if (!videos.isEmpty()) {
-                        uploadVideo(videos.remove(0), userLogin);
+                   //     uploadVideo(videos.remove(0), userLogin);
                     } else {
                         uploadUserData();
                     }
@@ -300,7 +300,7 @@ public class UploadService extends Service {
                     sendUpdateToUI(nextVideo.length());
                     nextVideo.delete();
                     if (!videos.isEmpty()) {
-                        uploadVideo(videos.remove(0), userLogin);
+                       // uploadVideo(videos.remove(0), userLogin);
                     } else {
                         uploadUserData();
                     }

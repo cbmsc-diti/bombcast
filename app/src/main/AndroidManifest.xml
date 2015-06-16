@@ -54,6 +54,16 @@
         <activity
             android:name=".views.LoginActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+
+            />
+        <activity
+            android:name=".views.UploadToServer"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:launchMode="singleTop"
+            />
+        <activity
+            android:name=".views.UploadActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:launchMode="singleTop"
             />
         <activity
@@ -68,9 +78,8 @@
             />
         <activity
             android:name=".views.Ocorrencia_Activity"
-            android:configChanges="orientation"
-            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:screenOrientation="landscape"
             android:launchMode="singleTop"
             />
         <activity

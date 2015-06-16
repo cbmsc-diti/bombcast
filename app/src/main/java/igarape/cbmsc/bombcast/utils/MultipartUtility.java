@@ -1,5 +1,7 @@
 package igarape.cbmsc.bombcast.utils;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +50,8 @@ public class MultipartUtility {
         httpConn.setUseCaches(false);
         httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);
+        httpConn.setRequestMethod("POST");
+        httpConn.setRequestProperty("ENCTYPE", "multipart/form-data");
         httpConn.setRequestProperty("Content-Type",
                 "multipart/form-data; boundary=" + boundary);
 
@@ -148,6 +152,9 @@ public class MultipartUtility {
                 response.add(line);
             }
             reader.close();
+
+            Log.d("NGVL", response.toString());
+
             httpConn.disconnect();
         } else {
             throw new IOException("Server returned non-OK status: " + status);
@@ -155,4 +162,5 @@ public class MultipartUtility {
 
         return response;
     }
+
 }

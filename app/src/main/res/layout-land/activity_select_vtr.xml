@@ -71,7 +71,8 @@
         android:enabled="false"
         android:layout_below="@+id/tv_desc_telefone"
         android:layout_alignLeft="@+id/tv_desc_telefone"
-        android:layout_alignStart="@+id/tv_desc_telefone" />
+        android:layout_alignStart="@+id/tv_desc_telefone"
+        android:hint="Ex: 4891463290" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -103,5 +104,16 @@
         android:layout_below="@+id/et_cel_cmt_area"
         android:layout_alignLeft="@+id/et_cel_cmt_area"
         android:layout_alignStart="@+id/et_cel_cmt_area" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descarregar Videos"
+        android:enabled="false"
+        android:id="@+id/btn_upload"
+        android:textSize="25dp"
+        android:layout_alignTop="@+id/btn_next"
+        android:layout_alignLeft="@+id/btn_edit_telefone"
+        android:layout_alignStart="@+id/btn_edit_telefone" />
 
 </RelativeLayout>
