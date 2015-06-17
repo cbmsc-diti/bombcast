@@ -129,7 +129,7 @@ ADDED from AndroidManifest.xml:54:9
 		ADDED from AndroidManifest.xml:56:13
 	android:name
 		ADDED from AndroidManifest.xml:55:13
-activity#igarape.cbmsc.bombcast.views.UploadToServer
+activity#igarape.cbmsc.bombcast.views.Server_193Activity
 ADDED from AndroidManifest.xml:59:9
 	android:theme
 		ADDED from AndroidManifest.xml:61:13
@@ -137,7 +137,7 @@ ADDED from AndroidManifest.xml:59:9
 		ADDED from AndroidManifest.xml:60:13
 	android:launchMode
 		ADDED from AndroidManifest.xml:62:13
-activity#igarape.cbmsc.bombcast.views.UploadActivity
+activity#igarape.cbmsc.bombcast.views.Select_Vtr_Activity
 ADDED from AndroidManifest.xml:64:9
 	android:theme
 		ADDED from AndroidManifest.xml:66:13
@@ -145,78 +145,62 @@ ADDED from AndroidManifest.xml:64:9
 		ADDED from AndroidManifest.xml:65:13
 	android:launchMode
 		ADDED from AndroidManifest.xml:67:13
-activity#igarape.cbmsc.bombcast.views.Server_193Activity
+activity#igarape.cbmsc.bombcast.views.Ocorrencia_Activity
 ADDED from AndroidManifest.xml:69:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:72:13
 	android:theme
 		ADDED from AndroidManifest.xml:71:13
 	android:name
 		ADDED from AndroidManifest.xml:70:13
 	android:launchMode
-		ADDED from AndroidManifest.xml:72:13
-activity#igarape.cbmsc.bombcast.views.Select_Vtr_Activity
-ADDED from AndroidManifest.xml:74:9
-	android:theme
-		ADDED from AndroidManifest.xml:76:13
-	android:name
-		ADDED from AndroidManifest.xml:75:13
-	android:launchMode
-		ADDED from AndroidManifest.xml:77:13
-activity#igarape.cbmsc.bombcast.views.Ocorrencia_Activity
-ADDED from AndroidManifest.xml:79:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:82:13
-	android:theme
-		ADDED from AndroidManifest.xml:81:13
-	android:name
-		ADDED from AndroidManifest.xml:80:13
-	android:launchMode
-		ADDED from AndroidManifest.xml:83:13
+		ADDED from AndroidManifest.xml:73:13
 activity#igarape.cbmsc.bombcast.views.ListaDetalhesActivity
-ADDED from AndroidManifest.xml:85:9
+ADDED from AndroidManifest.xml:75:9
 	android:theme
-		ADDED from AndroidManifest.xml:87:13
+		ADDED from AndroidManifest.xml:77:13
 	android:name
-		ADDED from AndroidManifest.xml:86:13
+		ADDED from AndroidManifest.xml:76:13
 service#igarape.cbmsc.bombcast.utils.UploadService
-ADDED from AndroidManifest.xml:88:9
+ADDED from AndroidManifest.xml:78:9
 	android:name
-		ADDED from AndroidManifest.xml:88:18
+		ADDED from AndroidManifest.xml:78:18
 service#igarape.cbmsc.bombcast.service.BackgroundVideoRecorder
-ADDED from AndroidManifest.xml:89:9
+ADDED from AndroidManifest.xml:79:9
 	android:name
-		ADDED from AndroidManifest.xml:89:18
+		ADDED from AndroidManifest.xml:79:18
 receiver#igarape.cbmsc.bombcast.receiver.GcmBroadcastReceiver
-ADDED from AndroidManifest.xml:92:9
+ADDED from AndroidManifest.xml:82:9
 	android:permission
-		ADDED from AndroidManifest.xml:94:13
+		ADDED from AndroidManifest.xml:84:13
 	android:name
-		ADDED from AndroidManifest.xml:93:13
+		ADDED from AndroidManifest.xml:83:13
 intent-filter#com.example.gcm+com.google.android.c2dm.intent.RECEIVE
-ADDED from AndroidManifest.xml:95:13
+ADDED from AndroidManifest.xml:85:13
 action#com.google.android.c2dm.intent.RECEIVE
-ADDED from AndroidManifest.xml:96:17
+ADDED from AndroidManifest.xml:86:17
 	android:name
-		ADDED from AndroidManifest.xml:96:25
+		ADDED from AndroidManifest.xml:86:25
 category#com.example.gcm
-ADDED from AndroidManifest.xml:98:17
+ADDED from AndroidManifest.xml:88:17
 	android:name
-		ADDED from AndroidManifest.xml:98:27
+		ADDED from AndroidManifest.xml:88:27
 service#igarape.cbmsc.bombcast.service.GcmIntentService
-ADDED from AndroidManifest.xml:102:9
+ADDED from AndroidManifest.xml:92:9
 	android:name
-		ADDED from AndroidManifest.xml:102:18
+		ADDED from AndroidManifest.xml:92:18
 meta-data#com.google.android.maps.v2.API_KEY
-ADDED from AndroidManifest.xml:107:9
+ADDED from AndroidManifest.xml:97:9
 	android:name
-		ADDED from AndroidManifest.xml:108:13
+		ADDED from AndroidManifest.xml:98:13
 	android:value
-		ADDED from AndroidManifest.xml:109:13
+		ADDED from AndroidManifest.xml:99:13
 activity#igarape.cbmsc.bombcast.views.MapaOcorrenciaActiviy
-ADDED from AndroidManifest.xml:111:9
+ADDED from AndroidManifest.xml:101:9
 	android:label
-		ADDED from AndroidManifest.xml:113:13
+		ADDED from AndroidManifest.xml:103:13
 	android:name
-		ADDED from AndroidManifest.xml:112:13
+		ADDED from AndroidManifest.xml:102:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.google.android.gms:play-services:6.5.87:18:5

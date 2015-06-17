@@ -82,7 +82,9 @@
     <string name="upload_data_size">Enviar dados (%1$sMB) </string>
         
     <string name="upload"> Enviar </string>
-        
+
+    <string name="atualizando_ebombeiro"> Atualizando E-Bombeiro </string>
+
     <string name="logout"> Sair </string>
         
     <string name="mission_start"> Missão Iniciada. </string>
@@ -127,4 +129,8 @@
     <string name="conexao_perdida">CONEXÃO PERDIDA.</string>
     <string name="retomar_conexao">RETOMAR CONEXÃO</string>
     <string name="texto_vtr_nao_cadastrada">Não foi encontrada nenhuma viatura para o seu usuário. Verifique seu cadastro no e-193.</string>
+    <string name="gps_desativado">GPS desativado!</string>
+    <string name="gps_desativado_text">Clique em OK para ativá-lo.</string>
+    <string name="problema">Erro!Utilize o Rádio...</string>
+
 </resources>

@@ -31,6 +31,7 @@
     <string name="notification_location_description">Searching for your current location</string>
     <string name="please_hold">Please hold…</string>
     <string name="login_in">Logging in</string>
+    <string name="atualizando_ebombeiro"> Atualizando E-Bombeiro </string>
     <string name="server_error">Unable do to contact server</string>
     <string name="connection_error">Error contacting server. Please, verify your connection.</string>
     <string name="bad_request_error">Connection error. Please, contact administrator.</string>
@@ -72,5 +73,9 @@
     <string name="conexao_perdida">CONEXÃO PERDIDA.</string>
     <string name="retomar_conexao">RETOMAR CONEXÃO</string>
     <string name="texto_vtr_nao_cadastrada">Não foi encontrada nenhuma viatura para o seu usuário. Verifique seu cadastro no e-193.</string>
+    <string name="gps_desativado">GPS desativado!</string>
+    <string name="gps_desativado_text">Clique em OK para ativá-lo.</string>
+    <string name="problema">Erro!Utilize o Rádio...</string>
+
 
 </resources>
