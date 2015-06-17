@@ -81,7 +81,7 @@ public class LoginActivity extends Activity {
         private String retornoHttp= "";
 
 
-        private Context context;
+        public Context context;
 
         public Processo(Context context) {
             this.context = context;

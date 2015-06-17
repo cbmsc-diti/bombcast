@@ -77,7 +77,6 @@ public class Ocorrencia_Activity extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });
 
@@ -88,9 +87,7 @@ public class Ocorrencia_Activity extends Activity {
 
                 findViewById(R.id.btn_j11).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
-
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
-
                 try {
                     retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                 } catch (Exception e) {
@@ -119,13 +116,9 @@ public class Ocorrencia_Activity extends Activity {
 
                                 String LatLocalIntermediario = Globals.getLatitude();
                                 String LngLocalIntermediario = Globals.getLongitude();
-
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_i="+LatLocalIntermediario+"&lng_i="+LngLocalIntermediario;
-
                                 try {
-
                                     retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -134,22 +127,15 @@ public class Ocorrencia_Activity extends Activity {
                         })
                         .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
                                 IO = Endereco[2].split(":");
-
                                 String LatLocalRecusa = Globals.getLatitude();
                                 String LngLocalRecusa = Globals.getLongitude();
-
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_r="+LatLocalRecusa+"&lng_r="+LngLocalRecusa;
-
                                 try {
-
                                     retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-
                             }
                         });
                 AlertDialog alert = builder.create();
