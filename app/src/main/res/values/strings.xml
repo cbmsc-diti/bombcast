@@ -22,14 +22,14 @@
     <string name="current_state">Current State:</string>
     <string name="start_streaming">Start Streaming</string>
     <string name="start_mission">Start Mission</string>
-    <string name="recording_started">Started Registering...</string>
+    <string name="recording_started">Started Registering…</string>
     <string name="start_uploading">Start Uploading</string>
     <string name="uploading_videos">Uploading Videos</string>
     <string name="notification_record_title">CopCast Camera</string>
     <string name="notification_record_description">Recording on SDCard</string>
     <string name="notification_location_title">Searching Location</string>
     <string name="notification_location_description">Searching for your current location</string>
-    <string name="please_hold">Please hold...</string>
+    <string name="please_hold">Please hold…</string>
     <string name="login_in">Logging in</string>
     <string name="server_error">Unable do to contact server</string>
     <string name="connection_error">Error contacting server. Please, verify your connection.</string>
@@ -49,7 +49,7 @@
     <string name="uploading">Uploading</string>
     <string name="uploading_size">Uploading (%1$sMB of %2$sMB)</string>
     <string name="notification_upload_title">Upload data.</string>
-    <string name="notification_upload_description">Uploading data to the server...</string>
+    <string name="notification_upload_description">Uploading data to the server…</string>
     <string name="upload_disabled">Can\'t upload right now. Is the phone charging?</string>
     <string name="upload_stopped">Upload canceled due to network/charging restrictions</string>
     <string name="under_construction">Under construction</string>
@@ -63,7 +63,7 @@
     <string name="logged">Logged</string>
     <string name="telefone_editado">Telefone editado.</string>
     <string name="msg_tel_nao_encontrado">Não há oficial cadastrado na escala de Comandante de Área.</string>
-    <string name="msg_sem_ocorrencia">Sem ocorrência para essa viatura no momento...</string>
+    <string name="msg_sem_ocorrencia">Sem ocorrência para essa viatura no momento…</string>
     <string name="texto_maca_retida">A MACA RETRÁTIL DESSA VIATURA FICOU RETIDA NESSE HOSPITAL? (caso não possua maca, ou não esteja em um hospital clique em NÃO.)</string>
     <string name="nao">NÃO</string>
     <string name="sim">SIM</string>

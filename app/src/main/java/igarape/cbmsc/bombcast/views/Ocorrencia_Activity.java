@@ -27,9 +27,6 @@ import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 
-/**
- * Created by barcellos on 24/02/15.
- */
 public class Ocorrencia_Activity extends Activity {
 
     protected boolean parar = false;
@@ -71,7 +68,7 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_j10).setEnabled(false);
                 findViewById(R.id.btn_j11).setEnabled(true);
 
-                IO = Endereco[2].split("\\:");
+                IO = Endereco[2].split(":");
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_o="+LatOcorrencia+"&lng_o="+LngOcorrencia+"&u="+Globals.getUserName()+"&fn="+TelefoneCmt;
 
@@ -118,7 +115,7 @@ public class Ocorrencia_Activity extends Activity {
                                 findViewById(R.id.btn_j10_i).setEnabled(false);
                                 findViewById(R.id.btn_j11_i).setEnabled(true);
 
-                                IO = Endereco[2].split("\\:");
+                                IO = Endereco[2].split(":");
 
                                 String LatLocalIntermediario = Globals.getLatitude();
                                 String LngLocalIntermediario = Globals.getLongitude();
@@ -138,7 +135,7 @@ public class Ocorrencia_Activity extends Activity {
                         .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                IO = Endereco[2].split("\\:");
+                                IO = Endereco[2].split(":");
 
                                 String LatLocalRecusa = Globals.getLatitude();
                                 String LngLocalRecusa = Globals.getLongitude();
@@ -178,7 +175,7 @@ public class Ocorrencia_Activity extends Activity {
                         .setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                IO = Endereco[2].split("\\:");
+                                IO = Endereco[2].split(":");
 
                                 String LatLocalMaca = Globals.getLatitude();
                                 String LngLocalMaca = Globals.getLongitude();
@@ -201,7 +198,7 @@ public class Ocorrencia_Activity extends Activity {
 
                 findViewById(R.id.btn_j11_i).setEnabled(false);
 
-                IO = Endereco[2].split("\\:");
+                IO = Endereco[2].split(":");
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
@@ -235,7 +232,7 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
                 findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
 
-                IO = Endereco[2].split("\\:");
+                IO = Endereco[2].split(":");
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j12=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
@@ -320,7 +317,7 @@ public class Ocorrencia_Activity extends Activity {
 
         public String retornoHttp= "";
 
-        private Context context;
+        public Context context;
         public Processo(Context context) {
             this.context = context;
         }
@@ -347,7 +344,7 @@ public class Ocorrencia_Activity extends Activity {
         @Override
         protected void onPostExecute(String result) {
 
-           if((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty()) && (parar==false)  ) {
+           if((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty()) && (!parar)  ) {
 
                Globals.setMonitor(retornoHttp);
 
@@ -358,7 +355,7 @@ public class Ocorrencia_Activity extends Activity {
                    Globals.setEnderecoOcorrencia(Endereco[5]);
                }
 
-               IO = Endereco[2].split("\\:");
+               IO = Endereco[2].split(":");
 
                Globals.setId_Ocorrencia(IO[1]);
 
@@ -391,7 +388,7 @@ public class Ocorrencia_Activity extends Activity {
                findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
                count = "ok";
 
-           }else if((retornoHttp.equals("0"))&& (parar==false)){
+           }else if((retornoHttp.equals("0"))&& (!parar)){
 
                Processo meu = new Processo(getBaseContext());
 
@@ -470,8 +467,7 @@ public class Ocorrencia_Activity extends Activity {
                 player.prepare();
                 audio.isSpeakerphoneOn();
                 player.start();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) {e.printStackTrace();}
     }
 
     private Uri getAlarmSound() {

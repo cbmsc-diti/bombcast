@@ -45,7 +45,7 @@
         
     <string name="start_mission"> Iniciar Missão </string>
         
-    <string name="recording_started"> Registrando... </string>
+    <string name="recording_started"> Registrando… </string>
         
     <string name="start_uploading">Iniciar o Envio</string>
         
@@ -59,7 +59,7 @@
         
     <string name="notification_location_description">Busca por sua localização atual</string>
         
-    <string name="please_hold"> Por favor, aguarde... </string>
+    <string name="please_hold"> Por favor, aguarde… </string>
         
     <string name="login_in"> Conectando </string>
         
@@ -97,7 +97,7 @@
         
     <string name="notification_upload_title">Enviando dados.</string>
         
-    <string name="notification_upload_description">Enviando dados para o servidor ... </string>
+    <string name="notification_upload_description">Enviando dados para o servidor … </string>
         
     <string name="upload_disabled">Não é possível enviar neste momento. O telefone está carregando?</string>
         
@@ -118,7 +118,7 @@
     <string name="cancel"> Cancelar </string>
     <string name="telefone_editado">Telefone editado.</string>
     <string name="msg_tel_nao_encontrado">Não há oficial cadastrado na escala de Comandante de Área.</string>
-    <string name="msg_sem_ocorrencia">Sem ocorrência para essa viatura no momento...</string>
+    <string name="msg_sem_ocorrencia">Sem ocorrência para essa viatura no momento…</string>
     <string name="texto_maca_retida">A MACA RETRÁTIL DESSA VIATURA FICOU RETIDA NESSE HOSPITAL? (caso não possua maca, ou não esteja em um hospital clique em NÃO.)</string>
     <string name="nao">NÃO</string>
     <string name="sim">SIM</string>
