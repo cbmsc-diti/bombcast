@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -77,9 +76,7 @@ public class Ocorrencia_Activity extends Activity {
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_o="+LatOcorrencia+"&lng_o="+LngOcorrencia+"&u="+Globals.getUserName()+"&fn="+TelefoneCmt;
 
                 try {
-
                   retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,9 +95,7 @@ public class Ocorrencia_Activity extends Activity {
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
                 try {
-
                     retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -236,7 +231,6 @@ public class Ocorrencia_Activity extends Activity {
 
                 findViewById(R.id.btn_play).setEnabled(false);
                 findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
-
                 findViewById(R.id.btn_stop).setEnabled(false);
                 findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
                 findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
@@ -272,13 +266,10 @@ public class Ocorrencia_Activity extends Activity {
         btn_detalhes_ocorrencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(Ocorrencia_Activity.this, ListaDetalhesActivity.class);
                 startActivity(intent);
-
             }
         });
-
         final Button btn_mapa_ocorrencia = (Button) findViewById(R.id.btn_mapa_ocorrencia);
         btn_mapa_ocorrencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,6 +287,7 @@ public class Ocorrencia_Activity extends Activity {
                 Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startService(intent);
+
                 findViewById(R.id.recBall).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_stop).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
@@ -313,6 +305,7 @@ public class Ocorrencia_Activity extends Activity {
                 Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 stopService(intent);
+
                 findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
                 findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
                 findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
@@ -419,10 +412,10 @@ public class Ocorrencia_Activity extends Activity {
            }else{
 
                final AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-               if (count == "not") {
+               if (count.equals("not")) {
                    play(Ocorrencia_Activity.this, getAlarmSound2());
                }
-               if (count != "ok"){
+               if (!count.equals("ok")){
                builder.setTitle(getString(R.string.conexao_perdida))
                        .setNeutralButton(getString(R.string.retomar_conexao), new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int id){
@@ -432,7 +425,7 @@ public class Ocorrencia_Activity extends Activity {
                                 }catch(Exception e){
                                   e.printStackTrace();
                               }
-                               count = "ok";
+
                                Processo meu = new Processo(getBaseContext());
                                meu.execute();
                            }
@@ -482,25 +475,11 @@ public class Ocorrencia_Activity extends Activity {
     }
 
     private Uri getAlarmSound() {
-        Uri alertSound = Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_001);
-        if (alertSound == null) {
-            alertSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
-            if (alertSound == null) {
-                alertSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            }
-        }
-        return alertSound;
+        return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_001);
     }
 
     private Uri getAlarmSound2() {
-        Uri alertSound = Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_002);
-        if (alertSound == null) {
-            alertSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
-            if (alertSound == null) {
-                alertSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            }
-        }
-        return alertSound;
+        return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_002);
     }
 
     @Override
