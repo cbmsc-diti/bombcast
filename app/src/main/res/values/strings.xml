@@ -61,5 +61,15 @@
     <string name="title_activity_mapa_ocorrencia_activiy">Map of Ocurrence</string>
     <string name="min_remaining"> Time remaining: </string>
     <string name="logged">Logged</string>
+    <string name="telefone_editado">Telefone editado.</string>
+    <string name="msg_tel_nao_encontrado">Não há oficial cadastrado na escala de Comandante de Área.</string>
+    <string name="msg_sem_ocorrencia">Sem ocorrência para essa viatura no momento...</string>
+    <string name="texto_maca_retida">A MACA RETRÁTIL DESSA VIATURA FICOU RETIDA NESSE HOSPITAL? (caso não possua maca, ou não esteja em um hospital clique em NÃO.)</string>
+    <string name="nao">NÃO</string>
+    <string name="sim">SIM</string>
+    <string name="texto_recusa_vitima">\n ESSE HOSPITAL RECUSOU ATENDIMENTO À VITIMA? \n (se não possuir uma vítima nessa viatura ou não estar em um hospital, clique em NÃO.)</string>
+    <string name="parar_alarme">PARAR ALARME:</string>
+    <string name="conexao_perdida">CONEXÃO PERDIDA.</string>
+    <string name="retomar_conexao">RETOMAR CONEXÃO</string>
 
 </resources>

@@ -116,9 +116,9 @@ public class Select_Vtr_Activity extends Activity {
 
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Não há oficial cadastrado na escala de Comandante de Área.")
+                builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
                         .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
                             }
@@ -165,7 +165,7 @@ public class Select_Vtr_Activity extends Activity {
             public void onClick(View view) {
 
                 findViewById(R.id.et_cel_cmt_area).setEnabled(true);
-                ((TextView) findViewById(R.id.tv_nm_cmt)).setText("Telefone editado.");
+                ((TextView) findViewById(R.id.tv_nm_cmt)).setText(getString(R.string.telefone_editado));
 
 
 
