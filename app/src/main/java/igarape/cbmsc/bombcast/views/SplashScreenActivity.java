@@ -1,9 +1,11 @@
 package igarape.cbmsc.bombcast.views;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -28,13 +30,13 @@ public class SplashScreenActivity extends Activity {
     private GoogleCloudMessaging gcm;
     private String regid = null;
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
         Mint.initAndStartSession(SplashScreenActivity.this, "c58077d2");
-
 
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION

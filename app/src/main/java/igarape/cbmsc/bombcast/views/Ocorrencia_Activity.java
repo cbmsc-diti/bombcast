@@ -60,6 +60,7 @@ public class Ocorrencia_Activity extends Activity {
         btn_j10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 parar = true;
 
                 String LatOcorrencia = Globals.getLatitude();
@@ -72,11 +73,17 @@ public class Ocorrencia_Activity extends Activity {
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_o="+LatOcorrencia+"&lng_o="+LngOcorrencia+"&u="+Globals.getUserName()+"&fn="+TelefoneCmt;
 
-                try {
-                  retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... unused) {
+                        try {
+                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                }.execute();
             }
         });
 
@@ -88,12 +95,17 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_j11).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
-                try {
-                    retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... unused) {
+                        try {
+                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                }.execute();
             }
 
         });
@@ -117,11 +129,17 @@ public class Ocorrencia_Activity extends Activity {
                                 String LatLocalIntermediario = Globals.getLatitude();
                                 String LngLocalIntermediario = Globals.getLongitude();
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_i="+LatLocalIntermediario+"&lng_i="+LngLocalIntermediario;
-                                try {
-                                    retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... unused) {
+                                        try {
+                                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        return null;
+                                    }
+                                }.execute();
 
                             }
                         })
@@ -131,17 +149,21 @@ public class Ocorrencia_Activity extends Activity {
                                 String LatLocalRecusa = Globals.getLatitude();
                                 String LngLocalRecusa = Globals.getLongitude();
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_r="+LatLocalRecusa+"&lng_r="+LngLocalRecusa;
-                                try {
-                                    retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... unused) {
+                                        try {
+                                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        return null;
+                                    }
+                                }.execute();
                             }
                         });
                 AlertDialog alert = builder.create();
-
                 alert.show();
-
             }
         });
 
@@ -168,13 +190,18 @@ public class Ocorrencia_Activity extends Activity {
 
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_m="+LatLocalMaca+"&lng_m="+LngLocalMaca;
 
-                                try {
+                                new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... unused) {
+                                        try {
+                                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        return null;
+                                    }
+                                }.execute();
 
-                                    retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
 
                             }
                         });
@@ -188,14 +215,17 @@ public class Ocorrencia_Activity extends Activity {
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
-                try {
-
-                    retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... unused) {
+                        try {
+                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                }.execute();
             }
         });
 
@@ -203,7 +233,6 @@ public class Ocorrencia_Activity extends Activity {
         btn_j12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 try {
                     Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -222,11 +251,18 @@ public class Ocorrencia_Activity extends Activity {
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j12=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
-                try {
-                    retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... unused) {
+                        try {
+                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                }.execute();
+
 
                 parar = false;
                 Processo meu = new Processo(getBaseContext());
@@ -308,9 +344,6 @@ public class Ocorrencia_Activity extends Activity {
             this.context = context;
         }
         @Override
-        protected void onPreExecute() {
-        }
-        @Override
         protected String doInBackground(String... paramss) {
 
         try {
@@ -326,7 +359,6 @@ public class Ocorrencia_Activity extends Activity {
             return retornoHttp;
 
         }
-
         @Override
         protected void onPostExecute(String result) {
 
@@ -435,9 +467,7 @@ public class Ocorrencia_Activity extends Activity {
               }
            }
         }
-        @Override
-        protected void onProgressUpdate(String... values) {
-        }
+
     }
 
     private MediaPlayer player;
