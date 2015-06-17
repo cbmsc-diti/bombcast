@@ -20,7 +20,6 @@
     <string name="copcast_main_title">Bombeiro Conectado</string>
     <string name="videos_label">Videos Recorded:</string>
     <string name="current_state">Current State:</string>
-    <string name="logged">Logged</string>
     <string name="start_streaming">Start Streaming</string>
     <string name="start_mission">Start Mission</string>
     <string name="recording_started">Started Registering...</string>
@@ -61,5 +60,6 @@
     <string name="title_activity_mapa_ocorrencia_">Map of Occurrence</string>
     <string name="title_activity_mapa_ocorrencia_activiy">Map of Ocurrence</string>
     <string name="min_remaining"> Time remaining: </string>
+    <string name="logged">Logged</string>
 
 </resources>

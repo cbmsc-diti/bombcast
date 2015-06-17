@@ -178,9 +178,9 @@ public class Select_Vtr_Activity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent2 = new Intent(Select_Vtr_Activity.this, UploadToServer.class);
-                startActivity(intent2);
-                Select_Vtr_Activity.this.finish();
+               // Intent intent2 = new Intent(Select_Vtr_Activity.this, UploadToServer.class);
+               // startActivity(intent2);
+               // Select_Vtr_Activity.this.finish();
 
             }
         });
