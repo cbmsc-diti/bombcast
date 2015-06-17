@@ -59,60 +59,46 @@ public class Select_Vtr_Activity extends Activity {
                 AlertDialog alert = builder.create();
                 alert.show();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         //Identifica o Spinner no layout
         Spinner sp_vtrs = (Spinner) findViewById(R.id.sp_vtrs);
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, vtrs);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, vtrs);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sp_vtrs.setAdapter(spinnerArrayAdapter);
-
         //Método do Spinner para capturar o item selecionado
         sp_vtrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
-                //pega nome pela posição
                 vtr_sel = parent.getItemAtPosition(posicao).toString();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
         try {
             status = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193+"&vf=1");
             if(!status.isEmpty()){
                 List<String> cmta = Arrays.asList(status.split("\\."));
-
                 String telefone = cmta.get(2);
                 String idCmt = cmta.get(0) +" "+ cmta.get(1);
-
                 ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
                 ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
-
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
                         .setCancelable(false)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
                             }
                         });
-
                 AlertDialog alert = builder.create();
                 alert.show();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         final Button btn_next = (Button) findViewById(R.id.btn_next);
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +128,8 @@ public class Select_Vtr_Activity extends Activity {
         btn_edit_telefone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 findViewById(R.id.et_cel_cmt_area).setEnabled(true);
                 ((TextView) findViewById(R.id.tv_nm_cmt)).setText(getString(R.string.telefone_editado));
-
-
-
             }
         });
 
@@ -160,7 +142,6 @@ public class Select_Vtr_Activity extends Activity {
         });
 
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
