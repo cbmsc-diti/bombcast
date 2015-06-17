@@ -71,5 +71,6 @@
     <string name="parar_alarme">PARAR ALARME:</string>
     <string name="conexao_perdida">CONEXÃO PERDIDA.</string>
     <string name="retomar_conexao">RETOMAR CONEXÃO</string>
+    <string name="texto_vtr_nao_cadastrada">Não foi encontrada nenhuma viatura para o seu usuário. Verifique seu cadastro no e-193.</string>
 
 </resources>
