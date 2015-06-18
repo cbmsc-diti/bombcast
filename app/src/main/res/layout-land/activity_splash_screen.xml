@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:contentDescription="@string/copcast_main_title"
-        android:src="@drawable/logo_copcast"
+        android:src="@drawable/logo_cbmsc"
         android:layout_centerVertical="true"
         android:layout_marginLeft="80dp" />
 
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView2"
         android:contentDescription="@string/copcast_main_title"
-        android:src="@drawable/logo_cbmsc"
+        android:src="@drawable/logo_copcast"
         android:layout_alignTop="@+id/imageView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

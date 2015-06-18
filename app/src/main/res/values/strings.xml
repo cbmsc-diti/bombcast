@@ -76,6 +76,25 @@
     <string name="gps_desativado">GPS desativado!</string>
     <string name="gps_desativado_text">Clique em OK para ativá-lo.</string>
     <string name="problema">Erro!Utilize o Rádio...</string>
+    <string name="ocorrencia">Ocorrência:</string>
+    <string name="j10">J10</string>
+    <string name="j9_i">J09 I</string>
+    <string name="cli">C.L.I</string>
+    <string name="sli">S.L.I</string>
+    <string name="j12">J12</string>
+    <string name="detalhes_ocorrencia">Detalhes da ocorrência</string>
+    <string name="mapa_ocorrencia">Mapa da ocorrência</string>
+    <string name="hint_fone">Ex: 4891463290</string>
+    <string name="fone">4891463290</string>
+    <string name="msg_selecione_vtr">Selecione uma viatura:</string>
+    <string name="monitorar">Monitorar</string>
+    <string name="vtr_monitorada">A viatura selecionada esta sendo monitorada.</string>
+    <string name="back">Voltar</string>
+    <string name="edit">Editar</string>
+    <string name="text_wpp">Confira abaixo se o telefone que receberá as notificações (via WhatsApp) dessa viatura está correto:</string>
+    <string name="descarregar_videos">Descarregar Videos</string>
+    <string name="next">Avançar</string>
+    <string name="msg_servidor">Escolha o servidor na lista abaixo:</string>
 
 
 </resources>

@@ -5,9 +5,6 @@ import android.content.res.Configuration;
 
 import igarape.cbmsc.bombcast.utils.FileUtils;
 
-/**
- * Created by fcavalcanti on 27/10/2014.
- */
 public class BombCastApplication extends Application {
 
     @Override

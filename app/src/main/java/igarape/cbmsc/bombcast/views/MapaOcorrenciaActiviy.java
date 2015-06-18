@@ -90,6 +90,7 @@ public class MapaOcorrenciaActiviy extends FragmentActivity {
             e.printStackTrace();
         }
 
+        assert addresses != null;
         if(addresses.size() > 0) {
 
             try {
