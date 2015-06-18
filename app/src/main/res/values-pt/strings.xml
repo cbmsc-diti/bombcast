@@ -114,7 +114,7 @@
         
     <string name="stop_uploading"> Você está enviando dados. Deseja interromper e começar a missão? </string>
         
-    <string name="ok"> Ok </string>
+    <string name="ok"> OK </string>
     <string name="title_activity_mapa_ocorrencia_">Mapa da Ocorrência</string>
     <string name="title_activity_mapa_ocorrencia_activiy">Mapa da Ocorrência</string>
     <string name="cancel"> Cancelar </string>
@@ -131,7 +131,7 @@
     <string name="texto_vtr_nao_cadastrada">Não foi encontrada nenhuma viatura para o seu usuário. Verifique seu cadastro no e-193.</string>
     <string name="gps_desativado">GPS desativado!</string>
     <string name="gps_desativado_text">Clique em OK para ativá-lo.</string>
-    <string name="problema">Erro!Utilize o Rádio...</string>
+    <string name="problema">Erro!  Utilize o Rádio...</string>
     <string name="ocorrencia">Ocorrência:</string>
     <string name="j10">J10</string>
     <string name="j9_i">J09 I</string>

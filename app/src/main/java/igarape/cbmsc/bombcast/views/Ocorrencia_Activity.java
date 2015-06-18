@@ -39,6 +39,7 @@ public class Ocorrencia_Activity extends Activity {
     protected String count = "not";
     protected PowerManager.WakeLock mWakeLock;
     public String retornoJS = "";
+    public String vf = "0";
     final Timer t = new Timer();
     TextView tv_endereco;
 
@@ -66,6 +67,7 @@ public class Ocorrencia_Activity extends Activity {
                 String LatOcorrencia = Globals.getLatitude();
                 String LngOcorrencia = Globals.getLongitude();
 
+
                 findViewById(R.id.btn_j10).setEnabled(false);
                 findViewById(R.id.btn_j11).setEnabled(true);
 
@@ -78,12 +80,28 @@ public class Ocorrencia_Activity extends Activity {
                     protected Void doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            vf = "0";
+
                         } catch (Exception e) {
                             e.printStackTrace();
+                            vf = "1";
                         }
+
                         return null;
                     }
+
                 }.execute();
+                if (vf.equals("1")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                    builder.setTitle(getString(R.string.problema))
+                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
             }
         });
 
@@ -95,17 +113,34 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_j11).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
+
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            vf = "0";
+
                         } catch (Exception e) {
                             e.printStackTrace();
+                            vf = "1";
                         }
+
                         return null;
                     }
+
                 }.execute();
+                if (vf.equals("1")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                    builder.setTitle(getString(R.string.problema))
+                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id){
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
             }
 
         });
@@ -129,17 +164,35 @@ public class Ocorrencia_Activity extends Activity {
                                 String LatLocalIntermediario = Globals.getLatitude();
                                 String LngLocalIntermediario = Globals.getLongitude();
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_i="+LatLocalIntermediario+"&lng_i="+LngLocalIntermediario;
+
                                 new AsyncTask<Void, Void, Void>() {
                                     @Override
                                     protected Void doInBackground(Void... unused) {
                                         try {
                                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                            vf = "0";
+
                                         } catch (Exception e) {
                                             e.printStackTrace();
+                                            vf = "1";
                                         }
+
                                         return null;
                                     }
+
                                 }.execute();
+
+                                if (vf.equals("1")){
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                                    builder.setTitle(getString(R.string.problema))
+                                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id){
+                                                }
+                                            });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
 
                             }
                         })
@@ -149,17 +202,34 @@ public class Ocorrencia_Activity extends Activity {
                                 String LatLocalRecusa = Globals.getLatitude();
                                 String LngLocalRecusa = Globals.getLongitude();
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_r="+LatLocalRecusa+"&lng_r="+LngLocalRecusa;
+
                                 new AsyncTask<Void, Void, Void>() {
                                     @Override
                                     protected Void doInBackground(Void... unused) {
                                         try {
                                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                            vf = "0";
+
                                         } catch (Exception e) {
                                             e.printStackTrace();
+                                            vf = "1";
                                         }
+
                                         return null;
                                     }
+
                                 }.execute();
+                                if (vf.equals("1")){
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                                    builder.setTitle(getString(R.string.problema))
+                                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id){
+                                                }
+                                            });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
                             }
                         });
                 AlertDialog alert = builder.create();
@@ -195,12 +265,28 @@ public class Ocorrencia_Activity extends Activity {
                                     protected Void doInBackground(Void... unused) {
                                         try {
                                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                            vf = "0";
+
                                         } catch (Exception e) {
                                             e.printStackTrace();
+                                            vf = "1";
                                         }
+
                                         return null;
                                     }
+
                                 }.execute();
+                                if (vf.equals("1")){
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                                    builder.setTitle(getString(R.string.problema))
+                                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id){
+                                                }
+                                            });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
 
 
                             }
@@ -220,12 +306,28 @@ public class Ocorrencia_Activity extends Activity {
                     protected Void doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            vf = "0";
+
                         } catch (Exception e) {
                             e.printStackTrace();
+                            vf = "1";
                         }
+
                         return null;
                     }
+
                 }.execute();
+                if (vf.equals("1")){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                    builder1.setTitle(getString(R.string.problema))
+                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id){
+                                }
+                            });
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
+                }
             }
         });
 
@@ -256,12 +358,28 @@ public class Ocorrencia_Activity extends Activity {
                     protected Void doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            vf = "0";
+
                         } catch (Exception e) {
                             e.printStackTrace();
+                            vf = "1";
                         }
+
                         return null;
                     }
+
                 }.execute();
+                if (vf.equals("1")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                    builder.setTitle(getString(R.string.problema))
+                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id){
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
 
 
                 parar = false;
@@ -405,6 +523,7 @@ public class Ocorrencia_Activity extends Activity {
 
                findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
                count = "ok";
+
 
            }else if((retornoHttp.equals("0"))&& (!parar)){
 

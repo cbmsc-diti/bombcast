@@ -56,7 +56,7 @@
     <string name="under_construction">Under construction</string>
     <string name="upload_completed">Upload completed!</string>
     <string name="stop_uploading">You are uploading data. Want to stop it and start the mission?</string>
-    <string name="ok" tools:ignore="ButtonCase">Ok</string>
+    <string name="ok" tools:ignore="ButtonCase">OK</string>
     <string name="cancel">Cancel</string>
     <string name="title_activity_mapa_ocorrencia_">Map of Occurrence</string>
     <string name="title_activity_mapa_ocorrencia_activiy">Map of Ocurrence</string>
@@ -75,7 +75,7 @@
     <string name="texto_vtr_nao_cadastrada">Não foi encontrada nenhuma viatura para o seu usuário. Verifique seu cadastro no e-193.</string>
     <string name="gps_desativado">GPS desativado!</string>
     <string name="gps_desativado_text">Clique em OK para ativá-lo.</string>
-    <string name="problema">Erro!Utilize o Rádio...</string>
+    <string name="problema">Erro!  Utilize o Rádio...</string>
     <string name="ocorrencia">Ocorrência:</string>
     <string name="j10">J10</string>
     <string name="j9_i">J09 I</string>
