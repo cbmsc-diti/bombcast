@@ -39,7 +39,7 @@ public class Ocorrencia_Activity extends Activity {
     protected String count = "not";
     protected PowerManager.WakeLock mWakeLock;
     public String retornoJS = "";
-    public String vf = "0";
+    public String vf;
     final Timer t = new Timer();
     TextView tv_endereco;
 
@@ -75,9 +75,9 @@ public class Ocorrencia_Activity extends Activity {
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_o="+LatOcorrencia+"&lng_o="+LngOcorrencia+"&u="+Globals.getUserName()+"&fn="+TelefoneCmt;
 
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Void, String>() {
                     @Override
-                    protected Void doInBackground(Void... unused) {
+                    protected String doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                             vf = "0";
@@ -87,21 +87,25 @@ public class Ocorrencia_Activity extends Activity {
                             vf = "1";
                         }
 
-                        return null;
+                        return vf;
                     }
+                    @Override
+                    protected void onPostExecute(String aVoid) {
+                        super.onPostExecute(aVoid);
+                        if (vf.equals("1")){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
+                            builder.setTitle(getString(R.string.problema))
+                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id){
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    }
                 }.execute();
-                if (vf.equals("1")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-                    builder.setTitle(getString(R.string.problema))
-                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
             }
         });
 
@@ -114,9 +118,9 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_j10_i).setEnabled(true);
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Void, String>() {
                     @Override
-                    protected Void doInBackground(Void... unused) {
+                    protected String doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                             vf = "0";
@@ -126,21 +130,24 @@ public class Ocorrencia_Activity extends Activity {
                             vf = "1";
                         }
 
-                        return null;
+                        return vf;
                     }
+                    @Override
+                    protected void onPostExecute(String aVoid) {
+                        super.onPostExecute(aVoid);
+                        if (vf.equals("1")){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
+                            builder.setTitle(getString(R.string.problema))
+                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id){
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    }
                 }.execute();
-                if (vf.equals("1")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                    builder.setTitle(getString(R.string.problema))
-                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id){
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
             }
 
         });
@@ -165,9 +172,9 @@ public class Ocorrencia_Activity extends Activity {
                                 String LngLocalIntermediario = Globals.getLongitude();
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_i="+LatLocalIntermediario+"&lng_i="+LngLocalIntermediario;
 
-                                new AsyncTask<Void, Void, Void>() {
+                                new AsyncTask<Void, Void, String>() {
                                     @Override
-                                    protected Void doInBackground(Void... unused) {
+                                    protected String doInBackground(Void... unused) {
                                         try {
                                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                                             vf = "0";
@@ -177,23 +184,24 @@ public class Ocorrencia_Activity extends Activity {
                                             vf = "1";
                                         }
 
-                                        return null;
+                                        return vf;
                                     }
+                                    @Override
+                                    protected void onPostExecute(String aVoid) {
+                                        super.onPostExecute(aVoid);
+                                        if (vf.equals("1")){
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
+                                            builder.setTitle(getString(R.string.problema))
+                                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id){
+                                                        }
+                                                    });
+                                            AlertDialog alert = builder.create();
+                                            alert.show();
+                                        }
+                                    }
                                 }.execute();
-
-                                if (vf.equals("1")){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                                    builder.setTitle(getString(R.string.problema))
-                                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int id){
-                                                }
-                                            });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
-                                }
-
                             }
                         })
                         .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
@@ -203,9 +211,9 @@ public class Ocorrencia_Activity extends Activity {
                                 String LngLocalRecusa = Globals.getLongitude();
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_r="+LatLocalRecusa+"&lng_r="+LngLocalRecusa;
 
-                                new AsyncTask<Void, Void, Void>() {
+                                new AsyncTask<Void, Void, String>() {
                                     @Override
-                                    protected Void doInBackground(Void... unused) {
+                                    protected String doInBackground(Void... unused) {
                                         try {
                                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                                             vf = "0";
@@ -215,21 +223,24 @@ public class Ocorrencia_Activity extends Activity {
                                             vf = "1";
                                         }
 
-                                        return null;
+                                        return vf;
                                     }
+                                    @Override
+                                    protected void onPostExecute(String aVoid) {
+                                        super.onPostExecute(aVoid);
+                                        if (vf.equals("1")){
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
+                                            builder.setTitle(getString(R.string.problema))
+                                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id){
+                                                        }
+                                                    });
+                                            AlertDialog alert = builder.create();
+                                            alert.show();
+                                        }
+                                    }
                                 }.execute();
-                                if (vf.equals("1")){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                                    builder.setTitle(getString(R.string.problema))
-                                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int id){
-                                                }
-                                            });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
-                                }
                             }
                         });
                 AlertDialog alert = builder.create();
@@ -260,9 +271,9 @@ public class Ocorrencia_Activity extends Activity {
 
                                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_m="+LatLocalMaca+"&lng_m="+LngLocalMaca;
 
-                                new AsyncTask<Void, Void, Void>() {
+                                new AsyncTask<Void, Void, String>() {
                                     @Override
-                                    protected Void doInBackground(Void... unused) {
+                                    protected String doInBackground(Void... unused) {
                                         try {
                                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                                             vf = "0";
@@ -272,23 +283,24 @@ public class Ocorrencia_Activity extends Activity {
                                             vf = "1";
                                         }
 
-                                        return null;
+                                        return vf;
                                     }
+                                    @Override
+                                    protected void onPostExecute(String aVoid) {
+                                        super.onPostExecute(aVoid);
+                                        if (vf.equals("1")){
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
+                                            builder.setTitle(getString(R.string.problema))
+                                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id){
+                                                        }
+                                                    });
+                                            AlertDialog alert = builder.create();
+                                            alert.show();
+                                        }
+                                    }
                                 }.execute();
-                                if (vf.equals("1")){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                                    builder.setTitle(getString(R.string.problema))
-                                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int id){
-                                                }
-                                            });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
-                                }
-
-
                             }
                         });
 
@@ -300,10 +312,9 @@ public class Ocorrencia_Activity extends Activity {
                 IO = Endereco[2].split(":");
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
-
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Void, String>() {
                     @Override
-                    protected Void doInBackground(Void... unused) {
+                    protected String doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                             vf = "0";
@@ -313,21 +324,24 @@ public class Ocorrencia_Activity extends Activity {
                             vf = "1";
                         }
 
-                        return null;
+                        return vf;
                     }
+                    @Override
+                    protected void onPostExecute(String aVoid) {
+                        super.onPostExecute(aVoid);
+                        if (vf.equals("1")){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
+                            builder.setTitle(getString(R.string.problema))
+                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id){
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    }
                 }.execute();
-                if (vf.equals("1")){
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                    builder1.setTitle(getString(R.string.problema))
-                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id){
-                                }
-                            });
-                    AlertDialog alert1 = builder.create();
-                    alert1.show();
-                }
             }
         });
 
@@ -353,9 +367,9 @@ public class Ocorrencia_Activity extends Activity {
 
                 UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j12=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Void, String>() {
                     @Override
-                    protected Void doInBackground(Void... unused) {
+                    protected String doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
                             vf = "0";
@@ -365,23 +379,24 @@ public class Ocorrencia_Activity extends Activity {
                             vf = "1";
                         }
 
-                        return null;
+                        return vf;
                     }
+                    @Override
+                    protected void onPostExecute(String aVoid) {
+                        super.onPostExecute(aVoid);
+                        if (vf.equals("1")){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
+                            builder.setTitle(getString(R.string.problema))
+                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id){
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    }
                 }.execute();
-                if (vf.equals("1")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                    builder.setTitle(getString(R.string.problema))
-                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id){
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-
-
                 parar = false;
                 Processo meu = new Processo(getBaseContext());
                 meu.execute();
