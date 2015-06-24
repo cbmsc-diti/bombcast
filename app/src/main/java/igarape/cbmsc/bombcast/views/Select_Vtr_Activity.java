@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.hive.MainActivity;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 
@@ -138,6 +139,9 @@ public class Select_Vtr_Activity extends Activity {
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent4 = new Intent(Select_Vtr_Activity.this, MainActivity.class);
+                startActivity(intent4);
+
             }
         });
 
