@@ -37,7 +37,7 @@ import igarape.cbmsc.bombcast.R;
 
 public class UploadActivity extends Activity {
 	// LogCat tag
-	private static final String TAG = MainActivity.class.getSimpleName();
+	private static final String TAG = UploadVideoActivity.class.getSimpleName();
 
 	private ProgressBar progressBar;
 	private String filePath = null;
@@ -85,6 +85,9 @@ public class UploadActivity extends Activity {
 			public void onClick(View v) {
 				// uploading the file to server
 				new UploadFileToServer().execute();
+
+                // Start foreground service to avoid unexpected kill
+
 			}
 		});
 
@@ -169,8 +172,8 @@ public class UploadActivity extends Activity {
 
 				// Extra parameters if you want to pass to server
 				entity.addPart("website",
-						new StringBody("www.androidhive.info"));
-				entity.addPart("email", new StringBody("abc@gmail.com"));
+						new StringBody("www.cbm.sc.gov.br"));
+				entity.addPart("email", new StringBody("barcellos@cbm.sc.gov.br"));
 
 				totalSize = entity.getContentLength();
 				httppost.setEntity(entity);

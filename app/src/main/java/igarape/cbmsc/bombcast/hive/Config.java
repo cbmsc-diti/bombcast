@@ -5,5 +5,5 @@ import java.lang.String;public class Config {
 	public static final String FILE_UPLOAD_URL = "https://aplicativosweb.cbm.sc.gov.br/ebm/AndroidFileUpload/fileUpload.php";
 	
 	// Directory name to store captured images and videos
-    public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
+    public static final String IMAGE_DIRECTORY_NAME = "BombCast";
 }

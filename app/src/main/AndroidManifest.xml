@@ -54,7 +54,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".hive.MainActivity"
+            android:name=".hive.UploadVideoActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
 
 

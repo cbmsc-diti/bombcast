@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
-import igarape.cbmsc.bombcast.hive.MainActivity;
+import igarape.cbmsc.bombcast.hive.UploadVideoActivity;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 
@@ -133,15 +133,12 @@ public class Select_Vtr_Activity extends Activity {
                 ((TextView) findViewById(R.id.tv_nm_cmt)).setText(getString(R.string.telefone_editado));
             }
         });
-
-        //Precisa arrumar uma forma de envio -- sem uso no momento
         final Button btn_upload = (Button) findViewById(R.id.btn_upload);
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent4 = new Intent(Select_Vtr_Activity.this, MainActivity.class);
+                Intent intent4 = new Intent(Select_Vtr_Activity.this, UploadVideoActivity.class);
                 startActivity(intent4);
-
             }
         });
 

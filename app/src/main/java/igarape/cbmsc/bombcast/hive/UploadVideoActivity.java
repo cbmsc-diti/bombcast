@@ -20,12 +20,11 @@ import java.util.Locale;
 import igarape.cbmsc.bombcast.R;
 
 
-public class MainActivity extends Activity {
+public class UploadVideoActivity extends Activity {
 	
 	// LogCat tag
-	private static final String TAG = MainActivity.class.getSimpleName();
-	
- 
+	private static final String TAG = UploadVideoActivity.class.getSimpleName();
+
     // Camera activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
@@ -42,10 +41,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // Changing action bar background color
-        // These two lines are not needed
-        //getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getResources().getString(R.color.action_bar))));
- 
+
         btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
         btnRecordVideo = (Button) findViewById(R.id.btnRecordVideo);
  
@@ -204,7 +200,7 @@ public class MainActivity extends Activity {
     }
     
     private void launchUploadActivity(boolean isImage){
-    	Intent i = new Intent(MainActivity.this, UploadActivity.class);
+    	Intent i = new Intent(UploadVideoActivity.this, UploadActivity.class);
         i.putExtra("filePath", fileUri.getPath());
         i.putExtra("isImage", isImage);
         startActivity(i);
@@ -242,7 +238,7 @@ public class MainActivity extends Activity {
         }
  
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm",
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
