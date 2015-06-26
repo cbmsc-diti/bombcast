@@ -50,15 +50,6 @@
         </activity>
 
         <activity
-            android:name=".hive.UploadActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".hive.UploadVideoActivity"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/>
-
-
-        <activity
             android:name=".views.LoginActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             />

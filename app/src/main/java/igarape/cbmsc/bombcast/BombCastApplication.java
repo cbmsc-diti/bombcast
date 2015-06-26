@@ -3,9 +3,16 @@ package igarape.cbmsc.bombcast;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+
 import igarape.cbmsc.bombcast.utils.FileUtils;
 
 public class BombCastApplication extends Application {
+
+    public static GoogleAnalytics analytics;
+    public static Tracker tracker;
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -16,6 +23,14 @@ public class BombCastApplication extends Application {
     public void onCreate() {
         super.onCreate();
         FileUtils.init();
+        analytics = GoogleAnalytics.getInstance(this);
+        analytics.setLocalDispatchPeriod(1800);
+
+        tracker = analytics.newTracker("UA-64149555-1"); // Replace with actual tracker/property Id
+        tracker.enableExceptionReporting(true);
+        tracker.enableAdvertisingIdCollection(true);
+        tracker.enableAutoActivityTracking(true);
+
     }
 
 
