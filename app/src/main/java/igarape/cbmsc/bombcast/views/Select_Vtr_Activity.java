@@ -19,9 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
-import igarape.cbmsc.bombcast.hive.UploadVideoActivity;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
+import igarape.cbmsc.bombcast.utils.UploadService;
 
 public class Select_Vtr_Activity extends Activity {
 
@@ -137,8 +137,9 @@ public class Select_Vtr_Activity extends Activity {
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent4 = new Intent(Select_Vtr_Activity.this, UploadVideoActivity.class);
-                startActivity(intent4);
+                Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
             }
         });
 

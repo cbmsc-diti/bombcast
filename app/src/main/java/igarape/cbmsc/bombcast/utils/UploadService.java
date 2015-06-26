@@ -13,16 +13,10 @@ import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -139,7 +133,7 @@ public class UploadService extends Service {
             uploadUserData();
         }
     }
-
+    /*
     private void uploadLocations(String userLogin) {
         final File file = new File(FileUtils.getLocationsFilePath(userLogin));
         if (!file.exists()) {
@@ -265,6 +259,7 @@ public class UploadService extends Service {
             Log.e(TAG, "location file error", e);
         }
     }
+    */
 
     private void uploadVideo(final File nextVideo, final String userLogin) {
         if (!ServiceUtils.isMyServiceRunning(UploadService.class, getApplicationContext())) {
@@ -279,6 +274,8 @@ public class UploadService extends Service {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
             params.add(new BasicNameValuePair("date", df.format(new Date(nextVideo.lastModified()))));
+            params.add(new BasicNameValuePair("nr_oc", userLogin));
+
             NetworkUtils.post(getBaseContext(), Globals.SERVER_CBM + "AndroidFileUpload/fileUpload.php", params, nextVideo, new HttpResponseCallback() {
 
                 @Override
@@ -289,7 +286,7 @@ public class UploadService extends Service {
                 @Override
                 public void failure(int statusCode) {
                     if (!videos.isEmpty()) {
-                   //     uploadVideo(videos.remove(0), userLogin);
+                       // uploadVideo(videos.remove(0), userLogin);
                     } else {
                         uploadUserData();
                     }
@@ -300,7 +297,7 @@ public class UploadService extends Service {
                     sendUpdateToUI(nextVideo.length());
                     nextVideo.delete();
                     if (!videos.isEmpty()) {
-                       // uploadVideo(videos.remove(0), userLogin);
+                        uploadVideo(videos.remove(0), userLogin);
                     } else {
                         uploadUserData();
                     }
