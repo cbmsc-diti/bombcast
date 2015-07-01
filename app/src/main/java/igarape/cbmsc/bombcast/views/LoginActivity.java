@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import igarape.cbmsc.bombcast.R;
@@ -72,13 +73,35 @@ public class LoginActivity extends Activity {
                                 public void run() {
                                     InputMethodManager keyboard = (InputMethodManager)
                                             getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    keyboard.showSoftInput(txtId, 0);
+                                    //keyboard.showSoftInput(txtId, 0);
                                 }
                             }, 200);
                         }
                     }
                 });
+        final ImageButton icon_face = (ImageButton) findViewById(R.id.icon_face);
+        icon_face.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Globals.setUrlSocial("https://pt-br.facebook.com/CBMSC");
+                Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
+                startActivity(intent);
             }
+        });
+
+        final ImageButton icon_twitter = (ImageButton) findViewById(R.id.icon_twitter);
+        icon_twitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Globals.setUrlSocial("https://twitter.com/CBMSC193");
+                Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+    }
 
             @Override
             public boolean onCreateOptionsMenu(Menu menu) {

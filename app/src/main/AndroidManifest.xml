@@ -56,6 +56,10 @@
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             />
         <activity
+            android:name=".views.SocialActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            />
+        <activity
             android:name=".views.Server_193Activity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:launchMode="singleTop"

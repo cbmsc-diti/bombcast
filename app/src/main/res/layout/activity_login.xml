@@ -85,4 +85,25 @@
         android:layout_alignParentEnd="true"
         android:background="@color/bg_dark_block" />
 
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/icon_face"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/icon_face"
+        android:clickable="true" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/icon_twitter"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/icon_face"
+        android:layout_toStartOf="@+id/icon_face"
+        android:src="@drawable/icon_twitter"
+        android:layout_marginRight="10dp"
+        android:clickable="true" />
+
 </RelativeLayout>

@@ -49,6 +49,18 @@ public class Globals {
     private static Double LatAlteracao = 0.0;
     private static Double LngAlteracao = 0.0;
 
+    private static String UrlSocial = "";
+
+    private static String TelefoneCmt = "";
+
+    public static String getUrlSocial() {
+        return UrlSocial;
+    }
+
+    public static void setUrlSocial(String urlSocial) {
+        UrlSocial = urlSocial;
+    }
+
     public static String getTelefoneCmt() {
         return TelefoneCmt;
     }
@@ -56,8 +68,6 @@ public class Globals {
     public static void setTelefoneCmt(String telefoneCmt) {
         TelefoneCmt = telefoneCmt;
     }
-
-    private static String TelefoneCmt = "";
 
 
     public static Double getLngAlteracao() {
