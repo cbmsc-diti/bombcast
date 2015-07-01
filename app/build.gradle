@@ -11,8 +11,8 @@ android {
         applicationId "igarape.cbmsc.bombcast"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 3
-        versionName "1.02"
+        versionCode 4
+        versionName "1.03"
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'

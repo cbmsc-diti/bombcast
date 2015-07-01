@@ -64,16 +64,16 @@ public class LoginActivity extends Activity {
                  * android:focusable="true"
                  * android:focusableInTouchMode="true"
                  */
-                txtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                txtPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (hasFocus) {
-                            txtId.postDelayed(new Runnable() {
+                            txtPwd.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     InputMethodManager keyboard = (InputMethodManager)
-                                            getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    //keyboard.showSoftInput(txtId, 0);
+                                          getSystemService(Context.INPUT_METHOD_SERVICE);
+                                   // keyboard.showSoftInput(txtId, 0);
                                 }
                             }, 200);
                         }
@@ -95,6 +95,26 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Globals.setUrlSocial("https://twitter.com/CBMSC193");
+                Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        final ImageButton icon_igarape = (ImageButton) findViewById(R.id.icon_igarape);
+        icon_igarape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Globals.setUrlSocial("http://www.igarape.org.br/");
+                Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        final ImageButton icon_cbm = (ImageButton) findViewById(R.id.icon_cbm);
+        icon_cbm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Globals.setUrlSocial("http://www.cbm.sc.gov.br/hotsite/");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
                 startActivity(intent);
             }
