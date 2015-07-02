@@ -97,7 +97,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="5dp" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -113,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:id="@+id/icon_igarape"
-        android:src="@drawable/igarape_icon"
+        android:src="@drawable/icon_igarape_bc"
         android:focusableInTouchMode="false"
         android:background="@color/bg_dark_block"
         android:layout_alignTop="@+id/icon_cbm"
@@ -141,7 +141,6 @@
         android:background="@color/bg_dark_block"
         android:layout_alignBottom="@+id/icon_twitter"
         android:layout_toLeftOf="@+id/icon_igarape"
-        android:layout_toStartOf="@+id/icon_igarape"
-        android:layout_marginRight="10dp" />
+        android:layout_toStartOf="@+id/icon_igarape" />
 
 </RelativeLayout>
