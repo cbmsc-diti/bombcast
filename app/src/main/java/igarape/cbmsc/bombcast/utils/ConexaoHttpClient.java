@@ -14,7 +14,7 @@ import org.apache.http.params.HttpParams;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ConexaoHttpClient {
 	public static final int HTTP_TIMEOUT = 30 * 1000;
@@ -38,7 +38,7 @@ public class ConexaoHttpClient {
 	}
 
 	public static String executaHttpPost(String url,
-			ArrayList<NameValuePair> parametroPost) throws Exception {
+			List<NameValuePair> parametroPost) throws Exception {
 		BufferedReader bufferedReader = null;
 		String resultado = null;
 		try {
@@ -55,7 +55,7 @@ public class ConexaoHttpClient {
 			String line = "";
 			String LS = System.getProperty("line.separator");
 			while ((line = bufferedReader.readLine()) != null) {
-				stringBuffer.append(line+LS);
+				stringBuffer.append(line);
 			}
 			bufferedReader.close();
 			resultado = stringBuffer.toString();

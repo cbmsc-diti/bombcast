@@ -12,17 +12,20 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
-
-import static java.net.URLEncoder.encode;
 
 public class LoginActivity extends Activity {
 
@@ -71,8 +74,8 @@ public class LoginActivity extends Activity {
                             txtPwd.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    InputMethodManager keyboard = (InputMethodManager)
-                                          getSystemService(Context.INPUT_METHOD_SERVICE);
+                                   // InputMethodManager keyboard = (InputMethodManager)
+                                      //    getSystemService(Context.INPUT_METHOD_SERVICE);
                                    // keyboard.showSoftInput(txtId, 0);
                                 }
                             }, 200);
@@ -142,28 +145,33 @@ public class LoginActivity extends Activity {
 
             public class Processo extends AsyncTask<String, String, String> {
 
+
                 private String retornoHttp = "";
-
-
                 public Context context;
-
                 public Processo(Context context) {
                     this.context = context;
                 }
+                protected List<NameValuePair> params = new ArrayList<>();
+
 
                 @Override
                 protected void onPreExecute() {
                     //ANTES DE EXECUTAR (JANELA)
                     pDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
 
+
+
                 }
 
                 @Override
                 protected String doInBackground(String... paramss) {
                     try {
-                        String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php?u=" + txtId.getText().toString() + "&p=" + encode(txtPwd.getText().toString(), "ISO-8859-1");
+                        String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php";
+                        params.add(new BasicNameValuePair("u", txtId.getText().toString()));
+                        params.add(new BasicNameValuePair("p", txtPwd.getText().toString()));
 
-                        retornoHttp = ConexaoHttpClient.executaHttpGet(URL);
+
+                        retornoHttp = ConexaoHttpClient.executaHttpPost(URL,params);
 
 
                     } catch (Exception e) {
@@ -182,20 +190,22 @@ public class LoginActivity extends Activity {
                         startActivity(intent);
                         LoginActivity.this.finish();
 
-                    }
-                    if (retornoHttp.equalsIgnoreCase("0")) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Tente novamente.", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.TOP, 0, 100);
-                        toast.show();
+                    }else{
+                        if (retornoHttp.equalsIgnoreCase("0")) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Tente novamente.", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.TOP, 0, 100);
+                            toast.show();
 
                         txtPwd.setText("");
                         pDialog.dismiss();
 
 
-                    } else {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Problema ao conectar com o E193.", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.TOP, 0, 100);
-                        toast.show();
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Problema ao conectar com o E193.", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.TOP, 0, 100);
+                            toast.show();
+                            pDialog.dismiss();
+                        }
                     }
                 }
 
@@ -204,5 +214,4 @@ public class LoginActivity extends Activity {
 
                 }
             }
-
-        }
+    }
