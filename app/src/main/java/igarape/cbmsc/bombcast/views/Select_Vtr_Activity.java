@@ -2,8 +2,10 @@ package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
@@ -25,6 +27,9 @@ import igarape.cbmsc.bombcast.utils.UploadService;
 
 public class Select_Vtr_Activity extends Activity {
 
+    public String status;
+    protected String Url;
+    ProgressDialog pDialog;
     private List<String> vtrs = new ArrayList<>();
     private String vtr_sel;
     private String servidor193 = Globals.getServidorSelecionado();
@@ -36,70 +41,103 @@ public class Select_Vtr_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_vtr);
 
+        findViewById(R.id.btn_next).setEnabled(false);
         et_telefone = (EditText) findViewById(R.id.et_cel_cmt_area);
         nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
 
-        String status;
-        try {
-            status = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193);
-            if(!status.isEmpty()){
-                vtrs = Arrays.asList(status.split("\\."));
-            }else{
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getString(R.string.texto_vtr_nao_cadastrada))
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent2 = new Intent(Select_Vtr_Activity.this, LoginActivity.class);
-                                startActivity(intent2);
-                                Select_Vtr_Activity.this.finish();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //Identifica o Spinner no layout
-        Spinner sp_vtrs = (Spinner) findViewById(R.id.sp_vtrs);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, vtrs);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
-        sp_vtrs.setAdapter(spinnerArrayAdapter);
-        //Método do Spinner para capturar o item selecionado
-        sp_vtrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193;
+
+            new AsyncTask<Void, Void, List>() {
+
+                @Override
+            protected void onPreExecute() {
+                    //ANTES DE EXECUTAR (JANELA)
+                    pDialog = ProgressDialog.show(Select_Vtr_Activity.this,"Verificando cadastro no E193", getString(R.string.please_hold), true);
+                }
             @Override
-            public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
-                vtr_sel = parent.getItemAtPosition(posicao).toString();
+            protected List doInBackground(Void... unused) {
+                try {
+                    status = ConexaoHttpClient.executaHttpGet(Url);
+                    vtrs = Arrays.asList(status.split("\\."));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    vtrs.add(0,"");
+                }
+
+                return vtrs;
             }
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            protected void onPostExecute(List aVoid) {
+                super.onPostExecute(aVoid);
+
+                if (vtrs.get(0).equals("")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+                    builder.setMessage(getString(R.string.texto_vtr_nao_cadastrada))
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent intent2 = new Intent(Select_Vtr_Activity.this, LoginActivity.class);
+                                    startActivity(intent2);
+                                    Select_Vtr_Activity.this.finish();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }else{
+                    //Identifica o Spinner no layout
+                    Spinner sp_vtrs = (Spinner) findViewById(R.id.sp_vtrs);
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(Select_Vtr_Activity.this, R.layout.spinner_item, vtrs);
+                    spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+                    sp_vtrs.setAdapter(spinnerArrayAdapter);
+                    //Método do Spinner para capturar o item selecionado
+                    sp_vtrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
+                            vtr_sel = parent.getItemAtPosition(posicao).toString();
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+
+                    try {
+                        pDialog.dismiss();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        status = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193+"&vf=1");
+
+                        if(!status.isEmpty()){
+                            List<String> cmta = Arrays.asList(status.split("\\."));
+                            String telefone = cmta.get(2);
+                            String idCmt = cmta.get(0) +" "+ cmta.get(1);
+                            ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
+                            ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
+                        }else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+                            builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
+                                    .setCancelable(false)
+                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                        } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                findViewById(R.id.btn_next).setEnabled(true);
+
             }
-        });
-        try {
-            status = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193+"&vf=1");
-            if(!status.isEmpty()){
-                List<String> cmta = Arrays.asList(status.split("\\."));
-                String telefone = cmta.get(2);
-                String idCmt = cmta.get(0) +" "+ cmta.get(1);
-                ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
-                ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
-            }else{
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }.execute();
+
         final Button btn_next = (Button) findViewById(R.id.btn_next);
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -158,9 +158,6 @@ public class LoginActivity extends Activity {
                 protected void onPreExecute() {
                     //ANTES DE EXECUTAR (JANELA)
                     pDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
-
-
-
                 }
 
                 @Override
@@ -185,6 +182,7 @@ public class LoginActivity extends Activity {
 
                     if (retornoHttp.equalsIgnoreCase("1")) {
 
+                        pDialog.dismiss();
                         Globals.setUserName(txtId.getText().toString());
                         Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
                         startActivity(intent);

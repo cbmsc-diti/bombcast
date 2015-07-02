@@ -3,7 +3,6 @@ package igarape.cbmsc.bombcast.views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,7 +52,6 @@ public class Server_193Activity extends Activity {
             @Override
             public void onClick(View view) {
 
-                ProgressDialog.show(Server_193Activity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
 
                 Globals.setServidorSelecionado(servidor_sel.getIp());
                 Intent intent = new Intent(Server_193Activity.this, Select_Vtr_Activity.class);
