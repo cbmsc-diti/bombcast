@@ -72,7 +72,6 @@
         android:layout_below="@+id/tv_desc_telefone"
         android:layout_alignLeft="@+id/tv_desc_telefone"
         android:layout_alignStart="@+id/tv_desc_telefone"
-        android:text="@string/fone"
         android:hint="@string/hint_fone"  />
 
     <Button

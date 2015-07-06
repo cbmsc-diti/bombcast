@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.splunk.mint.Mint;
 
 import igarape.cbmsc.bombcast.utils.FileUtils;
 
@@ -30,6 +31,8 @@ public class BombCastApplication extends Application {
         tracker.enableExceptionReporting(true);
         tracker.enableAdvertisingIdCollection(true);
         tracker.enableAutoActivityTracking(true);
+
+        Mint.initAndStartSession(BombCastApplication.this, "c58077d2");
 
     }
 

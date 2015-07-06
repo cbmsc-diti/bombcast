@@ -78,7 +78,6 @@
         android:maxLength="12"
         android:focusableInTouchMode="true"
         android:editable="true"
-        android:text="@string/fone"
         android:hint="@string/hint_fone" />
 
     <Button

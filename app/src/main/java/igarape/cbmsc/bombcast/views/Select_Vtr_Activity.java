@@ -27,40 +27,38 @@ import igarape.cbmsc.bombcast.utils.UploadService;
 
 public class Select_Vtr_Activity extends Activity {
 
-    public String status;
     protected String Url;
-    ProgressDialog pDialog;
     private List<String> vtrs = new ArrayList<>();
-    private String vtr_sel;
     private String servidor193 = Globals.getServidorSelecionado();
     private String usuario = Globals.getUserName();
+    private String vtr_sel;
+    public String status;
+    ProgressDialog pDialog;
     EditText et_telefone;
     TextView nm_cmt;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_vtr);
-
         findViewById(R.id.btn_next).setEnabled(false);
         et_telefone = (EditText) findViewById(R.id.et_cel_cmt_area);
         nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
+        Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
 
-        Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193;
+        new AsyncTask<Void, Void, List>() {
 
-            new AsyncTask<Void, Void, List>() {
-
-                @Override
+            @Override
             protected void onPreExecute() {
-                    //ANTES DE EXECUTAR (JANELA)
-                    pDialog = ProgressDialog.show(Select_Vtr_Activity.this,"Verificando cadastro no E193", getString(R.string.please_hold), true);
-                }
+                pDialog = ProgressDialog.show(Select_Vtr_Activity.this,"Verificando cadastro no E193", getString(R.string.please_hold), true);
+            }
             @Override
             protected List doInBackground(Void... unused) {
                 try {
                     status = ConexaoHttpClient.executaHttpGet(Url);
                     vtrs = Arrays.asList(status.split("\\."));
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     vtrs.add(0,"");
@@ -86,12 +84,17 @@ public class Select_Vtr_Activity extends Activity {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }else{
-                    //Identifica o Spinner no layout
+                    try {
+
+                        status = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193+"&vf=1");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     Spinner sp_vtrs = (Spinner) findViewById(R.id.sp_vtrs);
                     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(Select_Vtr_Activity.this, R.layout.spinner_item, vtrs);
                     spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                     sp_vtrs.setAdapter(spinnerArrayAdapter);
-                    //Método do Spinner para capturar o item selecionado
                     sp_vtrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
@@ -108,33 +111,27 @@ public class Select_Vtr_Activity extends Activity {
                         e.printStackTrace();
                     }
 
-                    try {
-                        status = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193+"&vf=1");
 
-                        if(!status.isEmpty()){
-                            List<String> cmta = Arrays.asList(status.split("\\."));
-                            String telefone = cmta.get(2);
-                            String idCmt = cmta.get(0) +" "+ cmta.get(1);
-                            ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
-                            ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
-                        }else{
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
-                            builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
-                                    .setCancelable(false)
-                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-                        } catch (Exception e) {
-                        e.printStackTrace();
+                    if(!status.isEmpty()){
+                        List<String> cmta = Arrays.asList(status.split("\\."));
+                        String telefone = cmta.get(2);
+                        String idCmt = cmta.get(0) +" "+ cmta.get(1);
+                        ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
+                        ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
+                    }else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+                        builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
+                                .setCancelable(false)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
                     }
+
                 }
-
                 findViewById(R.id.btn_next).setEnabled(true);
-
             }
         }.execute();
 
