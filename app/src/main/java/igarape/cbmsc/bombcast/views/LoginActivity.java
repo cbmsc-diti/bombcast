@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.Tracker;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -31,6 +33,7 @@ import igarape.cbmsc.bombcast.utils.Globals;
 public class LoginActivity extends Activity {
 
     public static String TAG = LoginActivity.class.getName();
+    public static Tracker tracker;
     EditText txtId;
     EditText txtPwd;
     ProgressDialog pDialog;
@@ -39,6 +42,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
 
         final Button btn_ajuda = (Button) findViewById(R.id.btn_ajuda);

@@ -166,7 +166,7 @@ public class NetworkUtils {
 
                 HttpURLConnection urlConnection = null;
                 try {
-                    URL urlToRequest = new URL(Globals.SERVER_URL + url);
+                    URL urlToRequest = new URL(url);
                     urlConnection = (HttpURLConnection) urlToRequest.openConnection();
 
                     if (method.equals(Method.POST)) {
