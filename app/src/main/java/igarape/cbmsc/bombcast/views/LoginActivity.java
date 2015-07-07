@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -67,18 +68,18 @@ public class LoginActivity extends Activity {
                  * android:focusable="true"
                  * android:focusableInTouchMode="true"
                  */
-                txtPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                txtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (hasFocus) {
-                            txtPwd.postDelayed(new Runnable() {
+                            txtId.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                   // InputMethodManager keyboard = (InputMethodManager)
-                                      //    getSystemService(Context.INPUT_METHOD_SERVICE);
-                                   // keyboard.showSoftInput(txtId, 0);
+                                    InputMethodManager keyboard = (InputMethodManager)
+                                    getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    keyboard.showSoftInput(txtId, 0);
                                 }
-                            }, 200);
+                            }, 800);
                         }
                     }
                 });
@@ -182,7 +183,11 @@ public class LoginActivity extends Activity {
 
                     if (retornoHttp.equalsIgnoreCase("1")) {
 
-                        pDialog.dismiss();
+                       try{
+                            pDialog.dismiss();
+                            }catch(Exception e){
+                            e.printStackTrace();
+                       }
                         Globals.setUserName(txtId.getText().toString());
                         Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
                         startActivity(intent);
@@ -195,14 +200,23 @@ public class LoginActivity extends Activity {
                             toast.show();
 
                         txtPwd.setText("");
-                        pDialog.dismiss();
+
+                            try{
+                                pDialog.dismiss();
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
 
 
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Problema ao conectar com o E193.", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.TOP, 0, 100);
                             toast.show();
-                            pDialog.dismiss();
+                            try{
+                                pDialog.dismiss();
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
