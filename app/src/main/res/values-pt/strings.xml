@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <resources>
         
-    <string name="app_name"> BombCast </string>
+    <string name="app_name"> FireCast </string>
         
     <string name="hello_world"> Olá, mundo! </string>
         
@@ -33,7 +33,7 @@
         
     <string name="network_required"> Rede deve estar ativa </string>
         
-    <string name="copcast_main_title"> BombCast </string>
+    <string name="copcast_main_title"> FireCast </string>
         
     <string name="videos_label"> Vídeos gravados: </string>
         

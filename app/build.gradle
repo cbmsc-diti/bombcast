@@ -9,10 +9,10 @@ android {
     buildToolsVersion "21.1.1"
     defaultConfig {
         applicationId "igarape.cbmsc.bombcast"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 21
-        versionCode 7
-        versionName "1.05"
+        versionCode 8
+        versionName "1.06"
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
