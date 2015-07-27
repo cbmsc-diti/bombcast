@@ -15,8 +15,9 @@ import static java.net.URLEncoder.encode;
 public class Globals {
 
     public static String TAG = Globals.class.getName();
-    public static final String SENDER_ID = "319635303076";
+    public static final String SENDER_ID = "559090531786";
     private static final String PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN";
+    public static final String PREF_FILE_NAMES = "PREF_FILE_NAMES";
     public static final String DATA = "DATA";
     private static final String PREF_TIME_LOGIN = "PREF_TIME_LOGIN";
     private static final String PREF_USER_LOGIN = "PREF_USER_LOGIN";

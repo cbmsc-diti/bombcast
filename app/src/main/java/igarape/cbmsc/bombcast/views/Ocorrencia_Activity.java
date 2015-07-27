@@ -17,7 +17,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,17 +46,23 @@ public class Ocorrencia_Activity extends Activity {
     public String vf;
     final Timer t = new Timer();
     TextView tv_endereco;
+    List<NameValuePair> params = new ArrayList<>();
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-      // StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
-
         setContentView(R.layout.activity_ocorrencia);
+
 
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
         this.mWakeLock.acquire();
+        UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2007.php";
+
+        params.add(new BasicNameValuePair("nr_vtr",VtrMonitorada));
+        params.add(new BasicNameValuePair("h",ServidorSelecionado));
+        params.add(new BasicNameValuePair("fn",TelefoneCmt));
+        params.add(new BasicNameValuePair("u",Globals.getUserName()));
 
         Processo meu = new Processo(getBaseContext());
         meu.execute();
@@ -60,32 +71,29 @@ public class Ocorrencia_Activity extends Activity {
         btn_j10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 parar = true;
 
                 String LatOcorrencia = Globals.getLatitude();
                 String LngOcorrencia = Globals.getLongitude();
 
+                params.add(new BasicNameValuePair("jota","j10"));
+                params.add(new BasicNameValuePair("lat_o",LatOcorrencia));
+                params.add(new BasicNameValuePair("lng_o",LngOcorrencia));
 
                 findViewById(R.id.btn_j10).setEnabled(false);
                 findViewById(R.id.btn_j11).setEnabled(true);
-
-                IO = Endereco[2].split(":");
-
-                UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_o="+LatOcorrencia+"&lng_o="+LngOcorrencia+"&u="+Globals.getUserName()+"&fn="+TelefoneCmt;
 
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... unused) {
                         try {
-                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                             vf = "0";
 
                         } catch (Exception e) {
                             e.printStackTrace();
                             vf = "1";
                         }
-
                         return vf;
                     }
                     @Override
@@ -93,7 +101,6 @@ public class Ocorrencia_Activity extends Activity {
                         super.onPostExecute(aVoid);
                         if (vf.equals("1")){
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
                             builder.setTitle(getString(R.string.problema))
                                     .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id){
@@ -104,7 +111,6 @@ public class Ocorrencia_Activity extends Activity {
                         }
                     }
                 }.execute();
-
             }
         });
 
@@ -112,18 +118,17 @@ public class Ocorrencia_Activity extends Activity {
         btn_j11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                params.add(new BasicNameValuePair("jota","j11"));
 
                 findViewById(R.id.btn_j11).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
-                UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
 
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... unused) {
                         try {
-                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                             vf = "0";
-
                         } catch (Exception e) {
                             e.printStackTrace();
                             vf = "1";
@@ -136,7 +141,6 @@ public class Ocorrencia_Activity extends Activity {
                         super.onPostExecute(aVoid);
                         if (vf.equals("1")){
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
                             builder.setTitle(getString(R.string.problema))
                                     .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id){
@@ -155,34 +159,32 @@ public class Ocorrencia_Activity extends Activity {
         btn_j10_i.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
                 builder.setMessage(getString(R.string.texto_recusa_vitima))
                         .setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id){
+                                String LatLocalIntermediario = Globals.getLatitude();
+                                String LngLocalIntermediario = Globals.getLongitude();
+
+                                params.add(new BasicNameValuePair("jota","j10i_n"));
+                                params.add(new BasicNameValuePair("lat_i",LatLocalIntermediario));
+                                params.add(new BasicNameValuePair("lng_i",LngLocalIntermediario));
 
                                 findViewById(R.id.btn_j10_i).setEnabled(false);
                                 findViewById(R.id.btn_j11_i).setEnabled(true);
-
-                                IO = Endereco[2].split(":");
-
-                                String LatLocalIntermediario = Globals.getLatitude();
-                                String LngLocalIntermediario = Globals.getLongitude();
-                                UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_i="+LatLocalIntermediario+"&lng_i="+LngLocalIntermediario;
 
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
                                     protected String doInBackground(Void... unused) {
                                         try {
-                                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                                             vf = "0";
 
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                             vf = "1";
                                         }
-
                                         return vf;
                                     }
                                     @Override
@@ -205,23 +207,23 @@ public class Ocorrencia_Activity extends Activity {
                         })
                         .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                IO = Endereco[2].split(":");
                                 String LatLocalRecusa = Globals.getLatitude();
                                 String LngLocalRecusa = Globals.getLongitude();
-                                UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j10i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_r="+LatLocalRecusa+"&lng_r="+LngLocalRecusa;
+
+                                params.add(new BasicNameValuePair("jota","j10i_s"));
+                                params.add(new BasicNameValuePair("lat_r",LatLocalRecusa));
+                                params.add(new BasicNameValuePair("lng_r",LngLocalRecusa));
 
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
                                     protected String doInBackground(Void... unused) {
                                         try {
-                                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                                             vf = "0";
-
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                             vf = "1";
                                         }
-
                                         return vf;
                                     }
                                     @Override
@@ -263,25 +265,24 @@ public class Ocorrencia_Activity extends Activity {
                         .setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                IO = Endereco[2].split(":");
-
                                 String LatLocalMaca = Globals.getLatitude();
                                 String LngLocalMaca = Globals.getLongitude();
 
-                                UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=0&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado+"&lat_m="+LatLocalMaca+"&lng_m="+LngLocalMaca;
+                                params.add(new BasicNameValuePair("jota","j11i_s"));
+                                params.add(new BasicNameValuePair("lat_m",LatLocalMaca));
+                                params.add(new BasicNameValuePair("lng_m",LngLocalMaca));
 
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
                                     protected String doInBackground(Void... unused) {
                                         try {
-                                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                                             vf = "0";
 
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                             vf = "1";
                                         }
-
                                         return vf;
                                     }
                                     @Override
@@ -306,23 +307,21 @@ public class Ocorrencia_Activity extends Activity {
                 AlertDialog alert = builder.create();
                 alert.show();
 
+                params.add(new BasicNameValuePair("jota","j11i_n"));
+
                 findViewById(R.id.btn_j11_i).setEnabled(false);
 
-                IO = Endereco[2].split(":");
-
-                UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j11i=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... unused) {
                         try {
-                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                             vf = "0";
 
                         } catch (Exception e) {
                             e.printStackTrace();
                             vf = "1";
                         }
-
                         return vf;
                     }
                     @Override
@@ -348,6 +347,9 @@ public class Ocorrencia_Activity extends Activity {
         btn_j12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                params.add(new BasicNameValuePair("jota","j12"));
+
                 try {
                     Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -356,28 +358,16 @@ public class Ocorrencia_Activity extends Activity {
                     e.printStackTrace();
                 }
 
-                findViewById(R.id.btn_play).setEnabled(false);
-                findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
-                findViewById(R.id.btn_stop).setEnabled(false);
-                findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
-                findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
-
-                IO = Endereco[2].split(":");
-
-                UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast.php?j12=1&nr_vtr="+VtrMonitorada+"&io="+IO[1]+"&h="+ServidorSelecionado;
-
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... unused) {
                         try {
-                            retornoJS = ConexaoHttpClient.executaHttpGet(UrlJS);
+                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                             vf = "0";
-
                         } catch (Exception e) {
                             e.printStackTrace();
                             vf = "1";
                         }
-
                         return vf;
                     }
                     @Override
@@ -396,10 +386,12 @@ public class Ocorrencia_Activity extends Activity {
                         }
                     }
                 }.execute();
-                parar = false;
-                Processo meu = new Processo(getBaseContext());
-                meu.execute();
 
+                findViewById(R.id.btn_play).setEnabled(false);
+                findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
+                findViewById(R.id.btn_stop).setEnabled(false);
+                findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
+                findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
                 findViewById(R.id.btn_j10).setEnabled(false);
                 findViewById(R.id.btn_j11).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(false);
@@ -410,6 +402,9 @@ public class Ocorrencia_Activity extends Activity {
 
                 tv_endereco.setText(getString(R.string.msg_sem_ocorrencia));
 
+                parar = false;
+                Processo meu = new Processo(getBaseContext());
+                meu.execute();
             }
         });
 
@@ -479,17 +474,18 @@ public class Ocorrencia_Activity extends Activity {
         protected String doInBackground(String... paramss) {
 
         try {
-
             new Thread();
             Thread.sleep(4000);
-                    retornoHttp = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "rec_coord.bombcast.php?infos=1&nr_vtr=" + VtrMonitorada + "&h=" + ServidorSelecionado);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                retornoHttp = "ASC";
-                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try{
+            retornoHttp = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "rec_coord.bombcast.php?infos=1&nr_vtr=" + VtrMonitorada + "&h=" + ServidorSelecionado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            retornoHttp = "ASC";
+            }
             return retornoHttp;
-
         }
         @Override
         protected void onPostExecute(String result) {
@@ -508,6 +504,7 @@ public class Ocorrencia_Activity extends Activity {
                IO = Endereco[2].split(":");
 
                Globals.setId_Ocorrencia(IO[1]);
+               params.add(new BasicNameValuePair("io",IO[1]));
 
                findViewById(R.id.btn_j10).setEnabled(true);
                findViewById(R.id.btn_j12).setEnabled(true);
@@ -525,9 +522,7 @@ public class Ocorrencia_Activity extends Activity {
                builder.setTitle(getString(R.string.parar_alarme))
                            .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
                                public void onClick(DialogInterface dialog, int id){
-
                                    player.stop();
-
                                }
                            });
 
@@ -538,7 +533,6 @@ public class Ocorrencia_Activity extends Activity {
                findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
                count = "ok";
 
-
            }else if((retornoHttp.equals("0"))&& (!parar)){
 
                Processo meu = new Processo(getBaseContext());
@@ -546,17 +540,19 @@ public class Ocorrencia_Activity extends Activity {
                try {
                    new Thread();
                    Thread.sleep(1000);
-
-                   Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando "+VtrMonitorada, Toast.LENGTH_SHORT);
-                   toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                   toast.show();
-
                } catch (InterruptedException e) {
                    e.printStackTrace();
                }
 
-               meu.execute();
+               try{
+                   Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando "+VtrMonitorada, Toast.LENGTH_SHORT);
+                   toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
+                   toast.show();
 
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+               meu.execute();
            }else{
 
                final AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
@@ -580,7 +576,7 @@ public class Ocorrencia_Activity extends Activity {
                        });
                }
                final AlertDialog alert = builder.create();
-              try {
+               try {
                   alert.show();
                   try{
                       t.schedule(new TimerTask() {
@@ -594,7 +590,7 @@ public class Ocorrencia_Activity extends Activity {
                     }catch(Exception e){
                       e.printStackTrace();
                   }
-              } catch (Exception e) {
+               } catch (Exception e) {
                 e.printStackTrace();
                 player.stop();
               }
@@ -602,7 +598,6 @@ public class Ocorrencia_Activity extends Activity {
         }
 
     }
-
     private MediaPlayer player;
 
     protected void play(Context context, Uri alert) {

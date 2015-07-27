@@ -18,8 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.Tracker;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -29,11 +27,11 @@ import java.util.List;
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
+import igarape.cbmsc.bombcast.utils.ManageSharedPreferences;
 
 public class LoginActivity extends Activity {
 
     public static String TAG = LoginActivity.class.getName();
-    public static Tracker tracker;
     EditText txtId;
     EditText txtPwd;
     ProgressDialog pDialog;
@@ -43,16 +41,14 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-
         final Button btn_ajuda = (Button) findViewById(R.id.btn_ajuda);
         btn_ajuda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
 
-                builder.setTitle("Precisa de ajuda?")
-                        .setMessage("Ligue para o plantão da DiTI (048)3271-1171 ou abra um SAU no site do CBMSC.")
+                builder.setTitle(getString(R.string.title_help))
+                        .setMessage(getString(R.string.help_text))
                         .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                             }
@@ -63,7 +59,11 @@ public class LoginActivity extends Activity {
             });
 
                 txtId = (EditText) findViewById(R.id.txtLoginUser);
-                //txtId.setText(Globals.getUserLogin(this));
+
+                String Login = ManageSharedPreferences.getStringFromSharedPreference(LoginActivity.this,Globals.PREF_FILE_NAMES,"login");
+
+                txtId.setText(Login);
+
                 txtPwd = (EditText) findViewById(R.id.txtLoginPassword);
 
                 /**
@@ -193,6 +193,9 @@ public class LoginActivity extends Activity {
                             e.printStackTrace();
                        }
                         Globals.setUserName(txtId.getText().toString());
+
+                        ManageSharedPreferences.putInSharedPreferences(LoginActivity.this,Globals.PREF_FILE_NAMES,"login",txtId.getText().toString());
+
                         Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();

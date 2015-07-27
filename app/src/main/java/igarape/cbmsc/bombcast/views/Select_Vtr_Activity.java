@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +39,7 @@ public class Select_Vtr_Activity extends Activity {
     ProgressDialog pDialog;
     EditText et_telefone;
     TextView nm_cmt;
+    List<NameValuePair> params = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +47,8 @@ public class Select_Vtr_Activity extends Activity {
         findViewById(R.id.btn_next).setEnabled(false);
         et_telefone = (EditText) findViewById(R.id.et_cel_cmt_area);
         nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
-        Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193;
+        Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php";
+
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
 
@@ -52,18 +57,20 @@ public class Select_Vtr_Activity extends Activity {
             @Override
             protected void onPreExecute() {
                 pDialog = ProgressDialog.show(Select_Vtr_Activity.this,"Verificando cadastro no E193", getString(R.string.please_hold), true);
+                params.add(new BasicNameValuePair("u", usuario));
+                params.add(new BasicNameValuePair("h", servidor193));
+                params.add(new BasicNameValuePair("vf", "0"));
             }
             @Override
             protected List doInBackground(Void... unused) {
                 try {
-                    status = ConexaoHttpClient.executaHttpGet(Url);
+                    status = ConexaoHttpClient.executaHttpPost(Url,params);
                     vtrs = Arrays.asList(status.split("\\."));
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     vtrs.add(0,"");
                 }
-
                 return vtrs;
             }
             @Override
@@ -85,8 +92,9 @@ public class Select_Vtr_Activity extends Activity {
                     alert.show();
                 }else{
                     try {
+                        params.add(new BasicNameValuePair("vf", "1"));
+                        status = ConexaoHttpClient.executaHttpPost(Url,params);
 
-                        status = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "sel_vtr.bombcast.php?u="+usuario+"&h="+servidor193+"&vf=1");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

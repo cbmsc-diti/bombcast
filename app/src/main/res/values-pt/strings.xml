@@ -17,9 +17,9 @@
         
     <string name="password_hint">Senha</string>
         
-    <string name="unauthorized_login">Login ou senha inválido</string>
+    <string name="unauthorized_login">Login ou senha inválidos</string>
         
-    <string name="no_server_login"> Não foi possível contactar o servidor </string>
+    <string name="no_server_login"> Não foi possível conectar no servidor </string>
         
     <string name="network"> Rede </string>
         
@@ -63,9 +63,9 @@
         
     <string name="login_in"> Conectando </string>
         
-    <string name="server_error"> Não é possível fazer para entrar em contato com servidor </string>
+    <string name="server_error"> Não é possível entrar em contato com servidor </string>
         
-    <string name="connection_error"> Erro contatando o servidor. Por favor, verifique sua conexão. </string>
+    <string name="connection_error"> Erro na conexão, por favor verifique a mesma. </string>
         
     <string name="bad_request_error"> Erro de conexão. Por favor, contate o administrador. </string>
         
@@ -118,7 +118,7 @@
     <string name="title_activity_mapa_ocorrencia_">Mapa da Ocorrência</string>
     <string name="title_activity_mapa_ocorrencia_activiy">Mapa da Ocorrência</string>
     <string name="cancel"> Cancelar </string>
-    <string name="telefone_editado">Telefone editado.</string>
+    <string name="telefone_editado">Número de telefone editado.</string>
     <string name="msg_tel_nao_encontrado">Não há oficial cadastrado na escala de Comandante de Área.</string>
     <string name="msg_sem_ocorrencia">Sem ocorrência para essa viatura no momento…</string>
     <string name="texto_maca_retida">A MACA RETRÁTIL DESSA VIATURA FICOU RETIDA NESSE HOSPITAL? (caso não possua maca, ou não esteja em um hospital clique em NÃO.)</string>
@@ -153,8 +153,10 @@
     <string name="msg_servidor">Escolha o servidor na lista abaixo:</string>
     <string name="btnTakePicture">Capture Image</string>
     <string name="btnRecordVideo">Record Video</string>
-    <string name="or">(or)</string>
-    <string name="btnUploadToServer">Upload to Server</string>
+    <string name="or">ou</string>
+    <string name="btnUploadToServer">Enviar ao servidor</string>
     <string name="ajuda">Ajuda?</string>
+    <string name="title_help">Precisa de ajuda?</string>
+    <string name="help_text">Ligue para o plantão da DiTI (048)3271-1171 ou abra um SAU no site do CBMSC.</string>
 
 </resources>
