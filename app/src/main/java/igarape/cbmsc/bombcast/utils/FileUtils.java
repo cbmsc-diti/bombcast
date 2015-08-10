@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -44,6 +45,11 @@ public class FileUtils {
 
         }
     }
+
+    public static void LogHistory(String userLogin, JSONObject history) {
+        LogToFile(userLogin, HISTORY_TXT, history.toString());
+    }
+
 
     public static String getHistoriesFilePath(String userLogin) {
         String userPath = getUserPath(userLogin);

@@ -158,6 +158,8 @@
     <string name="ajuda">Help?</string>
     <string name="title_help">Do you need help?</string>
     <string name="help_text">Call the duty of DiTI +55 48 32711171 or open CBMSC site(www.cbm.sc.gov.br).</string>
+    <string name="notification_stream_title">Streaming</string>
+    <string name="notification_stream_description">Srteaming</string>
 
 
 </resources>

@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.util.Log;
+
+import igarape.cbmsc.bombcast.BuildConfig;
 
 import static java.net.URLEncoder.encode;
 
@@ -23,7 +26,7 @@ public class Globals {
     private static final String PREF_USER_LOGIN = "PREF_USER_LOGIN";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
-   // public static final String SERVER_URL = BuildConfig.serverUrl;
+    public static final String SERVER_URL = BuildConfig.serverUrl;
     public static final String DIRECTORY_SIZE = "DIRECTORY_SIZE";
     public static final String DIRECTORY_UPLOADED_SIZE = "DIRECTORY_UPLOADED_SIZE";
     public static final String SERVER_CBM = "https://aplicativosweb.cbm.sc.gov.br/ebm/" ;
@@ -47,6 +50,20 @@ public class Globals {
     private static String Id_Ocorrencia="";
     private static Double LatAlteracao = 0.0;
     private static Double LngAlteracao = 0.0;
+    public static final long GPS_REPEAT_TIME = 1000 * 15; // 15 seconds
+    private static boolean toggling;
+
+
+    public static Location getLastKnownLocation() {
+        return lastKnownLocation;
+    }
+
+    public static void setLastKnownLocation(Location lastKnownLocation) {
+        Globals.lastKnownLocation = lastKnownLocation;
+    }
+
+    private static Location lastKnownLocation = null;
+
 
     private static String UrlSocial = "";
 
@@ -336,5 +353,13 @@ public class Globals {
 
     public static String getStreamingPath() {
         return streamingPath;
+    }
+
+    public static void setToggling(boolean toggling) {
+        Globals.toggling = toggling;
+    }
+
+    public static boolean isToggling() {
+        return toggling;
     }
 }

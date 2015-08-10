@@ -26,7 +26,7 @@ import java.util.List;
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
-import igarape.cbmsc.bombcast.utils.UploadService;
+import igarape.cbmsc.bombcast.service.UploadService;
 
 public class Select_Vtr_Activity extends Activity {
 

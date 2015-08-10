@@ -158,5 +158,7 @@
     <string name="ajuda">Ajuda?</string>
     <string name="title_help">Precisa de ajuda?</string>
     <string name="help_text">Ligue para o plantão da DiTI (048)3271-1171 ou abra um SAU no site do CBMSC.</string>
+    <string name="notification_stream_title">Streaming</string>
+    <string name="notification_stream_description">Srteaming</string>
 
 </resources>

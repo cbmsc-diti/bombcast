@@ -167,7 +167,7 @@ ADDED from AndroidManifest.xml:78:9
 		ADDED from AndroidManifest.xml:80:13
 	android:name
 		ADDED from AndroidManifest.xml:79:13
-service#igarape.cbmsc.bombcast.utils.UploadService
+service#igarape.cbmsc.bombcast.service.UploadService
 ADDED from AndroidManifest.xml:81:9
 	android:name
 		ADDED from AndroidManifest.xml:81:18
