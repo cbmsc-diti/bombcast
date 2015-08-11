@@ -82,7 +82,7 @@ public class LocationUtils {
         };
 
         try {
-            NetworkUtils.post(context, "/locations", buildJson(location), callback);
+            NetworkUtils.post(context, Globals.SERVER_URL_WEB+"/locations", buildJson(location), callback);
         } catch (JSONException e) {
             Log.e(TAG, "json error", e);
         }

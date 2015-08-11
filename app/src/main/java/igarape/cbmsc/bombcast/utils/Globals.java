@@ -26,10 +26,11 @@ public class Globals {
     private static final String PREF_USER_LOGIN = "PREF_USER_LOGIN";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
-    public static final String SERVER_URL = BuildConfig.serverUrl;
+    public static final String SERVER_URL_WEB = BuildConfig.serverUrl;
     public static final String DIRECTORY_SIZE = "DIRECTORY_SIZE";
     public static final String DIRECTORY_UPLOADED_SIZE = "DIRECTORY_UPLOADED_SIZE";
     public static final String SERVER_CBM = "https://aplicativosweb.cbm.sc.gov.br/ebm/" ;
+    public static final String AUTH = "AUTH";
     private static String accessToken = null;
     private static String userLogin = null;
     private static String serverIpAddress = "";
@@ -146,14 +147,22 @@ public class Globals {
 
     public synchronized static String getAccessToken(Context context) {
         if (accessToken == null) {
-            SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
             accessToken = sharedPrefs.getString(PREF_ACCESS_TOKEN, null);
         }
         return accessToken != null ? "Bearer " + accessToken : null;
     }
 
+    public synchronized static String getAccessTokenStraight(Context context) {
+        if (accessToken == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
+            accessToken = sharedPrefs.getString(PREF_ACCESS_TOKEN, null);
+        }
+        return accessToken != null ? accessToken : null;
+    }
+
     public synchronized static void setAccessToken(Context context, String token) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(PREF_ACCESS_TOKEN, token);
         editor.putLong(PREF_TIME_LOGIN, java.lang.System.currentTimeMillis());

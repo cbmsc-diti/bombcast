@@ -1,7 +1,9 @@
 package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,9 +29,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.receiver.AlarmReceiver;
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
+import igarape.cbmsc.bombcast.service.LocationService;
+import igarape.cbmsc.bombcast.state.State;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
+import igarape.cbmsc.bombcast.utils.HistoryUtils;
 
 public class Ocorrencia_Activity extends Activity {
 
@@ -59,10 +65,20 @@ public class Ocorrencia_Activity extends Activity {
         this.mWakeLock.acquire();
         UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2007.php";
 
-        params.add(new BasicNameValuePair("nr_vtr",VtrMonitorada));
-        params.add(new BasicNameValuePair("h",ServidorSelecionado));
+        params.add(new BasicNameValuePair("nr_vtr", VtrMonitorada));
+        params.add(new BasicNameValuePair("h", ServidorSelecionado));
         params.add(new BasicNameValuePair("fn",TelefoneCmt));
-        params.add(new BasicNameValuePair("u",Globals.getUserName()));
+        params.add(new BasicNameValuePair("u", Globals.getUserName()));
+
+
+        HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
+
+        //startAlarmReceiver();
+
+        Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
+
 
         Processo meu = new Processo(getBaseContext());
         meu.execute();
@@ -620,6 +636,17 @@ public class Ocorrencia_Activity extends Activity {
 
     private Uri getAlarmSound2() {
         return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_002);
+    }
+
+    private void startAlarmReceiver() {
+        /**
+         * AlarmManager...wakes every 15 sec.
+         */
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pending = PendingIntent.getBroadcast(this, 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), Globals.GPS_REPEAT_TIME, pending);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class HistoryUtils {
 
         try {
             final JSONObject history = buildJson(currentState, nextState);
-            NetworkUtils.post(context, "/histories", history, new HttpResponseCallback() {
+            NetworkUtils.post(context, Globals.SERVER_URL_WEB+"/histories", history, new HttpResponseCallback() {
                 @Override
                 public void unauthorized() {
                     Log.e(TAG, "history not sent successfully");

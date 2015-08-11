@@ -30,7 +30,7 @@ android {
     productFlavors {
         local {
             buildConfigField "Boolean", "requireWifiUpload", "true"
-            buildConfigField "String", "serverUrl", "\"https://localhost:3000\""
+            buildConfigField "String", "serverUrl", "\"http://10.193.191.12:3000\""
 
         }
     }

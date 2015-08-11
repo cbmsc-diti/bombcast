@@ -10,6 +10,8 @@ public enum State {
     RECORDING_OFFLINE,
     RECORDING_ONLINE,
     STREAMING,
-    UPLOADING, LOGGED;
+    UPLOADING,
+    MONITOR,
+    LOGGED;
 
 }

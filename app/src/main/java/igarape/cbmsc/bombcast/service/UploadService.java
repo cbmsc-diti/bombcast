@@ -123,8 +123,8 @@ public class UploadService extends Service {
             this.stopSelf();
             return;
         }
-        String userLogin = users.remove(0);
-
+      //  String userLogin = users.remove(0);
+        String userLogin = Globals.getUserName();
         String path = FileUtils.getPath(userLogin);
 
         uploadLocations(userLogin);
@@ -165,7 +165,7 @@ public class UploadService extends Service {
                 }
             }
 
-            NetworkUtils.post(getApplicationContext(), "/locations/" + userLogin, locations, new HttpResponseCallback() {
+            NetworkUtils.post(getApplicationContext(), Globals.SERVER_URL_WEB+"/locations/" + userLogin, locations, new HttpResponseCallback() {
                 @Override
                 public void unauthorized() {
                     Log.e(TAG, "locations unauthorized");
@@ -228,7 +228,7 @@ public class UploadService extends Service {
                 }
             }
 
-            NetworkUtils.post(getApplicationContext(), "/histories/" + userLogin, histories, new HttpResponseCallback() {
+            NetworkUtils.post(getApplicationContext(), Globals.SERVER_URL_WEB+"/histories/" + userLogin, histories, new HttpResponseCallback() {
                 @Override
                 public void unauthorized() {
                     Log.e(TAG, "histories unauthorized");

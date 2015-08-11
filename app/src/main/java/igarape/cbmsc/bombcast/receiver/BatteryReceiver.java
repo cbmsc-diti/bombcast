@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.igarape.copcast.utils.BatteryUtils;
+import igarape.cbmsc.bombcast.utils.BatteryUtils;
 
 /**
  * Created by FCavalcanti on 7/17/15.

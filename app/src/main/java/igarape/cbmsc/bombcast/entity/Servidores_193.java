@@ -54,7 +54,7 @@ public class Servidores_193 {
         servidores.add(new Servidores_193("Balneario Camboriu", "10.194.5.251"));
         servidores.add(new Servidores_193("Curitibanos", "10.194.30.251"));
         servidores.add(new Servidores_193("Joaçaba", "10.193.4.110"));
-        servidores.add(new Servidores_193("Servidor de testes", ""));
+        servidores.add(new Servidores_193("Servidor de testes", "10.193.4.71"));
         return servidores;
     }
 }
