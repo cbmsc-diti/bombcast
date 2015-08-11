@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +21,21 @@ import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.state.State;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
+import igarape.cbmsc.bombcast.utils.HistoryUtils;
+import igarape.cbmsc.bombcast.utils.HttpResponseCallback;
 import igarape.cbmsc.bombcast.utils.ManageSharedPreferences;
+
+import static igarape.cbmsc.bombcast.utils.NetworkUtils.post;
 
 public class LoginActivity extends Activity {
 
@@ -122,7 +130,7 @@ public class LoginActivity extends Activity {
         icon_cbm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Globals.setUrlSocial("http://www.cbm.sc.gov.br/hotsite/");
+                Globals.setUrlSocial("http://portal.cbm.sc.gov.br/");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
                 startActivity(intent);
             }
@@ -144,11 +152,90 @@ public class LoginActivity extends Activity {
 
             public void makeLoginRequest(View view) {
 
-                Processo meu = new Processo(getBaseContext());
-                meu.execute();
-            }
+                pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
 
-            public class Processo extends AsyncTask<String, String, String> {
+
+                final String regId = Globals.getRegistrationId(getApplicationContext());
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("username", txtId.getText().toString()));
+                params.add(new BasicNameValuePair("password", txtPwd.getText().toString()));
+                params.add(new BasicNameValuePair("scope", "client"));
+                params.add(new BasicNameValuePair("gcm_registration", regId));
+
+                post(this, Globals.SERVER_URL_WEB+"/token", params, new HttpResponseCallback() {
+                            @Override
+                            public void success(JSONObject response) {
+                                Log.d(TAG, "@JSONRESPONSE=[" + response + "]");
+                                String token = null;
+                                try {
+                                    token = (String) response.get("token");
+                                    //Globals.setUserName(getApplicationContext(), (String) response.get("userName"));
+                                } catch (JSONException e) {
+                                    Log.e(TAG, "error on login", e);
+                                }
+                                if (pDialog != null) {
+                                    pDialog.dismiss();
+                                    pDialog = null;
+                                }
+                                Globals.setAccessToken(getBaseContext(), token);
+                                Globals.setUserLogin(getBaseContext(), txtId.getText().toString());
+
+                                HistoryUtils.registerHistory(getApplicationContext(), State.NOT_LOGGED, State.LOGGED, Globals.getUserLogin(LoginActivity.this));
+                            }
+
+                    @Override
+                    public void unauthorized() {
+                        showToast(R.string.unauthorized_login);
+                    }
+                    private void showToast(final int message) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (pDialog != null) {
+                                    pDialog.dismiss();
+                                    pDialog = null;
+                                }
+                                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.TOP, 0, 100);
+                                toast.show();
+
+                            }
+                        });
+                    }
+                    @Override
+                    public void failure(int statusCode) {
+                        showToast(R.string.server_error);
+                    }
+
+                    @Override
+                    public void noConnection() {
+                        showToast(R.string.network_required);
+                    }
+
+                    @Override
+                    public void badConnection() {
+                        showToast(R.string.connection_error);
+                    }
+
+                    @Override
+                    public void badRequest() {
+                        showToast(R.string.bad_request_error);
+                    }
+
+                    @Override
+                    public void badResponse() {
+                        showToast(R.string.bad_request_error);
+                    }
+                        });
+
+                Processo meu = new Processo(getBaseContext());
+            meu.execute();
+
+
+        }
+
+                public class Processo extends AsyncTask<String, String, String> {
 
 
                 private String retornoHttp = "";
@@ -157,8 +244,8 @@ public class LoginActivity extends Activity {
                     this.context = context;
                 }
                 protected List<NameValuePair> params = new ArrayList<>();
-
-
+                public String txtID= txtId.getText().toString();
+                public String txtPwD= txtPwd.getText().toString();
                 @Override
                 protected void onPreExecute() {
                     //ANTES DE EXECUTAR (JANELA)
@@ -169,8 +256,8 @@ public class LoginActivity extends Activity {
                 protected String doInBackground(String... paramss) {
                     try {
                         String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php";
-                        params.add(new BasicNameValuePair("u", txtId.getText().toString()));
-                        params.add(new BasicNameValuePair("p", txtPwd.getText().toString()));
+                        params.add(new BasicNameValuePair("u",txtID ));
+                        params.add(new BasicNameValuePair("p",txtPwD));
 
 
                         retornoHttp = ConexaoHttpClient.executaHttpPost(URL,params);

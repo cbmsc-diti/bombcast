@@ -75,9 +75,6 @@ public class Ocorrencia_Activity extends Activity {
 
         //startAlarmReceiver();
 
-        Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(intent);
 
 
         Processo meu = new Processo(getBaseContext());
