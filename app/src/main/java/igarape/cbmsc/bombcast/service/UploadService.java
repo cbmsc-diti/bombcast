@@ -124,8 +124,11 @@ public class UploadService extends Service {
             return;
         }
       //  String userLogin = users.remove(0);
+
+        String ocorrencia = users.remove(0);
+
         String userLogin = Globals.getUserName();
-        String path = FileUtils.getPath(userLogin);
+        String path = FileUtils.getPath(ocorrencia);
 
         uploadLocations(userLogin);
         uploadHistories(userLogin);
@@ -136,7 +139,7 @@ public class UploadService extends Service {
             videos = new ArrayList<File>(Arrays.asList(files));
             if (!videos.isEmpty()) {
                 File nextVideo = videos.remove(0);
-                uploadVideo(nextVideo, userLogin);
+                uploadVideo(nextVideo, ocorrencia);
             } else {
                 uploadUserData();
             }

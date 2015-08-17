@@ -229,7 +229,7 @@ public class LoginActivity extends Activity {
                     }
                         });
 
-                Processo meu = new Processo(getBaseContext());
+            Processo meu = new Processo(getBaseContext());
             meu.execute();
 
 

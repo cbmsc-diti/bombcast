@@ -73,8 +73,11 @@ public class Ocorrencia_Activity extends Activity {
 
         HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
 
-        //startAlarmReceiver();
+        startAlarmReceiver();
 
+        Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
 
 
         Processo meu = new Processo(getBaseContext());
@@ -654,6 +657,14 @@ public class Ocorrencia_Activity extends Activity {
         stopService(intent);
         }catch( Exception e){
             e.printStackTrace();}
+
+        try{
+            Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
+            intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent2);
+        }catch( Exception e){
+            e.printStackTrace();}
+
 
         findViewById(R.id.btn_play).setEnabled(false);
         findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
