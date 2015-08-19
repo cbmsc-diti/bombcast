@@ -135,8 +135,8 @@
     <string name="ocorrencia">Ocorrência:</string>
     <string name="j10">J10</string>
     <string name="j9_i">J09 I</string>
-    <string name="cli">C.L.I</string>
-    <string name="sli">S.L.I</string>
+    <string name="cli">J10 I</string>
+    <string name="sli">J11</string>
     <string name="j12">J12</string>
     <string name="detalhes_ocorrencia">Detalhes da ocorrência</string>
     <string name="mapa_ocorrencia">Mapa da ocorrência</string>
@@ -160,5 +160,7 @@
     <string name="help_text">Ligue para o plantão da DiTI (048)3271-1171 ou abra um SAU no site do CBMSC.</string>
     <string name="notification_stream_title">Streaming</string>
     <string name="notification_stream_description">Srteaming</string>
+    <string name="btn_j9">J9</string>
+    <string name="j9">J9</string>
 
 </resources>

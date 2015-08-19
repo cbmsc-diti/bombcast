@@ -83,6 +83,50 @@ public class Ocorrencia_Activity extends Activity {
         Processo meu = new Processo(getBaseContext());
         meu.execute();
 
+        final Button btn_j9 = (Button) findViewById(R.id.btn_j9);
+        btn_j9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parar = true;
+
+                params.add(new BasicNameValuePair("jota", "j9"));
+
+                findViewById(R.id.btn_j9).setEnabled(false);
+                findViewById(R.id.btn_j10).setEnabled(true);
+                findViewById(R.id.btn_j11).setEnabled(true);
+                /*
+                new AsyncTask<Void, Void, String>() {
+                    @Override
+                    protected String doInBackground(Void... unused) {
+                        try {
+                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                            vf = "0";
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            vf = "1";
+                        }
+                        return vf;
+                    }
+
+                    @Override
+                    protected void onPostExecute(String aVoid) {
+                        super.onPostExecute(aVoid);
+                        if (vf.equals("1")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+                            builder.setTitle(getString(R.string.problema))
+                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    }
+                }.execute();*/
+            }
+        });
+
         final Button btn_j10 = (Button) findViewById(R.id.btn_j10);
         btn_j10.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,10 +138,11 @@ public class Ocorrencia_Activity extends Activity {
 
                 params.add(new BasicNameValuePair("jota","j10"));
                 params.add(new BasicNameValuePair("lat_o",LatOcorrencia));
-                params.add(new BasicNameValuePair("lng_o",LngOcorrencia));
+                params.add(new BasicNameValuePair("lng_o", LngOcorrencia));
 
                 findViewById(R.id.btn_j10).setEnabled(false);
-                findViewById(R.id.btn_j11).setEnabled(true);
+                findViewById(R.id.btn_j09_i).setEnabled(true);
+
 
                 new AsyncTask<Void, Void, String>() {
                     @Override
@@ -130,13 +175,13 @@ public class Ocorrencia_Activity extends Activity {
             }
         });
 
-        final Button btn_j11 = (Button) findViewById(R.id.btn_j11);
-        btn_j11.setOnClickListener(new View.OnClickListener() {
+        final Button btn_j9_i = (Button) findViewById(R.id.btn_j09_i);
+        btn_j9_i.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                params.add(new BasicNameValuePair("jota","j11"));
+                params.add(new BasicNameValuePair("jota","j9_i"));
 
-                findViewById(R.id.btn_j11).setEnabled(false);
+                findViewById(R.id.btn_j09_i).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
 
                 new AsyncTask<Void, Void, String>() {
@@ -188,7 +233,7 @@ public class Ocorrencia_Activity extends Activity {
                                 params.add(new BasicNameValuePair("lng_i",LngLocalIntermediario));
 
                                 findViewById(R.id.btn_j10_i).setEnabled(false);
-                                findViewById(R.id.btn_j11_i).setEnabled(true);
+                                findViewById(R.id.btn_j11).setEnabled(true);
 
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
@@ -265,8 +310,8 @@ public class Ocorrencia_Activity extends Activity {
             }
         });
 
-        final Button btn_j11_i = (Button) findViewById(R.id.btn_j11_i);
-        btn_j11_i.setOnClickListener(new View.OnClickListener() {
+        final Button btn_j11 = (Button) findViewById(R.id.btn_j11);
+        btn_j11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -323,9 +368,11 @@ public class Ocorrencia_Activity extends Activity {
                 AlertDialog alert = builder.create();
                 alert.show();
 
-                params.add(new BasicNameValuePair("jota","j11i_n"));
+                params.add(new BasicNameValuePair("jota", "j11i_n"));
 
-                findViewById(R.id.btn_j11_i).setEnabled(false);
+                findViewById(R.id.btn_j11).setEnabled(false);
+                findViewById(R.id.btn_j12).setEnabled(true);
+
 
                 new AsyncTask<Void, Void, String>() {
                     @Override
@@ -408,10 +455,11 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_stop).setEnabled(false);
                 findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
                 findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
+                findViewById(R.id.btn_j9).setEnabled(false);
                 findViewById(R.id.btn_j10).setEnabled(false);
-                findViewById(R.id.btn_j11).setEnabled(false);
+                findViewById(R.id.btn_j09_i).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(false);
-                findViewById(R.id.btn_j11_i).setEnabled(false);
+                findViewById(R.id.btn_j11).setEnabled(false);
                 findViewById(R.id.btn_j12).setEnabled(false);
                 findViewById(R.id.btn_mapa_ocorrencia).setEnabled(false);
                 findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(false);
@@ -522,8 +570,7 @@ public class Ocorrencia_Activity extends Activity {
                Globals.setId_Ocorrencia(IO[1]);
                params.add(new BasicNameValuePair("io",IO[1]));
 
-               findViewById(R.id.btn_j10).setEnabled(true);
-               findViewById(R.id.btn_j12).setEnabled(true);
+               findViewById(R.id.btn_j9).setEnabled(true);
 
                findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
                findViewById(R.id.btn_play).setEnabled(true);

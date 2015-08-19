@@ -135,8 +135,8 @@
     <string name="ocorrencia">Occurrence:</string>
     <string name="j10">J10</string>
     <string name="j9_i">J09 I</string>
-    <string name="cli">C.L.I</string>
-    <string name="sli">S.L.I</string>
+    <string name="cli">J10 I</string>
+    <string name="sli">J11</string>
     <string name="j12">J12</string>
     <string name="detalhes_ocorrencia">Occurrence details</string>
     <string name="mapa_ocorrencia">Map occurrence</string>
@@ -160,6 +160,8 @@
     <string name="help_text">Call the duty of DiTI +55 48 32711171 or open CBMSC site(www.cbm.sc.gov.br).</string>
     <string name="notification_stream_title">Streaming</string>
     <string name="notification_stream_description">Srteaming</string>
+    <string name="btn_j9">J9</string>
+    <string name="j9">J9</string>
 
 
 </resources>
