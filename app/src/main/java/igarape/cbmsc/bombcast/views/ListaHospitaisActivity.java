@@ -1,17 +1,11 @@
 package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -49,11 +43,19 @@ public class ListaHospitaisActivity extends Activity {
             public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 
 
+                Object obj = a.getItemAtPosition(pos);
+
+                String mensagem = "Deslocando para: " + obj;
+                String hosp = obj.toString();
+
+                Globals.setDeslocando_para(hosp);
+
+                Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_LONG)
+                        .show();
+
+                ListaHospitaisActivity.this.finish();
             }
+
         });
-
     }
-
-
-
 }

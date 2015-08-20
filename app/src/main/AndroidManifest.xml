@@ -76,11 +76,15 @@
             android:name=".views.ListaDetalhesActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+
             />
         <activity
             android:name=".views.ListaHospitaisActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+
             />
         <service android:name=".service.UploadService" />
         <service android:name=".service.BackgroundVideoRecorder" />

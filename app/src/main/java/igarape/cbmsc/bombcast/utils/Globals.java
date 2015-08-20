@@ -49,6 +49,16 @@ public class Globals {
     private static String Longitude = "0";
     private static String EnderecoOcorrencia = "Santa Catarina";
     private static String Id_Ocorrencia="";
+
+    public static String getDeslocando_para() {
+        return deslocando_para;
+    }
+
+    public static void setDeslocando_para(String deslocando_para) {
+        Globals.deslocando_para = deslocando_para;
+    }
+
+    private static String deslocando_para = null;
     private static Double LatAlteracao = 0.0;
     private static Double LngAlteracao = 0.0;
     public static final long GPS_REPEAT_TIME = 1000 * 15; // 15 seconds
