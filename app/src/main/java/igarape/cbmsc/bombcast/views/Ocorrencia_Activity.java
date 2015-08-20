@@ -94,7 +94,7 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_j9).setEnabled(false);
                 findViewById(R.id.btn_j10).setEnabled(true);
                 findViewById(R.id.btn_j11).setEnabled(true);
-                /*
+
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... unused) {
@@ -123,7 +123,7 @@ public class Ocorrencia_Activity extends Activity {
                             alert.show();
                         }
                     }
-                }.execute();*/
+                }.execute();
             }
         });
 
@@ -180,6 +180,9 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             public void onClick(View view) {
                 params.add(new BasicNameValuePair("jota","j9_i"));
+
+                Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
+                startActivity(intent);
 
                 findViewById(R.id.btn_j09_i).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
@@ -329,9 +332,9 @@ public class Ocorrencia_Activity extends Activity {
                                 String LatLocalMaca = Globals.getLatitude();
                                 String LngLocalMaca = Globals.getLongitude();
 
-                                params.add(new BasicNameValuePair("jota","j11i_s"));
+                                params.add(new BasicNameValuePair("jota","j11_s"));
                                 params.add(new BasicNameValuePair("lat_m",LatLocalMaca));
-                                params.add(new BasicNameValuePair("lng_m",LngLocalMaca));
+                                params.add(new BasicNameValuePair("lng_m", LngLocalMaca));
 
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
@@ -368,7 +371,7 @@ public class Ocorrencia_Activity extends Activity {
                 AlertDialog alert = builder.create();
                 alert.show();
 
-                params.add(new BasicNameValuePair("jota", "j11i_n"));
+                params.add(new BasicNameValuePair("jota", "j11_n"));
 
                 findViewById(R.id.btn_j11).setEnabled(false);
                 findViewById(R.id.btn_j12).setEnabled(true);

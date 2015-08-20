@@ -77,6 +77,11 @@
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:launchMode="singleTop"
             />
+        <activity
+            android:name=".views.ListaHospitaisActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:launchMode="singleTop"
+            />
         <service android:name=".service.UploadService" />
         <service android:name=".service.BackgroundVideoRecorder" />
         <service android:name=".service.LocationService" />
