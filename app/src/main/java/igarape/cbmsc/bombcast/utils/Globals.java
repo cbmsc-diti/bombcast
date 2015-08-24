@@ -8,6 +8,11 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.util.Log;
 
+import org.apache.http.NameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import igarape.cbmsc.bombcast.BuildConfig;
 
 import static java.net.URLEncoder.encode;
@@ -49,6 +54,16 @@ public class Globals {
     private static String Longitude = "0";
     private static String EnderecoOcorrencia = "Santa Catarina";
     private static String Id_Ocorrencia="";
+
+    public static List<String> getListaHospitais() {
+        return listaHospitais;
+    }
+
+    public static void setListaHospitais(List<String> listaHospitais) {
+        Globals.listaHospitais = listaHospitais;
+    }
+
+    private static List<String> listaHospitais = new ArrayList<>();
 
     public static String getDeslocando_para() {
         return deslocando_para;

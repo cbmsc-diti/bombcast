@@ -71,6 +71,23 @@ public class Select_Vtr_Activity extends Activity {
                     e.printStackTrace();
                     vtrs.add(0,"");
                 }
+
+                try {
+                    params.add(new BasicNameValuePair("vf", "2"));
+                    status = ConexaoHttpClient.executaHttpPost(Url, params);
+                    List<String> hosp = Arrays.asList(status.split("\\."));
+                    Globals.setListaHospitais(hosp);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    String erro = "Não foi possivel carregar os destinos.";
+                    List<String> hosp = Arrays.asList(erro);
+                    Globals.setListaHospitais(hosp);
+                }
+
+
+
                 return vtrs;
             }
             @Override
@@ -147,6 +164,8 @@ public class Select_Vtr_Activity extends Activity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
 
                 Globals.setTelefoneCmt(et_telefone.getText().toString());
                 Globals.setVtrSelecionada(vtr_sel);

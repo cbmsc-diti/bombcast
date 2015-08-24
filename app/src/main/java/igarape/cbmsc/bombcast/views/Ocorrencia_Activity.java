@@ -53,6 +53,7 @@ public class Ocorrencia_Activity extends Activity {
     final Timer t = new Timer();
     TextView tv_endereco;
     List<NameValuePair> params = new ArrayList<>();
+    public TextView tv_tipo_oc;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,6 @@ public class Ocorrencia_Activity extends Activity {
         Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
-
 
         Processo meu = new Processo(getBaseContext());
         meu.execute();
@@ -468,6 +468,8 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(false);
 
                 tv_endereco.setText(getString(R.string.msg_sem_ocorrencia));
+                tv_tipo_oc.setText(VtrMonitorada);
+
 
                 parar = false;
                 Processo meu = new Processo(getBaseContext());
@@ -563,8 +565,12 @@ public class Ocorrencia_Activity extends Activity {
 
                Endereco = retornoHttp.split("\\|");
                tv_endereco = (TextView)findViewById(R.id.tv_endereco_ocorrencia);
+               tv_tipo_oc = (TextView)findViewById(R.id.tv_desc_endereco_ocorrencia);
+
                if(!Endereco[5].isEmpty()) {
                   tv_endereco.setText(Endereco[5]);
+                   tv_tipo_oc.setText("Ocorrência "+Endereco[0]);
+
                    Globals.setEnderecoOcorrencia(Endereco[5]);
                }
 
@@ -620,49 +626,16 @@ public class Ocorrencia_Activity extends Activity {
                }
                meu.execute();
            }else{
-
-               final AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-               if (count.equals("not")) {
-                   play(Ocorrencia_Activity.this, getAlarmSound2());
-               }
-               if (!count.equals("ok")){
-               builder.setTitle(getString(R.string.conexao_perdida))
-                       .setNeutralButton(getString(R.string.retomar_conexao), new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int id){
-                               t.cancel();
-                              try {
-                                  player.stop();
-                                }catch(Exception e){
-                                  e.printStackTrace();
-                              }
-
-                               Processo meu = new Processo(getBaseContext());
-                               meu.execute();
-                           }
-                       });
-               }
-               final AlertDialog alert = builder.create();
                try {
-                  alert.show();
-                  try{
-                      t.schedule(new TimerTask() {
-                          public void run() {
-                              alert.dismiss();
                               Processo meu = new Processo(getBaseContext());
                               meu.execute();
-                              t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
-                          }
-                      }, 25000);
+
                     }catch(Exception e){
                       e.printStackTrace();
                   }
-               } catch (Exception e) {
-                e.printStackTrace();
-                player.stop();
+
               }
            }
-        }
-
     }
     private MediaPlayer player;
 
@@ -682,10 +655,6 @@ public class Ocorrencia_Activity extends Activity {
 
     private Uri getAlarmSound() {
         return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_001);
-    }
-
-    private Uri getAlarmSound2() {
-        return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_002);
     }
 
     private void startAlarmReceiver() {

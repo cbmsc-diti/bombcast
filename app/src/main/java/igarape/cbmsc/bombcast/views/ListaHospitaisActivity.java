@@ -1,6 +1,9 @@
 package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,11 +11,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 
 /**
@@ -23,17 +30,21 @@ public class ListaHospitaisActivity extends Activity {
     private List<String> listadeHospitais = new ArrayList<>();
     ListView lv_hospitais;
     private String hospitais;
+    List<NameValuePair> params = new ArrayList<>();
+    String UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2007.php";
+    String retornoJS = "";
+    public String vf;
+    protected String VtrMonitorada = Globals.getVtrSelecionada();
+    protected String ServidorSelecionado = Globals.getServidorSelecionado();
+    String mensagem;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_hospitais);
-        hospitais = "HU|HR|HSJ|OUTROS";
-        listadeHospitais = Arrays.asList(hospitais.split("\\|"));
+        listadeHospitais =Globals.getListaHospitais();
         lv_hospitais = (ListView) findViewById(R.id.lv_listahospitais);
-
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ListaHospitaisActivity.this, R.layout.listview_detalhes, listadeHospitais);
-
-
         ArrayAdapter<String> ListArrayAdapter = arrayAdapter;
         lv_hospitais.setAdapter(ListArrayAdapter);
 
@@ -45,17 +56,44 @@ public class ListaHospitaisActivity extends Activity {
 
                 Object obj = a.getItemAtPosition(pos);
 
-                String mensagem = "Deslocando para: " + obj;
+                mensagem = "Deslocando para: " + obj;
                 String hosp = obj.toString();
 
                 Globals.setDeslocando_para(hosp);
+                params.add(new BasicNameValuePair("jota", "hosp"));
+                params.add(new BasicNameValuePair("hsp", hosp));
+                params.add(new BasicNameValuePair("nr_vtr", VtrMonitorada));
+                params.add(new BasicNameValuePair("h", ServidorSelecionado));
+                params.add(new BasicNameValuePair("u", Globals.getUserName()));
+                params.add(new BasicNameValuePair("io", Globals.getId_Ocorrencia()));
 
-                Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_LONG)
-                        .show();
 
-                ListaHospitaisActivity.this.finish();
+                new AsyncTask<Void, Void, String>() {
+                    @Override
+                    protected String doInBackground(Void... unused) {
+                        try {
+
+                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                            vf = "ok";
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return vf;
+                    }
+
+                    @Override
+                    protected void onPostExecute(String aVoid) {
+                        super.onPostExecute(aVoid);
+
+                        Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_LONG)
+                                .show();
+
+                        ListaHospitaisActivity.this.finish();
+                    }
+                }.execute();
             }
-
         });
+
     }
 }
