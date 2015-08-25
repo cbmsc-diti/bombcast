@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
+import igarape.cbmsc.bombcast.service.LocationService;
 import igarape.cbmsc.bombcast.state.State;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
@@ -152,7 +154,7 @@ public class LoginActivity extends Activity {
 
             public void makeLoginRequest(View view) {
 
-                pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
+               // pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
 
 
                 final String regId = Globals.getRegistrationId(getApplicationContext());
@@ -162,31 +164,32 @@ public class LoginActivity extends Activity {
                 params.add(new BasicNameValuePair("scope", "client"));
                 params.add(new BasicNameValuePair("gcm_registration", regId));
 
-                post(this, Globals.SERVER_URL_WEB+"/token", params, new HttpResponseCallback() {
-                            @Override
-                            public void success(JSONObject response) {
-                                Log.d(TAG, "@JSONRESPONSE=[" + response + "]");
-                                String token = null;
-                                try {
-                                    token = (String) response.get("token");
-                                    //Globals.setUserName(getApplicationContext(), (String) response.get("userName"));
-                                } catch (JSONException e) {
-                                    Log.e(TAG, "error on login", e);
-                                }
-                                if (pDialog != null) {
-                                    pDialog.dismiss();
-                                    pDialog = null;
-                                }
-                                Globals.setAccessToken(getBaseContext(), token);
-                                Globals.setUserLogin(getBaseContext(), txtId.getText().toString());
+                post(this, Globals.SERVER_URL_WEB + "/token", params, new HttpResponseCallback() {
+                    @Override
+                    public void success(JSONObject response) {
+                        Log.d(TAG, "@JSONRESPONSE=[" + response + "]");
+                        String token = null;
+                        try {
+                            token = (String) response.get("token");
+                            //Globals.setUserName(getApplicationContext(), (String) response.get("userName"));
+                        } catch (JSONException e) {
+                            Log.e(TAG, "error on login", e);
+                        }
+                        if (pDialog != null) {
+                            pDialog.dismiss();
+                            pDialog = null;
+                        }
+                        Globals.setAccessToken(getBaseContext(), token);
+                        Globals.setUserLogin(getBaseContext(), txtId.getText().toString());
 
-                                HistoryUtils.registerHistory(getApplicationContext(), State.NOT_LOGGED, State.LOGGED, Globals.getUserLogin(LoginActivity.this));
-                            }
+                        HistoryUtils.registerHistory(getApplicationContext(), State.NOT_LOGGED, State.LOGGED, Globals.getUserLogin(LoginActivity.this));
+                    }
 
                     @Override
                     public void unauthorized() {
                         showToast(R.string.unauthorized_login);
                     }
+
                     private void showToast(final int message) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -203,6 +206,7 @@ public class LoginActivity extends Activity {
                             }
                         });
                     }
+
                     @Override
                     public void failure(int statusCode) {
                         showToast(R.string.server_error);
@@ -227,10 +231,11 @@ public class LoginActivity extends Activity {
                     public void badResponse() {
                         showToast(R.string.bad_request_error);
                     }
-                        });
+                });
 
             Processo meu = new Processo(getBaseContext());
             meu.execute();
+
 
 
         }
@@ -286,6 +291,8 @@ public class LoginActivity extends Activity {
                         Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
+                        cancel(true);
+
 
                     }else{
                         if (retornoHttp.equalsIgnoreCase("0")) {
@@ -312,7 +319,9 @@ public class LoginActivity extends Activity {
                                 e.printStackTrace();
                             }
                         }
+
                     }
+                    cancel(true);
                 }
 
                 @Override
@@ -320,4 +329,11 @@ public class LoginActivity extends Activity {
 
                 }
             }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
     }
+
+}

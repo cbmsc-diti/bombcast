@@ -122,6 +122,7 @@ public class Ocorrencia_Activity extends Activity {
                             AlertDialog alert = builder.create();
                             alert.show();
                         }
+                        super.cancel(true);
                     }
                 }.execute();
             }
@@ -170,6 +171,7 @@ public class Ocorrencia_Activity extends Activity {
                             AlertDialog alert = builder.create();
                             alert.show();
                         }
+                        super.cancel(true);
                     }
                 }.execute();
             }
@@ -213,6 +215,7 @@ public class Ocorrencia_Activity extends Activity {
                             AlertDialog alert = builder.create();
                             alert.show();
                         }
+                        super.cancel(true);
                     }
                 }.execute();
             }
@@ -265,6 +268,7 @@ public class Ocorrencia_Activity extends Activity {
                                             AlertDialog alert = builder.create();
                                             alert.show();
                                         }
+                                        super.cancel(true);
                                     }
                                 }.execute();
                             }
@@ -304,6 +308,7 @@ public class Ocorrencia_Activity extends Activity {
                                             AlertDialog alert = builder.create();
                                             alert.show();
                                         }
+                                        super.cancel(true);
                                     }
                                 }.execute();
                             }
@@ -363,6 +368,7 @@ public class Ocorrencia_Activity extends Activity {
                                             AlertDialog alert = builder.create();
                                             alert.show();
                                         }
+                                        super.cancel(true);
                                     }
                                 }.execute();
                             }
@@ -404,6 +410,7 @@ public class Ocorrencia_Activity extends Activity {
                             AlertDialog alert = builder.create();
                             alert.show();
                         }
+                        super.cancel(true);
                     }
                 }.execute();
             }
@@ -450,6 +457,7 @@ public class Ocorrencia_Activity extends Activity {
                             AlertDialog alert = builder.create();
                             alert.show();
                         }
+                        super.cancel(true);
                     }
                 }.execute();
 
@@ -577,7 +585,7 @@ public class Ocorrencia_Activity extends Activity {
                IO = Endereco[2].split(":");
 
                Globals.setId_Ocorrencia(IO[1]);
-               params.add(new BasicNameValuePair("io",IO[1]));
+               params.add(new BasicNameValuePair("io", IO[1]));
 
                findViewById(R.id.btn_j9).setEnabled(true);
 
@@ -593,17 +601,18 @@ public class Ocorrencia_Activity extends Activity {
 
                builder.setTitle(getString(R.string.parar_alarme))
                            .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int id){
+                               public void onClick(DialogInterface dialog, int id) {
                                    player.stop();
                                }
                            });
 
                    AlertDialog alert = builder.create();
 
-                   alert.show();
+               alert.show();
 
                findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
                count = "ok";
+               cancel(true);
 
            }else if((retornoHttp.equals("0"))&& (!parar)){
 
@@ -635,7 +644,8 @@ public class Ocorrencia_Activity extends Activity {
                   }
 
               }
-           }
+            cancel(true);
+        }
     }
     private MediaPlayer player;
 
