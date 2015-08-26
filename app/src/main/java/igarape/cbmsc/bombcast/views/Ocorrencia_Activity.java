@@ -40,6 +40,7 @@ import igarape.cbmsc.bombcast.utils.HistoryUtils;
 public class Ocorrencia_Activity extends Activity {
 
     protected boolean parar = false;
+    protected boolean j11 = true;
     protected String VtrMonitorada = Globals.getVtrSelecionada();
     protected String TelefoneCmt = Globals.getTelefoneCmt();
     protected String[] Endereco;
@@ -227,6 +228,7 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+                j11 = false;
 
                 builder.setMessage(getString(R.string.texto_recusa_vitima))
                         .setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
@@ -322,97 +324,102 @@ public class Ocorrencia_Activity extends Activity {
         btn_j11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!j11) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+                    builder.setMessage(getString(R.string.texto_maca_retida))
+                            .setNegativeButton(getString(R.string.nao), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
 
-                builder.setMessage(getString(R.string.texto_maca_retida))
-                       .setNegativeButton(getString(R.string.nao), new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int id) {
+                                }
+                            })
+                            .setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
 
-                           }
-                       })
-                        .setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                                    String LatLocalMaca = Globals.getLatitude();
+                                    String LngLocalMaca = Globals.getLongitude();
 
-                                String LatLocalMaca = Globals.getLatitude();
-                                String LngLocalMaca = Globals.getLongitude();
+                                    params.add(new BasicNameValuePair("jota", "j11_s"));
+                                    params.add(new BasicNameValuePair("lat_m", LatLocalMaca));
+                                    params.add(new BasicNameValuePair("lng_m", LngLocalMaca));
 
-                                params.add(new BasicNameValuePair("jota","j11_s"));
-                                params.add(new BasicNameValuePair("lat_m",LatLocalMaca));
-                                params.add(new BasicNameValuePair("lng_m", LngLocalMaca));
+                                    new AsyncTask<Void, Void, String>() {
+                                        @Override
+                                        protected String doInBackground(Void... unused) {
+                                            try {
+                                                retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                                                vf = "0";
 
-                                new AsyncTask<Void, Void, String>() {
-                                    @Override
-                                    protected String doInBackground(Void... unused) {
-                                        try {
-                                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
-                                            vf = "0";
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            vf = "1";
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                vf = "1";
+                                            }
+                                            return vf;
                                         }
-                                        return vf;
-                                    }
-                                    @Override
-                                    protected void onPostExecute(String aVoid) {
-                                        super.onPostExecute(aVoid);
-                                        if (vf.equals("1")){
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-                                            builder.setTitle(getString(R.string.problema))
-                                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id){
-                                                        }
-                                                    });
-                                            AlertDialog alert = builder.create();
-                                            alert.show();
+                                        @Override
+                                        protected void onPostExecute(String aVoid) {
+                                            super.onPostExecute(aVoid);
+                                            if (vf.equals("1")) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                                                builder.setTitle(getString(R.string.problema))
+                                                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                            }
+                                                        });
+                                                AlertDialog alert = builder.create();
+                                                alert.show();
+                                            }
+                                            super.cancel(true);
                                         }
-                                        super.cancel(true);
-                                    }
-                                }.execute();
+                                    }.execute();
+                                }
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }else{
+
+                    params.add(new BasicNameValuePair("jota", "j11_n"));
+
+                    findViewById(R.id.btn_j10).setEnabled(false);
+                    findViewById(R.id.btn_j10_i).setEnabled(false);
+                    findViewById(R.id.btn_j11).setEnabled(false);
+                    findViewById(R.id.btn_j12).setEnabled(true);
+
+
+                    new AsyncTask<Void, Void, String>() {
+                        @Override
+                        protected String doInBackground(Void... unused) {
+                            try {
+                                retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
+                                vf = "0";
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                vf = "1";
                             }
-                        });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-
-                params.add(new BasicNameValuePair("jota", "j11_n"));
-
-                findViewById(R.id.btn_j11).setEnabled(false);
-                findViewById(R.id.btn_j12).setEnabled(true);
-
-
-                new AsyncTask<Void, Void, String>() {
-                    @Override
-                    protected String doInBackground(Void... unused) {
-                        try {
-                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
-                            vf = "0";
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            vf = "1";
+                            return vf;
                         }
-                        return vf;
-                    }
-                    @Override
-                    protected void onPostExecute(String aVoid) {
-                        super.onPostExecute(aVoid);
-                        if (vf.equals("1")){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+                        @Override
+                        protected void onPostExecute(String aVoid) {
+                            super.onPostExecute(aVoid);
+                            if (vf.equals("1")){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-                            builder.setTitle(getString(R.string.problema))
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id){
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
+                                builder.setTitle(getString(R.string.problema))
+                                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id){
+                                            }
+                                        });
+                                AlertDialog alert = builder.create();
+                                alert.show();
+                            }
+                            super.cancel(true);
                         }
-                        super.cancel(true);
-                    }
-                }.execute();
+                    }.execute();
+                }
             }
         });
 
@@ -550,100 +557,100 @@ public class Ocorrencia_Activity extends Activity {
         @Override
         protected String doInBackground(String... paramss) {
 
-        try {
-            new Thread();
-            Thread.sleep(4000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try{
-            retornoHttp = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "rec_coord.bombcast.php?infos=1&nr_vtr=" + VtrMonitorada + "&h=" + ServidorSelecionado);
-        } catch (Exception e) {
-            e.printStackTrace();
-            retornoHttp = "ASC";
+            try {
+                new Thread();
+                Thread.sleep(4000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try{
+                retornoHttp = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "rec_coord.bombcast.php?infos=1&nr_vtr=" + VtrMonitorada + "&h=" + ServidorSelecionado);
+            } catch (Exception e) {
+                e.printStackTrace();
+                retornoHttp = "ASC";
             }
             return retornoHttp;
         }
         @Override
         protected void onPostExecute(String result) {
 
-           if((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty()) && (!parar)  ) {
+            if((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty()) && (!parar)  ) {
 
-               Globals.setMonitor(retornoHttp);
+                Globals.setMonitor(retornoHttp);
 
-               Endereco = retornoHttp.split("\\|");
-               tv_endereco = (TextView)findViewById(R.id.tv_endereco_ocorrencia);
-               tv_tipo_oc = (TextView)findViewById(R.id.tv_desc_endereco_ocorrencia);
+                Endereco = retornoHttp.split("\\|");
+                tv_endereco = (TextView)findViewById(R.id.tv_endereco_ocorrencia);
+                tv_tipo_oc = (TextView)findViewById(R.id.tv_desc_endereco_ocorrencia);
 
-               if(!Endereco[5].isEmpty()) {
-                  tv_endereco.setText(Endereco[5]);
-                   tv_tipo_oc.setText("Ocorrência "+Endereco[0]);
+                if(!Endereco[5].isEmpty()) {
+                    tv_endereco.setText(Endereco[5]);
+                    tv_tipo_oc.setText("Ocorrência "+Endereco[0]);
 
-                   Globals.setEnderecoOcorrencia(Endereco[5]);
-               }
+                    Globals.setEnderecoOcorrencia(Endereco[5]);
+                }
 
-               IO = Endereco[2].split(":");
+                IO = Endereco[2].split(":");
 
-               Globals.setId_Ocorrencia(IO[1]);
-               params.add(new BasicNameValuePair("io", IO[1]));
+                Globals.setId_Ocorrencia(IO[1]);
+                params.add(new BasicNameValuePair("io", IO[1]));
 
-               findViewById(R.id.btn_j9).setEnabled(true);
+                findViewById(R.id.btn_j9).setEnabled(true);
 
-               findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
-               findViewById(R.id.btn_play).setEnabled(true);
-               findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
+                findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
+                findViewById(R.id.btn_play).setEnabled(true);
+                findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
 
-               play(Ocorrencia_Activity.this, getAlarmSound());
+                play(Ocorrencia_Activity.this, getAlarmSound());
 
-               parar=true;
+                parar=true;
 
-               AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-               builder.setTitle(getString(R.string.parar_alarme))
-                           .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int id) {
-                                   player.stop();
-                               }
-                           });
+                builder.setTitle(getString(R.string.parar_alarme))
+                        .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                player.stop();
+                            }
+                        });
 
-                   AlertDialog alert = builder.create();
+                AlertDialog alert = builder.create();
 
-               alert.show();
+                alert.show();
 
-               findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
-               count = "ok";
-               cancel(true);
+                findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
+                count = "ok";
+                cancel(true);
 
-           }else if((retornoHttp.equals("0"))&& (!parar)){
+            }else if((retornoHttp.equals("0"))&& (!parar)){
 
-               Processo meu = new Processo(getBaseContext());
+                Processo meu = new Processo(getBaseContext());
 
-               try {
-                   new Thread();
-                   Thread.sleep(1000);
-               } catch (InterruptedException e) {
-                   e.printStackTrace();
-               }
+                try {
+                    new Thread();
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-               try{
-                   Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando "+VtrMonitorada, Toast.LENGTH_SHORT);
-                   toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                   toast.show();
+                try{
+                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando "+VtrMonitorada, Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
+                    toast.show();
 
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-               meu.execute();
-           }else{
-               try {
-                              Processo meu = new Processo(getBaseContext());
-                              meu.execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                meu.execute();
+            }else{
+                try {
+                    Processo meu = new Processo(getBaseContext());
+                    meu.execute();
 
-                    }catch(Exception e){
-                      e.printStackTrace();
-                  }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
 
-              }
+            }
             cancel(true);
         }
     }
@@ -655,11 +662,11 @@ public class Ocorrencia_Activity extends Activity {
             player.setDataSource(context, alert);
             final AudioManager audio = (AudioManager) context
                     .getSystemService(Context.AUDIO_SERVICE);
-                player.setAudioStreamType(AudioManager.STREAM_ALARM);
-                player.setVolume(20, 20);
-                player.prepare();
-                audio.isSpeakerphoneOn();
-                player.start();
+            player.setAudioStreamType(AudioManager.STREAM_ALARM);
+            player.setVolume(20, 20);
+            player.prepare();
+            audio.isSpeakerphoneOn();
+            player.start();
         } catch (IOException e) {e.printStackTrace();}
     }
 
@@ -681,9 +688,9 @@ public class Ocorrencia_Activity extends Activity {
     @Override
     protected void onDestroy() {
         try{
-        Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        stopService(intent);
+            Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent);
         }catch( Exception e){
             e.printStackTrace();}
 

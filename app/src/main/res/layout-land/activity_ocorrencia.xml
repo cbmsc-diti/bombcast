@@ -134,11 +134,10 @@
         android:id="@+id/recBall"
         android:src="@drawable/rec_ball"
         android:visibility="invisible"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/btn_mapa_ocorrencia"
-        android:layout_alignEnd="@+id/btn_mapa_ocorrencia"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_alignTop="@+id/btn_stop"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="7dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -148,11 +147,10 @@
         android:background="@drawable/play"
         android:enabled="false"
         android:visibility="invisible"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/btn_stop"
-        android:layout_toStartOf="@+id/btn_stop"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="2dp" />
+        android:layout_below="@+id/lv_detalhesOcorrencia"
+        android:layout_alignRight="@+id/tv_desc_endereco_ocorrencia"
+        android:layout_alignEnd="@+id/tv_desc_endereco_ocorrencia"
+        android:layout_marginLeft="5dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -162,9 +160,9 @@
         android:background="@drawable/stop"
         android:enabled="false"
         android:visibility="invisible"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/recBall"
-        android:layout_toStartOf="@+id/recBall" />
+        android:layout_above="@+id/btn_j12"
+        android:layout_alignRight="@+id/btn_play"
+        android:layout_alignEnd="@+id/btn_play" />
 
     <ListView
         android:layout_width="wrap_content"
