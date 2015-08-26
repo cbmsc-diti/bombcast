@@ -130,8 +130,10 @@ public class UploadService extends Service {
         String userLogin = Globals.getUserName();
         String path = FileUtils.getPath(ocorrencia);
 
-        uploadLocations(userLogin);
-        uploadHistories(userLogin);
+
+      //FUNÇOES DO COPCAST --AJEITAR NO BANCO DE DADOS ANTES
+       // uploadLocations(userLogin);
+       // uploadHistories(userLogin);
 
         File dir = new File(path);
         File[] files = dir.listFiles(filter);

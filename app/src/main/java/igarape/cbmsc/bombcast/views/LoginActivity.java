@@ -154,7 +154,9 @@ public class LoginActivity extends Activity {
 
             public void makeLoginRequest(View view) {
 
-                pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
+
+              //ACESSO AO MONITORAMENTO DO COPCAST-- AJEITAR NO BANCO DE DADOS ANTES
+             /*   pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
 
 
                 final String regId = Globals.getRegistrationId(getApplicationContext());
@@ -232,7 +234,7 @@ public class LoginActivity extends Activity {
                         showToast(R.string.bad_request_error);
                     }
                 });
-
+*/
             Processo meu = new Processo(getBaseContext());
             meu.execute();
 
@@ -254,7 +256,7 @@ public class LoginActivity extends Activity {
                 @Override
                 protected void onPreExecute() {
                     //ANTES DE EXECUTAR (JANELA)
-                    //pDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
+                    pDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
                 }
 
                 @Override

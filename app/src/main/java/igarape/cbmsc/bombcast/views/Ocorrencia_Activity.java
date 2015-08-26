@@ -72,7 +72,7 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("fn",TelefoneCmt));
         params.add(new BasicNameValuePair("u", Globals.getUserName()));
 
-
+/*  #### AJEITAR NO BANCO DE DADOS ANTES>>>ACESSO POR VIATURAS
         HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
 
         startAlarmReceiver();
@@ -80,7 +80,7 @@ public class Ocorrencia_Activity extends Activity {
         Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
-
+*/
         Processo meu = new Processo(getBaseContext());
         meu.execute();
 
