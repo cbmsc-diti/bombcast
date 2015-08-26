@@ -121,10 +121,10 @@
     <string name="telefone_editado">Phone number edited.</string>
     <string name="msg_tel_nao_encontrado">There is no official registered in the range of Area Commander.</string>
     <string name="msg_sem_ocorrencia">No event for this car right now ...</string>
-    <string name="texto_maca_retida">THE RETRACTABLE STRETCHER OF THIS CAR WAS RETAINED IN THIS HOSPITAL? (if you have not litter, or not in a hospital click NOT.)</string>
+    <string name="texto_maca_retida">THE RETRACTABLE STRETCHER OF THIS CAR WAS RETAINED IN THIS HOSPITAL?</string>
     <string name="nao">NOT</string>
     <string name="sim">YES</string>
-    <string name="texto_recusa_vitima">\n HOSPITAL CARE THAT REFUSED TO VICTIM? \n (if you do not have a victim in this car or not be in a hospital, click on NO.)</string>
+    <string name="texto_recusa_vitima">HOSPITAL CARE THAT REFUSED TO VICTIM?</string>
     <string name="parar_alarme">STOP ALARM:</string>
     <string name="conexao_perdida">LOST CONNECTION.</string>
     <string name="retomar_conexao">RESUME CONNECTION</string>

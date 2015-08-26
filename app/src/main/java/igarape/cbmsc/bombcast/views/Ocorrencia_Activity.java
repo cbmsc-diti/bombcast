@@ -379,11 +379,12 @@ public class Ocorrencia_Activity extends Activity {
 
                     AlertDialog alert = builder.create();
                     alert.show();
-                }else{
+                }
 
                     params.add(new BasicNameValuePair("jota", "j11_n"));
 
                     findViewById(R.id.btn_j10).setEnabled(false);
+                    findViewById(R.id.btn_j09_i).setEnabled(false);
                     findViewById(R.id.btn_j10_i).setEnabled(false);
                     findViewById(R.id.btn_j11).setEnabled(false);
                     findViewById(R.id.btn_j12).setEnabled(true);
@@ -420,7 +421,7 @@ public class Ocorrencia_Activity extends Activity {
                         }
                     }.execute();
                 }
-            }
+
         });
 
         final Button btn_j12 = (Button) findViewById(R.id.btn_j12);
