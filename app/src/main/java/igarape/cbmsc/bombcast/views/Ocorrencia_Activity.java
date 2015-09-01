@@ -23,10 +23,11 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.receiver.AlarmReceiver;
@@ -39,22 +40,25 @@ import igarape.cbmsc.bombcast.utils.HistoryUtils;
 
 public class Ocorrencia_Activity extends Activity {
 
+    public SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
+    List<NameValuePair> params = new ArrayList<>();
+    protected PowerManager.WakeLock mWakeLock;
     protected boolean parar = false;
     protected boolean j11 = true;
     protected String VtrMonitorada = Globals.getVtrSelecionada();
     protected String TelefoneCmt = Globals.getTelefoneCmt();
-    protected String[] Endereco;
-    protected String[] IO;
-    protected String UrlJS;
     protected String ServidorSelecionado = Globals.getServidorSelecionado();
     protected String count = "not";
-    protected PowerManager.WakeLock mWakeLock;
-    public String retornoJS = "";
-    public String vf;
-    final Timer t = new Timer();
-    TextView tv_endereco;
-    List<NameValuePair> params = new ArrayList<>();
+    protected String[] Endereco;
     public TextView tv_tipo_oc;
+    public String LatOcorrencia;
+    public String LngOcorrencia;
+    public String retornoJS = "";
+    protected String UrlJS;
+    protected String[] IO;
+    TextView tv_endereco;
+    public String vf;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,6 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("fn",TelefoneCmt));
         params.add(new BasicNameValuePair("u", Globals.getUserName()));
 
-/*  #### AJEITAR NO BANCO DE DADOS ANTES>>>ACESSO POR VIATURAS
         HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
 
         startAlarmReceiver();
@@ -80,7 +83,7 @@ public class Ocorrencia_Activity extends Activity {
         Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
-*/
+
         Processo meu = new Processo(getBaseContext());
         meu.execute();
 
@@ -91,6 +94,8 @@ public class Ocorrencia_Activity extends Activity {
                 parar = true;
 
                 params.add(new BasicNameValuePair("jota", "j9"));
+                params.add(new BasicNameValuePair("hr_j9", s.format(new Date())));
+
 
                 findViewById(R.id.btn_j9).setEnabled(false);
                 findViewById(R.id.btn_j10).setEnabled(true);
@@ -106,6 +111,7 @@ public class Ocorrencia_Activity extends Activity {
                         } catch (Exception e) {
                             e.printStackTrace();
                             vf = "1";
+
                         }
                         return vf;
                     }
@@ -135,12 +141,14 @@ public class Ocorrencia_Activity extends Activity {
             public void onClick(View view) {
                 parar = true;
 
-                String LatOcorrencia = Globals.getLatitude();
-                String LngOcorrencia = Globals.getLongitude();
+                LatOcorrencia = Globals.getLatitude();
+                LngOcorrencia = Globals.getLongitude();
 
                 params.add(new BasicNameValuePair("jota","j10"));
                 params.add(new BasicNameValuePair("lat_o",LatOcorrencia));
                 params.add(new BasicNameValuePair("lng_o", LngOcorrencia));
+                params.add(new BasicNameValuePair("hr_j10", s.format(new Date())));
+
 
                 findViewById(R.id.btn_j10).setEnabled(false);
                 findViewById(R.id.btn_j09_i).setEnabled(true);
@@ -156,6 +164,7 @@ public class Ocorrencia_Activity extends Activity {
                         } catch (Exception e) {
                             e.printStackTrace();
                             vf = "1";
+
                         }
                         return vf;
                     }
@@ -183,6 +192,8 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             public void onClick(View view) {
                 params.add(new BasicNameValuePair("jota","j9_i"));
+                params.add(new BasicNameValuePair("hr_j9_i", s.format(new Date())));
+
 
                 Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
                 startActivity(intent);
@@ -239,6 +250,8 @@ public class Ocorrencia_Activity extends Activity {
                                 params.add(new BasicNameValuePair("jota","j10i_n"));
                                 params.add(new BasicNameValuePair("lat_i",LatLocalIntermediario));
                                 params.add(new BasicNameValuePair("lng_i",LngLocalIntermediario));
+                                params.add(new BasicNameValuePair("hr_j10_i_n", s.format(new Date())));
+
 
                                 findViewById(R.id.btn_j10_i).setEnabled(false);
                                 findViewById(R.id.btn_j11).setEnabled(true);
@@ -283,6 +296,8 @@ public class Ocorrencia_Activity extends Activity {
                                 params.add(new BasicNameValuePair("jota","j10i_s"));
                                 params.add(new BasicNameValuePair("lat_r",LatLocalRecusa));
                                 params.add(new BasicNameValuePair("lng_r",LngLocalRecusa));
+                                params.add(new BasicNameValuePair("hr_j10_i_s", s.format(new Date())));
+
 
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
@@ -342,6 +357,8 @@ public class Ocorrencia_Activity extends Activity {
                                     params.add(new BasicNameValuePair("jota", "j11_s"));
                                     params.add(new BasicNameValuePair("lat_m", LatLocalMaca));
                                     params.add(new BasicNameValuePair("lng_m", LngLocalMaca));
+                                    params.add(new BasicNameValuePair("hr_j11_s", s.format(new Date())));
+
 
                                     new AsyncTask<Void, Void, String>() {
                                         @Override
@@ -381,46 +398,48 @@ public class Ocorrencia_Activity extends Activity {
                     alert.show();
                 }
 
-                    params.add(new BasicNameValuePair("jota", "j11_n"));
-
-                    findViewById(R.id.btn_j10).setEnabled(false);
-                    findViewById(R.id.btn_j09_i).setEnabled(false);
-                    findViewById(R.id.btn_j10_i).setEnabled(false);
-                    findViewById(R.id.btn_j11).setEnabled(false);
-                    findViewById(R.id.btn_j12).setEnabled(true);
+                params.add(new BasicNameValuePair("jota", "j11_n"));
+                params.add(new BasicNameValuePair("hr_j11_n", s.format(new Date())));
 
 
-                    new AsyncTask<Void, Void, String>() {
-                        @Override
-                        protected String doInBackground(Void... unused) {
-                            try {
-                                retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
-                                vf = "0";
+                findViewById(R.id.btn_j10).setEnabled(false);
+                findViewById(R.id.btn_j09_i).setEnabled(false);
+                findViewById(R.id.btn_j10_i).setEnabled(false);
+                findViewById(R.id.btn_j11).setEnabled(false);
+                findViewById(R.id.btn_j12).setEnabled(true);
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                vf = "1";
-                            }
-                            return vf;
+
+                new AsyncTask<Void, Void, String>() {
+                    @Override
+                    protected String doInBackground(Void... unused) {
+                        try {
+                            retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
+                            vf = "0";
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            vf = "1";
                         }
-                        @Override
-                        protected void onPostExecute(String aVoid) {
-                            super.onPostExecute(aVoid);
-                            if (vf.equals("1")){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+                        return vf;
+                    }
+                    @Override
+                    protected void onPostExecute(String aVoid) {
+                        super.onPostExecute(aVoid);
+                        if (vf.equals("1")){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
-                                builder.setTitle(getString(R.string.problema))
-                                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id){
-                                            }
-                                        });
-                                AlertDialog alert = builder.create();
-                                alert.show();
-                            }
-                            super.cancel(true);
+                            builder.setTitle(getString(R.string.problema))
+                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id){
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
                         }
-                    }.execute();
-                }
+                        super.cancel(true);
+                    }
+                }.execute();
+            }
 
         });
 
@@ -430,6 +449,8 @@ public class Ocorrencia_Activity extends Activity {
             public void onClick(View view) {
 
                 params.add(new BasicNameValuePair("jota","j12"));
+                params.add(new BasicNameValuePair("hr_j12", s.format(new Date())));
+
 
                 try {
                     Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
@@ -560,7 +581,7 @@ public class Ocorrencia_Activity extends Activity {
 
             try {
                 new Thread();
-                Thread.sleep(4000);
+                Thread.sleep(5000);
             } catch (Exception e) {
                 e.printStackTrace();
             }

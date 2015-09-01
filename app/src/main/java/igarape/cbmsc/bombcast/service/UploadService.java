@@ -132,8 +132,8 @@ public class UploadService extends Service {
 
 
       //FUNÇOES DO COPCAST --AJEITAR NO BANCO DE DADOS ANTES
-       // uploadLocations(userLogin);
-       // uploadHistories(userLogin);
+        uploadLocations(userLogin);
+        uploadHistories(userLogin);
 
         File dir = new File(path);
         File[] files = dir.listFiles(filter);
