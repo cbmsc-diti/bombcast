@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.receiver.AlarmReceiver;
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
@@ -49,14 +48,14 @@ public class Ocorrencia_Activity extends Activity {
     protected String TelefoneCmt = Globals.getTelefoneCmt();
     protected String ServidorSelecionado = Globals.getServidorSelecionado();
     protected String count = "not";
+    protected String UrlJS;
+    protected String[] IO;
     protected String[] Endereco;
     public TextView tv_tipo_oc;
+    public TextView tv_endereco;
     public String LatOcorrencia;
     public String LngOcorrencia;
     public String retornoJS = "";
-    protected String UrlJS;
-    protected String[] IO;
-    TextView tv_endereco;
     public String vf;
 
 
@@ -64,7 +63,6 @@ public class Ocorrencia_Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocorrencia);
-
 
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
@@ -95,7 +93,6 @@ public class Ocorrencia_Activity extends Activity {
 
                 params.add(new BasicNameValuePair("jota", "j9"));
                 params.add(new BasicNameValuePair("hr_j9", s.format(new Date())));
-
 
                 findViewById(R.id.btn_j9).setEnabled(false);
                 findViewById(R.id.btn_j10).setEnabled(true);
@@ -153,18 +150,15 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_j10).setEnabled(false);
                 findViewById(R.id.btn_j09_i).setEnabled(true);
 
-
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... unused) {
                         try {
                             retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
                             vf = "0";
-
                         } catch (Exception e) {
                             e.printStackTrace();
                             vf = "1";
-
                         }
                         return vf;
                     }
@@ -339,7 +333,7 @@ public class Ocorrencia_Activity extends Activity {
         btn_j11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!j11) {
+                if (j11 == false) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
                     builder.setMessage(getString(R.string.texto_maca_retida))
@@ -451,7 +445,6 @@ public class Ocorrencia_Activity extends Activity {
                 params.add(new BasicNameValuePair("jota","j12"));
                 params.add(new BasicNameValuePair("hr_j12", s.format(new Date())));
 
-
                 try {
                     Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -506,7 +499,6 @@ public class Ocorrencia_Activity extends Activity {
 
                 tv_endereco.setText(getString(R.string.msg_sem_ocorrencia));
                 tv_tipo_oc.setText(VtrMonitorada);
-
 
                 parar = false;
                 Processo meu = new Processo(getBaseContext());
@@ -563,7 +555,6 @@ public class Ocorrencia_Activity extends Activity {
                 findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_stop).setEnabled(false);
                 findViewById(R.id.btn_play).setEnabled(true);
-
             }
         });
     }
