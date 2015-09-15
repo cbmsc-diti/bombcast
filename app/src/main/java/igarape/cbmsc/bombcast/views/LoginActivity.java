@@ -102,7 +102,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Globals.setUrlSocial("https://pt-br.facebook.com/CBMSC");
+                Globals.setUrlSocial("http://pt-br.facebook.com/CBMSC");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
                 startActivity(intent);
             }
@@ -112,7 +112,7 @@ public class LoginActivity extends Activity {
         icon_twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Globals.setUrlSocial("https://twitter.com/CBMSC193");
+                Globals.setUrlSocial("http://twitter.com/CBMSC193");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
                 startActivity(intent);
             }
@@ -156,7 +156,7 @@ public class LoginActivity extends Activity {
 
 
               //ACESSO AO MONITORAMENTO DO COPCAST-- AJEITAR NO BANCO DE DADOS ANTES
-                pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
+               /* pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
 
 
                 final String regId = Globals.getRegistrationId(getApplicationContext());
@@ -234,10 +234,24 @@ public class LoginActivity extends Activity {
                         showToast(R.string.bad_request_error);
                     }
                 });
+                #######################################################
+*/
 
+            //MINHA VALIDAÇÂO NO LDAP
             Processo meu = new Processo(getBaseContext());
             meu.execute();
 
+                //LOGIN SEM VALIDAÇÂO
+               /* Globals.setUserName(txtId.getText().toString());
+                Globals.setUserPwd(txtPwd.getText().toString());
+
+
+                ManageSharedPreferences.putInSharedPreferences(LoginActivity.this,Globals.PREF_FILE_NAMES,"login",txtId.getText().toString());
+
+                Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
+                startActivity(intent);
+                LoginActivity.this.finish();
+*/
 
 
         }
@@ -266,7 +280,6 @@ public class LoginActivity extends Activity {
                         params.add(new BasicNameValuePair("u",txtID ));
                         params.add(new BasicNameValuePair("p",txtPwD));
 
-
                         retornoHttp = ConexaoHttpClient.executaHttpPost(URL,params);
 
 
@@ -286,7 +299,9 @@ public class LoginActivity extends Activity {
                             }catch(Exception e){
                             e.printStackTrace();
                        }
-                        Globals.setUserName(txtId.getText().toString());
+                        Globals.setUserName(txtID);
+                        Globals.setUserPwd(txtPwD);
+
 
                         ManageSharedPreferences.putInSharedPreferences(LoginActivity.this,Globals.PREF_FILE_NAMES,"login",txtId.getText().toString());
 

@@ -32,9 +32,9 @@ public class Globals {
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     public static final String SERVER_URL_WEB = BuildConfig.serverUrl;
+    public static final String SERVER_CBM = BuildConfig.serverCBM;
     public static final String DIRECTORY_SIZE = "DIRECTORY_SIZE";
     public static final String DIRECTORY_UPLOADED_SIZE = "DIRECTORY_UPLOADED_SIZE";
-    public static final String SERVER_CBM = "https://aplicativosweb.cbm.sc.gov.br/ebm/" ;
     public static final String AUTH = "AUTH";
     private static String accessToken = null;
     private static String userLogin = null;
@@ -54,6 +54,17 @@ public class Globals {
     private static String Longitude = "0";
     private static String EnderecoOcorrencia = "Santa Catarina";
     private static String Id_Ocorrencia="";
+
+    public static String getUserPwd() {
+        return userPwd;
+    }
+
+    public static void setUserPwd(String userPwd) {
+        Globals.userPwd = userPwd;
+    }
+
+    private static String userPwd="";
+
 
     public static List<String> getListaHospitais() {
         return listaHospitais;

@@ -40,7 +40,7 @@ public class Servidores_193 {
 
     public static List<Servidores_193> listaServidores() {
         List<Servidores_193> servidores = new ArrayList<Servidores_193>();
-        servidores.add(new Servidores_193("Florianopolis", "10.193.4.55"));
+        servidores.add(new Servidores_193("Florianopolis", "fpolis.cbm.sc.gov.br"));
         servidores.add(new Servidores_193("Criciuma", "10.194.1.121"));
         servidores.add(new Servidores_193("Tubarao", "10.194.2.251"));
         servidores.add(new Servidores_193("Lages", "10.194.62.251"));
@@ -54,7 +54,8 @@ public class Servidores_193 {
         servidores.add(new Servidores_193("Balneario Camboriu", "10.194.5.251"));
         servidores.add(new Servidores_193("Curitibanos", "10.194.30.251"));
         servidores.add(new Servidores_193("Joaçaba", "10.193.4.110"));
-        servidores.add(new Servidores_193("Servidor de testes", "10.193.4.71"));
+        servidores.add(new Servidores_193("Servidor de testes", "10.193.4.55"));
+       // servidores.add(new Servidores_193("Servidor de apresentação", "localhost"));
         return servidores;
     }
 }

@@ -12,7 +12,7 @@ android {
         applicationId "igarape.cbmsc.bombcast"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 13
+        versionCode 14
         versionName "2.0"
     }
     packagingOptions {
@@ -28,9 +28,16 @@ android {
     }
 
     productFlavors {
-        local {
+        real {
             buildConfigField "Boolean", "requireWifiUpload", "true"
             buildConfigField "String", "serverUrl", "\"http://10.193.191.12:3000\""
+            buildConfigField "String", "serverCBM", "\"https://aplicativosweb.cbm.sc.gov.br/ebm/\""
+
+        }
+        local {
+            buildConfigField "Boolean", "requireWifiUpload", "false"
+            buildConfigField "String", "serverUrl", "\"http://localhost:3000\""
+            buildConfigField "String", "serverCBM", "\"https://aplicativosweb.cbm.sc.gov.br/ebm/\""
 
         }
     }

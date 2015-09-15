@@ -73,15 +73,19 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("h", ServidorSelecionado));
         params.add(new BasicNameValuePair("fn",TelefoneCmt));
         params.add(new BasicNameValuePair("u", Globals.getUserName()));
+        params.add(new BasicNameValuePair("infos","1"));
+        params.add(new BasicNameValuePair("status","ON"));
+        params.add(new BasicNameValuePair("log","1"));
 
-        HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
+
+       /* HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
 
         startAlarmReceiver();
 
         Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
-
+*/
         Processo meu = new Processo(getBaseContext());
         meu.execute();
 
@@ -189,8 +193,8 @@ public class Ocorrencia_Activity extends Activity {
                 params.add(new BasicNameValuePair("hr_j9_i", s.format(new Date())));
 
 
-                Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
-                startActivity(intent);
+               // Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
+              //  startActivity(intent);
 
                 findViewById(R.id.btn_j09_i).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
@@ -577,7 +581,8 @@ public class Ocorrencia_Activity extends Activity {
                 e.printStackTrace();
             }
             try{
-                retornoHttp = ConexaoHttpClient.executaHttpGet(Globals.SERVER_CBM + "rec_coord.bombcast.php?infos=1&nr_vtr=" + VtrMonitorada + "&h=" + ServidorSelecionado);
+                retornoHttp = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast.php", params);
+                params.add(new BasicNameValuePair("log","3"));
             } catch (Exception e) {
                 e.printStackTrace();
                 retornoHttp = "ASC";
@@ -722,6 +727,27 @@ public class Ocorrencia_Activity extends Activity {
 
         this.mWakeLock.release();
         parar=true;
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... unused) {
+                try {
+                    params.add(new BasicNameValuePair("status","OFF"));
+                    params.add(new BasicNameValuePair("log","2"));
+                    ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast.php",params);
+                    vf = "0";
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    vf = "1";
+                }
+                return vf;
+            }
+            @Override
+            protected void onPostExecute(String aVoid) {
+                super.cancel(true);
+            }
+        }.execute();
+
         super.onDestroy();
     }
 

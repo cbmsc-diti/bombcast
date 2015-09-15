@@ -49,7 +49,6 @@ public class Select_Vtr_Activity extends Activity {
         nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
         Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php";
 
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
 
         new AsyncTask<Void, Void, List>() {
