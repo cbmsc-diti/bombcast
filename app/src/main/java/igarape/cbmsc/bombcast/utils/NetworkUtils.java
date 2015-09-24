@@ -123,9 +123,9 @@ public class NetworkUtils {
                     //MultipartUtility request = new MultipartUtility(serverUrl + url, "UTF-8", Globals.getAccessToken(context));
                     MultipartUtility request = new MultipartUtility(url, "UTF-8", Globals.getAccessToken(context));
                     String token = Globals.getAccessToken(context);
-                   // if (token != null) {
-                  //      request.addHeaderField("Authorization", token);
-                   // }
+                    if (token != null) {
+                        request.addHeaderField("Authorization", token);
+                    }
                     for (NameValuePair pair : params) {
                         request.addFormField(pair.getName(), pair.getValue());
                     }

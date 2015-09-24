@@ -3,8 +3,10 @@ package igarape.cbmsc.bombcast.views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -89,11 +91,21 @@ public class ListaHospitaisActivity extends Activity {
                         Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_LONG)
                                 .show();
 
-                        ListaHospitaisActivity.this.finish();
+
                     }
                 }.execute();
+
             }
         });
+        AlertDialog.Builder builder = new AlertDialog.Builder(ListaHospitaisActivity.this);
+        builder.setTitle("Deslocando para:")
+                .setMessage("SELECIONE UM DESTINO E CLIQUE NO BOTÃO 'VOLTAR' DO TELEFONE.")
+                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
 }

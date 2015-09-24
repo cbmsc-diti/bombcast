@@ -8,7 +8,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/ocorrencia"
         android:id="@+id/tv_desc_endereco_ocorrencia"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -43,7 +42,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="6dp" />
+        android:layout_marginLeft="2dp" />
 
     <Button
         android:layout_width="95dp"
@@ -56,7 +55,7 @@
         android:layout_alignTop="@+id/btn_j9"
         android:layout_toRightOf="@+id/btn_j9"
         android:layout_toEndOf="@+id/btn_j9"
-        android:layout_marginLeft="6dp" />
+        android:layout_marginLeft="5dp" />
 
     <Button
         android:layout_width="95dp"
@@ -67,7 +66,7 @@
         android:layout_toRightOf="@+id/btn_j10"
         android:textAlignment="center"
         android:textSize="40sp"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="5dp"
         android:enabled="false"
         />
 
@@ -80,7 +79,7 @@
         android:layout_toRightOf="@+id/btn_j09_i"
         android:textSize="40sp"
         android:enabled="false"
-        android:layout_marginLeft="6dp" />
+        android:layout_marginLeft="5dp" />
 
     <Button
         android:layout_width="95dp"
@@ -92,7 +91,7 @@
         android:layout_toRightOf="@+id/btn_j10_i"
         android:layout_toEndOf="@+id/btn_j10_i"
         android:enabled="false"
-        android:layout_marginLeft="6dp" />
+        android:layout_marginLeft="5dp" />
 
     <Button
         android:layout_width="95dp"
@@ -103,7 +102,7 @@
         android:layout_alignTop="@+id/btn_j11"
         android:layout_toRightOf="@+id/btn_j11"
         android:layout_toEndOf="@+id/btn_j11"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="5dp"
         android:enabled="false"/>
 
     <Button

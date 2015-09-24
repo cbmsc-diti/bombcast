@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -59,10 +60,9 @@ public class Ocorrencia_Activity extends Activity {
     public String vf;
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocorrencia);
+        super.onCreate(savedInstanceState);
 
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
@@ -193,8 +193,10 @@ public class Ocorrencia_Activity extends Activity {
                 params.add(new BasicNameValuePair("hr_j9_i", s.format(new Date())));
 
 
-               // Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
-              //  startActivity(intent);
+
+
+                Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
+                startActivity(intent);
 
                 findViewById(R.id.btn_j09_i).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
@@ -602,7 +604,7 @@ public class Ocorrencia_Activity extends Activity {
 
                 if(!Endereco[5].isEmpty()) {
                     tv_endereco.setText(Endereco[5]);
-                    tv_tipo_oc.setText("Ocorrência "+Endereco[0]);
+                    tv_tipo_oc.setText(Endereco[0]);
 
                     Globals.setEnderecoOcorrencia(Endereco[5]);
                 }

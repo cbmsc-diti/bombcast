@@ -8,13 +8,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -25,7 +31,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
@@ -42,9 +51,10 @@ import static igarape.cbmsc.bombcast.utils.NetworkUtils.post;
 public class LoginActivity extends Activity {
 
     public static String TAG = LoginActivity.class.getName();
-    EditText txtId;
+    AutoCompleteTextView txtId;
     EditText txtPwd;
     ProgressDialog pDialog;
+    public Set<String> logins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +78,29 @@ public class LoginActivity extends Activity {
                 }
             });
 
-                txtId = (EditText) findViewById(R.id.txtLoginUser);
+                txtId = (AutoCompleteTextView) findViewById(R.id.txtLoginUser);
+try{
+        logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
 
-                String Login = ManageSharedPreferences.getStringFromSharedPreference(LoginActivity.this,Globals.PREF_FILE_NAMES,"login");
+        Iterator it = logins.iterator();
+        int cont = 0;
+        String[] arr = new String[logins.size()];
+        while (it.hasNext()) {
+            String aux = (String)it.next();
+            arr[cont] = aux;
+            cont++;
+        }
 
-                txtId.setText(Login);
+
+
+    ArrayAdapter<String> adapter =
+            new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
+    txtId.setAdapter(adapter);
+}catch (Exception e){
+
+}
+
+               // txtId.setText(Login);
 
                 txtPwd = (EditText) findViewById(R.id.txtLoginPassword);
 
@@ -97,6 +125,18 @@ public class LoginActivity extends Activity {
                         }
                     }
                 });
+
+        final CheckBox cbShowPassword = (CheckBox) findViewById(R.id.show_password);
+        cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    txtPwd.setTransformationMethod(null);
+                else
+                    txtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        });
+
         final ImageButton icon_face = (ImageButton) findViewById(R.id.icon_face);
         icon_face.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,8 +195,8 @@ public class LoginActivity extends Activity {
             public void makeLoginRequest(View view) {
 
 
-              //ACESSO AO MONITORAMENTO DO COPCAST-- AJEITAR NO BANCO DE DADOS ANTES
-               /* pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
+         /*     //ACESSO AO MONITORAMENTO DO COPCAST-- AJEITAR NO BANCO DE DADOS ANTES
+                pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
 
 
                 final String regId = Globals.getRegistrationId(getApplicationContext());
@@ -234,7 +274,7 @@ public class LoginActivity extends Activity {
                         showToast(R.string.bad_request_error);
                     }
                 });
-                #######################################################
+//                #######################################################
 */
 
             //MINHA VALIDAÇÂO NO LDAP
@@ -267,6 +307,7 @@ public class LoginActivity extends Activity {
                 protected List<NameValuePair> params = new ArrayList<>();
                 public String txtID= txtId.getText().toString();
                 public String txtPwD= txtPwd.getText().toString();
+
                 @Override
                 protected void onPreExecute() {
                     //ANTES DE EXECUTAR (JANELA)
@@ -286,7 +327,7 @@ public class LoginActivity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    return retornoHttp;
+                    return retornoHttp;//0 ou 1
                 }
 
                 @Override
@@ -302,8 +343,21 @@ public class LoginActivity extends Activity {
                         Globals.setUserName(txtID);
                         Globals.setUserPwd(txtPwD);
 
+                      try {
+                          logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
+                      }catch (Exception e){}
+                          if (logins == null){
+                            logins = new LinkedHashSet<String>();
+                        }
+                        logins.add(txtID);
+                        Iterator it = logins.iterator();
 
-                        ManageSharedPreferences.putInSharedPreferences(LoginActivity.this,Globals.PREF_FILE_NAMES,"login",txtId.getText().toString());
+                        while (it.hasNext()) {
+                            String aux = (String)it.next();
+                        }
+
+                        ManageSharedPreferences.putInSharedPreferences(LoginActivity.this, Globals.PREF_FILE_NAMES, "login", logins);
+
 
                         Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
                         startActivity(intent);
