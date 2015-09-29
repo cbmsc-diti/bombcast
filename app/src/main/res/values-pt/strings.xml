@@ -131,7 +131,7 @@
     <string name="texto_vtr_nao_cadastrada">Não foi encontrada nenhuma viatura para o seu usuário. Verifique seu cadastro no e-193.</string>
     <string name="gps_desativado">GPS desativado!</string>
     <string name="gps_desativado_text">Clique em OK para ativá-lo.</string>
-    <string name="problema">Erro de conexão!  Utilize o Rádio...</string>
+    <string name="problema">Erro de conexão!</string>
     <string name="ocorrencia">Ocorrência:</string>
     <string name="j10">J10</string>
     <string name="j9_i">J09 I</string>

@@ -79,6 +79,31 @@ public class LoginActivity extends Activity {
             });
 
                 txtId = (AutoCompleteTextView) findViewById(R.id.txtLoginUser);
+
+
+        /**
+         * Appears a hack
+         * On login_activity I added
+         * android:focusable="true"
+         * android:focusableInTouchMode="true"
+         */
+
+        txtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    txtId.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager keyboard = (InputMethodManager)
+                                    getSystemService(Context.INPUT_METHOD_SERVICE);
+                            keyboard.showSoftInput(txtId, 0);
+                        }
+                    }, 500);
+                }
+            }
+        });
+
 try{
         logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
 
@@ -100,31 +125,9 @@ try{
 
 }
 
-               // txtId.setText(Login);
-
                 txtPwd = (EditText) findViewById(R.id.txtLoginPassword);
 
-                /**
-                 * Appears a hack
-                 * On login_activity I added
-                 * android:focusable="true"
-                 * android:focusableInTouchMode="true"
-                 */
-                txtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (hasFocus) {
-                            txtId.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    InputMethodManager keyboard = (InputMethodManager)
-                                    getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    keyboard.showSoftInput(txtId, 0);
-                                }
-                            }, 800);
-                        }
-                    }
-                });
+
 
         final CheckBox cbShowPassword = (CheckBox) findViewById(R.id.show_password);
         cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -351,11 +354,11 @@ try{
                         }
                         logins.add(txtID);
                         Iterator it = logins.iterator();
-
+/*
                         while (it.hasNext()) {
                             String aux = (String)it.next();
                         }
-
+*/
                         ManageSharedPreferences.putInSharedPreferences(LoginActivity.this, Globals.PREF_FILE_NAMES, "login", logins);
 
 

@@ -49,13 +49,15 @@ public class Select_Vtr_Activity extends Activity {
         nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
         Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php";
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
-
         new AsyncTask<Void, Void, List>() {
 
             @Override
             protected void onPreExecute() {
-                pDialog = ProgressDialog.show(Select_Vtr_Activity.this,"Verificando cadastro no E193", getString(R.string.please_hold), true);
+                try {
+                    pDialog = ProgressDialog.show(Select_Vtr_Activity.this,"Verificando cadastro no E193", getString(R.string.please_hold), true);
+                }catch (Exception e){
+
+                }
                 params.add(new BasicNameValuePair("u", usuario));
                 params.add(new BasicNameValuePair("h", servidor193));
                 params.add(new BasicNameValuePair("vf", "0"));
@@ -137,11 +139,15 @@ public class Select_Vtr_Activity extends Activity {
 
 
                     if(!status.isEmpty()){
-                        List<String> cmta = Arrays.asList(status.split("\\."));
+                        try { List<String> cmta = Arrays.asList(status.split("\\."));
                         String telefone = cmta.get(2);
                         String idCmt = cmta.get(0) +" "+ cmta.get(1);
                         ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
                         ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                     }else{
                         AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
                         builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
@@ -156,6 +162,7 @@ public class Select_Vtr_Activity extends Activity {
 
                 }
                 findViewById(R.id.btn_next).setEnabled(true);
+                super.cancel(true);
             }
         }.execute();
 
@@ -163,7 +170,6 @@ public class Select_Vtr_Activity extends Activity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
 
                 Globals.setTelefoneCmt(et_telefone.getText().toString());
