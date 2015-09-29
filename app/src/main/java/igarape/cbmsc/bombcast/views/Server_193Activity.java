@@ -66,6 +66,7 @@ public class Server_193Activity extends Activity {
             public void onClick(View view) {
                 Intent intent2 = new Intent(Server_193Activity.this, LoginActivity.class);
                 startActivity(intent2);
+                Server_193Activity.this.finish();
             }
         });
     }
@@ -101,9 +102,6 @@ public class Server_193Activity extends Activity {
     public void updateView(Location locat){
         Double latitude = locat.getLatitude();
         Double longitude = locat.getLongitude();
-
-        Globals.setLatAlteracao(latitude);
-        Globals.setLngAlteracao(longitude);
 
         Globals.setLatAlteracao(latitude);
         Globals.setLngAlteracao(longitude);

@@ -11,7 +11,7 @@ import igarape.cbmsc.bombcast.utils.Globals;
  * Created by barcellos on 01/07/15.
  */
 public class SocialActivity extends Activity {
-    private WebView myWebView;
+    protected WebView myWebView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
