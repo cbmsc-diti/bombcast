@@ -47,7 +47,7 @@ public class FireCastApplication extends Application {
 
     @Override
     public void onTerminate() {
-        super.onTerminate();
+
         try{
             Intent intent2 = new Intent(getApplicationContext(), LocationService.class);
             intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -60,5 +60,9 @@ public class FireCastApplication extends Application {
             stopService(intent);
         }catch( Exception e){
             e.printStackTrace();}
+
+        super.onTerminate();
     }
+
+
 }

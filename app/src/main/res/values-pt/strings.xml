@@ -55,9 +55,9 @@
         
     <string name="notification_record_description"> Gravando no SDCard </string>
         
-    <string name="notification_location_title"> Buscando Localização</string>
+    <string name="notification_location_title"> Transmitindo localização</string>
         
-    <string name="notification_location_description">Busca por sua localização atual</string>
+    <string name="notification_location_description">Enviando coordenadas...</string>
         
     <string name="please_hold"> Por favor, aguarde… </string>
         

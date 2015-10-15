@@ -2,19 +2,34 @@ package igarape.cbmsc.bombcast.utils;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.util.Log;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
+
+import igarape.cbmsc.bombcast.views.Ocorrencia_Activity;
 
 /**
  * Created by bruno on 11/5/14.
  */
+
 public class LocationUtils {
     /*
   * Define a request code to send to Google Play services
@@ -29,7 +44,7 @@ public class LocationUtils {
     public static final int MILLISECONDS_PER_SECOND = 1000;
 
     // The update interval
-    public static final int UPDATE_INTERVAL_IN_SECONDS = 5;
+    public static final int UPDATE_INTERVAL_IN_SECONDS = 15;
 
     // A fast interval ceiling
     public static final int FAST_CEILING_IN_SECONDS = 1;
@@ -82,8 +97,41 @@ public class LocationUtils {
         };
 
         try {
-            NetworkUtils.post(context, Globals.SERVER_URL_WEB+"/locations", buildJson(location), callback);
-        } catch (JSONException e) {
+
+
+            new AsyncTask<Void, Void, String>() {
+                String vf;
+                String rec_location;
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+                @Override
+                protected String doInBackground(Void... unused) {
+                    try {
+                        float velo = location.getSpeed();
+
+                       if (velo < 0.3){
+                           vf = "1";
+                       }else{
+                               params.add(new BasicNameValuePair("p", buildJson(location).toString()));
+                               rec_location = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "locations/rec_locations.php", params);
+                               vf = rec_location;
+                       }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        vf = "1";
+                    }
+                    return vf;
+                }
+                @Override
+                protected void onPostExecute(String aVoid) {
+                    super.onPostExecute(aVoid);
+
+                    super.cancel(true);
+                }
+            }.execute();
+
+          //  NetworkUtils.post(context, Globals.SERVER_CBM+"locations/rec_locations.php", buildJson(location), callback);
+        } catch (Exception e) {
             Log.e(TAG, "json error", e);
         }
     }
@@ -103,7 +151,13 @@ public class LocationUtils {
         JSONObject json = new JSONObject();
         json.put("lat", latitude);
         json.put("lng", longitude);
-        json.put("date", date);
+        json.put("data", date);
+        json.put("nr_vtr",Globals.getVtrSelecionada());
+        json.put("id_ocorrencia",Globals.getId_Ocorrencia());
+        json.put("servidor", Globals.getServidorSelecionado());
+
+
+
 
         if (accuracy != null) {
             json.put("accuracy", accuracy);

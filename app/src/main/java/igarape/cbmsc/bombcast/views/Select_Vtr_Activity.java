@@ -3,8 +3,11 @@ package igarape.cbmsc.bombcast.views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -41,6 +45,7 @@ public class Select_Vtr_Activity extends Activity {
     TextView nm_cmt;
     List<NameValuePair> params = new ArrayList<>();
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_vtr);
@@ -48,6 +53,8 @@ public class Select_Vtr_Activity extends Activity {
         et_telefone = (EditText) findViewById(R.id.et_cel_cmt_area);
         nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
         Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php";
+        final Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+
 
         new AsyncTask<Void, Void, List>() {
 
@@ -204,13 +211,14 @@ public class Select_Vtr_Activity extends Activity {
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startService(intent);
+
             }
         });
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

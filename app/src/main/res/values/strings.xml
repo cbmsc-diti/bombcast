@@ -131,7 +131,7 @@
     <string name="texto_vtr_nao_cadastrada">It found no vehicle for your user. Check your registration on the e-193.</string>
     <string name="gps_desativado">GPS disabled!</string>
     <string name="gps_desativado_text">Click OK to activate it.</string>
-    <string name="problema">Connection error! Use the Radio ...</string>
+    <string name="problema">Connection error!</string>
     <string name="ocorrencia">Occurrence:</string>
     <string name="j10">J10</string>
     <string name="j9_i">J09 I</string>

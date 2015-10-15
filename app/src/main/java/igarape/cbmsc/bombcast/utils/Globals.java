@@ -50,8 +50,8 @@ public class Globals {
     private static String ServidorSelecionado = null;
     private static String VtrSelecionada = "";
     private static String Monitor = "";
-    private static String Latitude = "0";
-    private static String Longitude = "0";
+    private static String Latitude = null;
+    private static String Longitude = null ;
     private static String EnderecoOcorrencia = "Santa Catarina";
     private static String Id_Ocorrencia="";
 
@@ -160,7 +160,7 @@ public class Globals {
     }
 
     public static void setLatitude(String latitude) {
-        Latitude = latitude;
+        Latitude = getLatAlteracao().toString();
     }
 
     public static String getLongitude() {
@@ -168,7 +168,7 @@ public class Globals {
     }
 
     public static void setLongitude(String longitude) {
-        Longitude = longitude;
+        Longitude = getLngAlteracao().toString();
     }
 
 

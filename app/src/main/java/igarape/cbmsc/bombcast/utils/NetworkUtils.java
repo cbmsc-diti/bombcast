@@ -72,7 +72,19 @@ public class NetworkUtils {
     private static String getResponseText(InputStream inStream) {
         // very nice trick from
         // http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
-        return new Scanner(inStream).useDelimiter("\\A").next();
+        try {
+            //return new Scanner(inStream).useDelimiter("\\A").next();
+            Scanner scanner = new Scanner(inStream);
+            while(scanner.hasNext()){
+                Log.i(TAG, scanner.next().toString());
+            }
+            return null;
+
+        }catch (Exception e){
+            Log.e(TAG, "json error", e);
+
+            return null;
+        }
     }
 
     public static void get(Context context, String url, HttpResponseCallback callback) {
@@ -208,6 +220,8 @@ public class NetworkUtils {
                     // handle issues
                     urlConnection.connect();
                     statusCode = urlConnection.getResponseCode();
+
+                    Object teste = urlConnection.getContent();
                     if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         callback.unauthorized();
                         return null;
@@ -220,10 +234,10 @@ public class NetworkUtils {
                             urlConnection.getInputStream());
                     String responseText = getResponseText(in);
 
-                    JSONObject response = new JSONObject(responseText);
+                   // JSONObject response = new JSONObject(responseText);
 
 
-                    callback.success(response);
+                //    callback.success(response);
                 } catch (MalformedURLException e) {
                     callback.badRequest();
                     Log.e(TAG, "Url error ", e);
@@ -233,9 +247,6 @@ public class NetworkUtils {
                 } catch (IOException e) {
                     callback.badResponse();
                     Log.e(TAG, "Could not read response body ", e);
-                } catch (JSONException e) {
-
-                    return null;
                 } finally {
                     try {
                         if (writer != null) {

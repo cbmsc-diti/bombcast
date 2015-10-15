@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 public class FileUtils {
     public static final String LOCATIONS_TXT = "locations.txt";
     public static final String HISTORY_TXT = "history.txt";
-    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String DATE_FORMAT = "yyyy-MM-dd' 'HH:mm:ss.SS";
     private static final String TAG = FileUtils.class.getName();
 
     private static String path = null;

@@ -3,6 +3,7 @@ package igarape.cbmsc.bombcast.views;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -82,16 +83,19 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("infos","1"));
         params.add(new BasicNameValuePair("status","ON"));
         params.add(new BasicNameValuePair("log","1"));
+        params.add(new BasicNameValuePair("lat_vtr",Globals.getLatitude()));
+        params.add(new BasicNameValuePair("lng_vtr",Globals.getLongitude()));
+
 
 
        /* HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
 
         startAlarmReceiver();
-
-        Intent intent = new Intent(Ocorrencia_Activity.this, LocationService.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(intent);
 */
+        Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
+        intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent2);
+
         Processo meu = new Processo(getBaseContext());
         meu.execute();
 
@@ -363,7 +367,7 @@ public class Ocorrencia_Activity extends Activity {
         btn_j11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (j11 == false) {
+                if (!j11) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
                     builder.setMessage(getString(R.string.texto_maca_retida))
@@ -617,20 +621,19 @@ public class Ocorrencia_Activity extends Activity {
         });
     }
 
-    private void disableKeyguard() {
-
-    }
-
-    public class Processo extends AsyncTask<String, String, String> {
+        public class Processo extends AsyncTask<String, String, String> {
 
         public String retornoHttp= "";
-
+        public SimpleDateFormat s_hora = new SimpleDateFormat("HH:mm");
+        String verifica_hora =  s_hora.format(new Date());
         public Context context;
-        public Processo(Context context) {
+
+            public Processo(Context context) {
             this.context = context;
         }
         @Override
         protected String doInBackground(String... paramss) {
+
 
             try {
                 new Thread();
@@ -638,6 +641,8 @@ public class Ocorrencia_Activity extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
             try{
                 retornoHttp = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast.php", params);
                 params.add(new BasicNameValuePair("log","3"));
@@ -649,85 +654,108 @@ public class Ocorrencia_Activity extends Activity {
         }
         @Override
         protected void onPostExecute(String result) {
-
-            if((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty()) && (!parar)  ) {
-
-                Globals.setMonitor(retornoHttp);
-
-                detalhes_ocorrencia = retornoHttp.split("\\|");
-                tv_endereco = (TextView)findViewById(R.id.tv_endereco_ocorrencia);
-                tv_tipo_oc = (TextView)findViewById(R.id.tv_desc_endereco_ocorrencia);
-
-                if(!detalhes_ocorrencia[5].isEmpty()) {
-                    tv_endereco.setText(detalhes_ocorrencia[5]);
-                    tv_tipo_oc.setText(detalhes_ocorrencia[0]);
-
-                    Globals.setEnderecoOcorrencia(detalhes_ocorrencia[5]);
-                }
-                endereco_final = detalhes_ocorrencia[5].split(":");
-
-
-                IO = detalhes_ocorrencia[2].split(":");
-
-                Globals.setId_Ocorrencia(IO[1]);
-                params.add(new BasicNameValuePair("io", IO[1]));
-
-                findViewById(R.id.btn_j9).setEnabled(true);
-
-                findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
-                findViewById(R.id.btn_play).setEnabled(true);
-                findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
-
-                play(Ocorrencia_Activity.this, getAlarmSound());
-
-                parar=true;
+            if(verifica_hora.equals("08:00")){
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                builder.setTitle(getString(R.string.parar_alarme))
-                        .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
+                builder.setTitle("Novo login!")
+                        .setMessage("Faça o login com um membro da guarnição atual!")
+                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                player.stop();
+                                Intent intent = new Intent(Ocorrencia_Activity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
-
                 AlertDialog alert = builder.create();
 
                 alert.show();
 
-                findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
-                count = "ok";
-                cancel(true);
+                Processo.this.cancel(true);
+            }else {
 
-            }else if((retornoHttp.equals("0"))&& (!parar)){
+                if ((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty()) && (!parar)) {
 
-                Processo meu = new Processo(getBaseContext());
+                    Globals.setMonitor(retornoHttp);
 
-                try {
-                    new Thread();
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                    detalhes_ocorrencia = retornoHttp.split("\\|");
+                    tv_endereco = (TextView) findViewById(R.id.tv_endereco_ocorrencia);
+                    tv_tipo_oc = (TextView) findViewById(R.id.tv_desc_endereco_ocorrencia);
 
-                try{
-                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando "+VtrMonitorada, Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                    toast.show();
+                    if (!detalhes_ocorrencia[5].isEmpty()) {
+                        tv_endereco.setText(detalhes_ocorrencia[5]);
+                        tv_tipo_oc.setText(detalhes_ocorrencia[0]);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                meu.execute();
-            }else{
-                try {
+                        Globals.setEnderecoOcorrencia(detalhes_ocorrencia[5]);
+                    }
+                    endereco_final = detalhes_ocorrencia[5].split(":");
+
+
+                    IO = detalhes_ocorrencia[2].split(":");
+                    try {
+                        Globals.setId_Ocorrencia(IO[1]);
+                        params.add(new BasicNameValuePair("io", IO[1]));
+                    } catch (Exception e) {
+
+                    }
+
+
+                    findViewById(R.id.btn_j9).setEnabled(true);
+
+                    findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
+                    findViewById(R.id.btn_play).setEnabled(true);
+                    findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
+
+                    play(Ocorrencia_Activity.this, getAlarmSound());
+
+                    parar = true;
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+
+                    builder.setTitle(getString(R.string.parar_alarme))
+                            .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    player.stop();
+                                }
+                            });
+
+                    AlertDialog alert = builder.create();
+
+                    alert.show();
+
+                    findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
+                    count = "ok";
+                    cancel(true);
+
+                } else if ((retornoHttp.equals("0")) && (!parar)) {
+
                     Processo meu = new Processo(getBaseContext());
+
+                    try {
+                        new Thread();
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
+                        toast.show();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     meu.execute();
+                } else {
+                    try {
+                        Processo meu = new Processo(getBaseContext());
+                        meu.execute();
 
-                }catch(Exception e){
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
-
             }
             cancel(true);
         }
@@ -801,7 +829,7 @@ public class Ocorrencia_Activity extends Activity {
                     params.add(new BasicNameValuePair("status","OFF"));
                     params.add(new BasicNameValuePair("log","2"));
                     ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast.php",params);
-                    vf = "0";
+                    //vf = "0";
                 } catch (Exception e) {
                     e.printStackTrace();
                     vf = "1";
