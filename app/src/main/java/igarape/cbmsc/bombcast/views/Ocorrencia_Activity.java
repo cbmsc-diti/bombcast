@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -796,6 +797,29 @@ public class Ocorrencia_Activity extends Activity {
         return manager.getActiveNetworkInfo() != null &&
                 manager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
+
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Ocorrencia_Activity.this, AlertDialog.THEME_HOLO_DARK);
+
+        Resources res = getResources();
+        alertDialog.setTitle("MONITORAMENTO!");
+        alertDialog.setMessage("Deseja realmente parar o monitoramento?");
+
+        alertDialog.setPositiveButton(res.getText(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Ocorrencia_Activity.this.finish();
+            }
+        });
+        alertDialog.setNegativeButton(res.getText(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
 
     @Override
     protected void onDestroy() {

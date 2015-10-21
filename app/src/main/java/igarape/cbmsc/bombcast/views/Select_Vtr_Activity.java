@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,14 +26,19 @@ import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
+import igarape.cbmsc.bombcast.utils.FileUtils;
 import igarape.cbmsc.bombcast.utils.Globals;
 import igarape.cbmsc.bombcast.service.UploadService;
+
+import static igarape.cbmsc.bombcast.BuildConfig.requireWifiUpload;
 
 public class Select_Vtr_Activity extends Activity {
 
@@ -44,6 +52,8 @@ public class Select_Vtr_Activity extends Activity {
     EditText et_telefone;
     TextView nm_cmt;
     List<NameValuePair> params = new ArrayList<>();
+    private final GenericExtFilter filter = new GenericExtFilter(".mp4");
+    private ArrayList<File> videos;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,7 @@ public class Select_Vtr_Activity extends Activity {
         nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
         Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php";
         final Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
+
 
 
         new AsyncTask<Void, Void, List>() {
@@ -101,6 +112,7 @@ public class Select_Vtr_Activity extends Activity {
             @Override
             protected void onPostExecute(List aVoid) {
                 super.onPostExecute(aVoid);
+                params.add(new BasicNameValuePair("vf", "1"));
 
                 if (vtrs.get(0).equals("")){
                     AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
@@ -117,7 +129,6 @@ public class Select_Vtr_Activity extends Activity {
                     alert.show();
                 }else{
                     try {
-                        params.add(new BasicNameValuePair("vf", "1"));
                         status = ConexaoHttpClient.executaHttpPost(Url,params);
 
                     } catch (Exception e) {
@@ -147,10 +158,10 @@ public class Select_Vtr_Activity extends Activity {
 
                     if(!status.isEmpty()){
                         try { List<String> cmta = Arrays.asList(status.split("\\."));
-                        String telefone = cmta.get(2);
-                        String idCmt = cmta.get(0) +" "+ cmta.get(1);
-                        ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
-                        ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
+                            String telefone = cmta.get(2);
+                            String idCmt = cmta.get(0) +" "+ cmta.get(1);
+                            ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
+                            ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -211,12 +222,89 @@ public class Select_Vtr_Activity extends Activity {
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startService(intent);
 
-            }
+                if (!canUpload(getBaseContext(), intent)) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+
+                    builder.setTitle("ERRO!")
+                            .setMessage("Envio de vídeos somente conectado na WIFI.")
+                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+                } else {
+                    String path = FileUtils.getPath(Globals.getUserName());
+
+                    File dir = new File(path);
+                    File[] files = dir.listFiles(filter);
+
+                    if (files != null && files.length > 0) {
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startService(intent);
+
+                        try{
+                            Toast toast = Toast.makeText(Select_Vtr_Activity.this, "Os vídeos estão sendo enviados...", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
+                            toast.show();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+
+                            builder.setTitle("ERRO!")
+                                    .setMessage("Não foram encontrados vídeos nesse dispositivo")
+                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+
+                        }
+                    }
+                }
+
+
+
+
+
+
+
         });
 
+    }
+
+    public static boolean canUpload(Context context, Intent intent) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo == null || !networkInfo.isConnectedOrConnecting() || intent == null) {
+            return false;
+        }
+
+        boolean isWiFi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        return (isWiFi || !requireWifiUpload);
+    }
+    class GenericExtFilter implements FilenameFilter {
+
+        private String ext;
+
+        public GenericExtFilter(String ext) {
+            this.ext = ext;
+        }
+
+        public boolean accept(File dir, String name) {
+            return (name.endsWith(ext));
+        }
     }
 
     @Override

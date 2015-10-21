@@ -129,10 +129,10 @@ public class UploadService extends Service {
         }
       //  String userLogin = users.remove(0);
 
-        String ocorrencia = users.remove(0);
+     //   String ocorrencia = users.remove(0);
 
         String userLogin = Globals.getUserName();
-        String path = FileUtils.getPath(ocorrencia);
+        String path = FileUtils.getPath(userLogin);
 
 
       //FUNÇOES DO COPCAST --AJEITAR NO BANCO DE DADOS ANTES
@@ -145,7 +145,7 @@ public class UploadService extends Service {
             videos = new ArrayList<File>(Arrays.asList(files));
             if (!videos.isEmpty()) {
                 File nextVideo = videos.remove(0);
-                uploadVideo(nextVideo, ocorrencia);
+                uploadVideo(nextVideo, userLogin);
             } else {
                 uploadUserData();
             }

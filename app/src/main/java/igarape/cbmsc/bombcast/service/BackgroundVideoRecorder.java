@@ -1,5 +1,6 @@
 package igarape.cbmsc.bombcast.service;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
@@ -36,6 +38,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
     public static final long MAX_SIZE_BYTES = 7500000;
     private int mId = 1;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate() {
 
@@ -80,7 +83,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
         mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW));
 
         mediaRecorder.setOutputFile(
-                FileUtils.getPath(Globals.getId_Ocorrencia()) +
+                FileUtils.getPath(Globals.getUserName()) +Globals.getId_Ocorrencia()+"_"+
                         Globals.getVtrSelecionada() +"_"+
                         android.text.format.DateFormat.format("yyyy-MM-dd_kk-mm-ss", new Date().getTime()) +
                         ".mp4");
