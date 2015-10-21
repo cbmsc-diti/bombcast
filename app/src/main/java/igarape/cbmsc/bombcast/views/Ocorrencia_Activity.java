@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -390,6 +391,13 @@ public class Ocorrencia_Activity extends Activity {
 
 
                                     new AsyncTask<Void, Void, String>() {
+
+                                        ProgressDialog pDialog;
+                                        protected void onPreExecute() {
+                                            super.onPreExecute();
+                                            //ANTES DE EXECUTAR (JANELA)
+                                            pDialog  = ProgressDialog.show(Ocorrencia_Activity.this, "J11", "Atualizando ocorrência, aguarde...", true);
+                                        }
                                         @Override
                                         protected String doInBackground(Void... unused) {
                                             try {
@@ -406,6 +414,8 @@ public class Ocorrencia_Activity extends Activity {
                                         @Override
                                         protected void onPostExecute(String aVoid) {
                                             super.onPostExecute(aVoid);
+                                            pDialog.dismiss();
+
                                             /*
                        ##MENSAGEM DE ERRO DE CONEXÃO
                        if (vf.equals("1")) {
@@ -438,6 +448,13 @@ public class Ocorrencia_Activity extends Activity {
 
 
                 new AsyncTask<Void, Void, String>() {
+
+                    ProgressDialog pDialog;
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        //ANTES DE EXECUTAR (JANELA)
+                        pDialog  = ProgressDialog.show(Ocorrencia_Activity.this, "J11", "Atualizando ocorrência, aguarde...", true);
+                    }
                     @Override
                     protected String doInBackground(Void... unused) {
                         try {
@@ -453,6 +470,9 @@ public class Ocorrencia_Activity extends Activity {
                     @Override
                     protected void onPostExecute(String aVoid) {
                         super.onPostExecute(aVoid);
+                        pDialog.dismiss();
+
+
                        /* if (vf.equals("1")){
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
@@ -496,6 +516,13 @@ public class Ocorrencia_Activity extends Activity {
                 }
 
                 new AsyncTask<Void, Void, String>() {
+
+                    ProgressDialog pDialog;
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        //ANTES DE EXECUTAR (JANELA)
+                        pDialog  = ProgressDialog.show(Ocorrencia_Activity.this, "J12", "Encerrando ocorrência, aguarde...", true);
+                    }
                     @Override
                     protected String doInBackground(Void... unused) {
                         try {
@@ -511,6 +538,9 @@ public class Ocorrencia_Activity extends Activity {
                     protected void onPostExecute(String aVoid) {
                         super.onPostExecute(aVoid);
                         if (vf.equals("1")){
+
+                            pDialog.dismiss();
+
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
 
                             builder.setTitle(getString(R.string.problema))
@@ -523,6 +553,9 @@ public class Ocorrencia_Activity extends Activity {
                             alert.show();
                         }
                         if (vf.equals("0")){
+
+                            pDialog.dismiss();
+
                             findViewById(R.id.btn_play).setEnabled(false);
                             findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
                             findViewById(R.id.btn_stop).setEnabled(false);
