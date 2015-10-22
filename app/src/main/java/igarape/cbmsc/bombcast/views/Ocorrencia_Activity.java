@@ -1,11 +1,8 @@
 package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.KeyguardManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,7 +31,6 @@ import java.util.Date;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
-import igarape.cbmsc.bombcast.receiver.AlarmReceiver;
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
 import igarape.cbmsc.bombcast.service.LocationService;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
@@ -88,8 +84,6 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("lat_vtr",Globals.getLatitude()));
         params.add(new BasicNameValuePair("lng_vtr",Globals.getLongitude()));
 
-
-
        /* HistoryUtils.registerHistory(getApplicationContext(), State.LOGGED, State.MONITOR, Globals.getUserName());
 
         startAlarmReceiver();
@@ -110,9 +104,11 @@ public class Ocorrencia_Activity extends Activity {
                 params.add(new BasicNameValuePair("jota", "j9"));
                 params.add(new BasicNameValuePair("hr_j9", s.format(new Date())));
 
+                //ALTERNA BOTOES NA TELA ####################################
                 findViewById(R.id.btn_j9).setEnabled(false);
                 findViewById(R.id.btn_j10).setEnabled(true);
                 findViewById(R.id.btn_j11).setEnabled(true);
+                //###########################################################
 
                 new AsyncTask<Void, Void, String>() {
                     @Override
@@ -132,20 +128,6 @@ public class Ocorrencia_Activity extends Activity {
                     @Override
                     protected void onPostExecute(String aVoid) {
                         super.onPostExecute(aVoid);
-                       /*
-                       ##MENSAGEM DE ERRO DE CONEXÃO
-                       if (vf.equals("1")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-                            builder.setTitle(getString(R.string.problema))
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                           AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-
-                        */
                         super.cancel(true);
                     }
                 }.execute();
@@ -161,14 +143,15 @@ public class Ocorrencia_Activity extends Activity {
                 LatOcorrencia = Globals.getLatitude();
                 LngOcorrencia = Globals.getLongitude();
 
-                params.add(new BasicNameValuePair("jota","j10"));
+                params.set(11,new BasicNameValuePair("jota","j10"));
                 params.add(new BasicNameValuePair("lat_o",LatOcorrencia));
                 params.add(new BasicNameValuePair("lng_o", LngOcorrencia));
                 params.add(new BasicNameValuePair("hr_j10", s.format(new Date())));
 
-
+                //ALTERNA BOTOES NA TELA ####################################
                 findViewById(R.id.btn_j10).setEnabled(false);
                 findViewById(R.id.btn_j09_i).setEnabled(true);
+                //###########################################################
 
                 new AsyncTask<Void, Void, String>() {
                     @Override
@@ -185,20 +168,6 @@ public class Ocorrencia_Activity extends Activity {
                     @Override
                     protected void onPostExecute(String aVoid) {
                         super.onPostExecute(aVoid);
-                        /*
-                       ##MENSAGEM DE ERRO DE CONEXÃO
-                       if (vf.equals("1")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-                            builder.setTitle(getString(R.string.problema))
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                           AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-
-                        */
                         super.cancel(true);
                     }
                 }.execute();
@@ -209,17 +178,20 @@ public class Ocorrencia_Activity extends Activity {
         btn_j9_i.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                params.add(new BasicNameValuePair("jota","j9_i"));
-                params.add(new BasicNameValuePair("hr_j9_i", s.format(new Date())));
 
+
+                params.set(11, new BasicNameValuePair("jota", "j9_i"));
+                params.add(new BasicNameValuePair("hr_j9_i", s.format(new Date())));
 
 
 
                 Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
                 startActivity(intent);
 
+                //ALTERNA BOTOES NA TELA ####################################
                 findViewById(R.id.btn_j09_i).setEnabled(false);
                 findViewById(R.id.btn_j10_i).setEnabled(true);
+                //###########################################################
 
                 new AsyncTask<Void, Void, String>() {
                     @Override
@@ -237,20 +209,6 @@ public class Ocorrencia_Activity extends Activity {
                     @Override
                     protected void onPostExecute(String aVoid) {
                         super.onPostExecute(aVoid);
-                        /*
-                       ##MENSAGEM DE ERRO DE CONEXÃO
-                       if (vf.equals("1")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-                            builder.setTitle(getString(R.string.problema))
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                           AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-
-                        */
                         super.cancel(true);
                     }
                 }.execute();
@@ -271,14 +229,15 @@ public class Ocorrencia_Activity extends Activity {
                                 String LatLocalIntermediario = Globals.getLatitude();
                                 String LngLocalIntermediario = Globals.getLongitude();
 
-                                params.add(new BasicNameValuePair("jota","j10_i_n"));
+                                params.set(11, new BasicNameValuePair("jota", "j10_i_n"));
                                 params.add(new BasicNameValuePair("lat_i",LatLocalIntermediario));
                                 params.add(new BasicNameValuePair("lng_i",LngLocalIntermediario));
                                 params.add(new BasicNameValuePair("hr_j10_i_n", s.format(new Date())));
 
-
+                                //ALTERNA BOTOES NA TELA ####################################
                                 findViewById(R.id.btn_j10_i).setEnabled(false);
                                 findViewById(R.id.btn_j11).setEnabled(true);
+                                //###########################################################
 
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
@@ -296,20 +255,6 @@ public class Ocorrencia_Activity extends Activity {
                                     @Override
                                     protected void onPostExecute(String aVoid) {
                                         super.onPostExecute(aVoid);
-                                         /*
-                       ##MENSAGEM DE ERRO DE CONEXÃO
-                       if (vf.equals("1")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-                            builder.setTitle(getString(R.string.problema))
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                           AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-
-                        */
                                         super.cancel(true);
                                     }
                                 }.execute();
@@ -317,10 +262,11 @@ public class Ocorrencia_Activity extends Activity {
                         })
                         .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+
                                 String LatLocalRecusa = Globals.getLatitude();
                                 String LngLocalRecusa = Globals.getLongitude();
 
-                                params.add(new BasicNameValuePair("jota","j10_i_s"));
+                                params.set(11, new BasicNameValuePair("jota", "j10_i_s"));
                                 params.add(new BasicNameValuePair("lat_r",LatLocalRecusa));
                                 params.add(new BasicNameValuePair("lng_r",LngLocalRecusa));
                                 params.add(new BasicNameValuePair("hr_j10_i_s", s.format(new Date())));
@@ -341,20 +287,6 @@ public class Ocorrencia_Activity extends Activity {
                                     @Override
                                     protected void onPostExecute(String aVoid) {
                                         super.onPostExecute(aVoid);
-                                        /*
-                       ##MENSAGEM DE ERRO DE CONEXÃO
-                       if (vf.equals("1")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-                            builder.setTitle(getString(R.string.problema))
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                           AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-
-                        */
                                         super.cancel(true);
                                     }
                                 }.execute();
@@ -384,7 +316,7 @@ public class Ocorrencia_Activity extends Activity {
                                     String LatLocalMaca = Globals.getLatitude();
                                     String LngLocalMaca = Globals.getLongitude();
 
-                                    params.add(new BasicNameValuePair("jota", "j11_s"));
+                                    params.set(11, new BasicNameValuePair("jota", "j11_s"));
                                     params.add(new BasicNameValuePair("lat_m", LatLocalMaca));
                                     params.add(new BasicNameValuePair("lng_m", LngLocalMaca));
                                     params.add(new BasicNameValuePair("hr_j11_s", s.format(new Date())));
@@ -415,21 +347,6 @@ public class Ocorrencia_Activity extends Activity {
                                         protected void onPostExecute(String aVoid) {
                                             super.onPostExecute(aVoid);
                                             pDialog.dismiss();
-
-                                            /*
-                       ##MENSAGEM DE ERRO DE CONEXÃO
-                       if (vf.equals("1")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-                            builder.setTitle(getString(R.string.problema))
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                           AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-
-                        */
                                             super.cancel(true);
                                         }
                                     }.execute();
@@ -440,7 +357,7 @@ public class Ocorrencia_Activity extends Activity {
                     alert.show();
                 }
 
-                params.add(new BasicNameValuePair("jota", "j11_n"));
+                params.set(11, new BasicNameValuePair("jota", "j11_n"));
                 params.add(new BasicNameValuePair("hr_j11_n", s.format(new Date())));
 
 
@@ -473,24 +390,13 @@ public class Ocorrencia_Activity extends Activity {
                         pDialog.dismiss();
 
 
-                       /* if (vf.equals("1")){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
-                            builder.setTitle(getString(R.string.problema))
-                                   //J12 .setMessage("Clique em J12 somente conectado na WIFI da OBM!")
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                        }*/
-
+                        //ALTERNA BOTOES NA TELA ####################################
                         findViewById(R.id.btn_j10).setEnabled(false);
                         findViewById(R.id.btn_j09_i).setEnabled(false);
                         findViewById(R.id.btn_j10_i).setEnabled(false);
                         findViewById(R.id.btn_j11).setEnabled(false);
                         findViewById(R.id.btn_j12).setEnabled(true);
+                        //###########################################################
 
                         super.cancel(true);
                     }
@@ -504,7 +410,7 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             public void onClick(View view) {
 
-                params.add(new BasicNameValuePair("jota","j12"));
+                params.set(11, new BasicNameValuePair("jota", "j12"));
                 params.add(new BasicNameValuePair("hr_j12", s.format(new Date())));
 
                 try {
@@ -539,6 +445,7 @@ public class Ocorrencia_Activity extends Activity {
                         super.onPostExecute(aVoid);
                         if (vf.equals("1")){
 
+                            //TIRA JANELA DE CARREGAMENTO DA TELA
                             pDialog.dismiss();
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
@@ -556,6 +463,7 @@ public class Ocorrencia_Activity extends Activity {
 
                             pDialog.dismiss();
 
+                            //ALTERNA BOTOES NA TELA ####################################
                             findViewById(R.id.btn_play).setEnabled(false);
                             findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
                             findViewById(R.id.btn_stop).setEnabled(false);
@@ -569,19 +477,22 @@ public class Ocorrencia_Activity extends Activity {
                             findViewById(R.id.btn_j12).setEnabled(false);
                             findViewById(R.id.btn_mapa_ocorrencia).setEnabled(false);
                             findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(false);
+                            //###########################################################
 
+                            //MUDA TEXTO DA TELA, INSERE O NOME DA VIATURA
                             tv_endereco.setText(getString(R.string.msg_sem_ocorrencia));
                             tv_tipo_oc.setText(VtrMonitorada);
 
+
+                            //VERIFICADOR DO PROCESSO MUDA PARA -->FALSE E RETORNA O MONITORAMENTO DAS OCORRENCIAS
                             parar = false;
                             Processo meu = new Processo(getBaseContext());
                             meu.execute();
-
+                            //##################################################################
                         }
                         super.cancel(true);
                     }
                 }.execute();
-
             }
         });
 
@@ -597,9 +508,6 @@ public class Ocorrencia_Activity extends Activity {
         btn_mapa_ocorrencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
                 if(isOnline()) {
                     intent = new Intent(android.content.Intent.ACTION_VIEW,
                             Uri.parse("google.navigation:q=" + endereco_final[1]));
@@ -614,8 +522,6 @@ public class Ocorrencia_Activity extends Activity {
                         e.printStackTrace();
                     }
                 }
-
-
             }
         });
 
@@ -628,12 +534,13 @@ public class Ocorrencia_Activity extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startService(intent);
 
+                //ALTERNA BOTOES NA TELA ####################################
                 findViewById(R.id.recBall).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_stop).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
                 findViewById(R.id.btn_stop).setEnabled(true);
                 findViewById(R.id.btn_play).setEnabled(false);
-
+                //###########################################################
             }
         });
 
@@ -646,25 +553,28 @@ public class Ocorrencia_Activity extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 stopService(intent);
 
+
+                //ALTERNA BOTOES NA TELA ####################################
                 findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
                 findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
                 findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_stop).setEnabled(false);
                 findViewById(R.id.btn_play).setEnabled(true);
+                //###########################################################
             }
         });
     }
 
         public class Processo extends AsyncTask<String, String, String> {
 
-        public String retornoHttp= "";
-        public SimpleDateFormat s_hora = new SimpleDateFormat("HH:mm");
-        String verifica_hora =  s_hora.format(new Date());
-        public Context context;
+            public String retornoHttp= "";
+            public SimpleDateFormat s_hora = new SimpleDateFormat("HH:mm");
+            public Context context;
+            String verifica_hora =  s_hora.format(new Date());
 
             public Processo(Context context) {
-            this.context = context;
-        }
+                this.context = context;
+            }
         @Override
         protected String doInBackground(String... paramss) {
 
@@ -675,7 +585,6 @@ public class Ocorrencia_Activity extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
 
             try{
                 retornoHttp = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast.php", params);
@@ -712,6 +621,7 @@ public class Ocorrencia_Activity extends Activity {
                     Globals.setMonitor(retornoHttp);
 
                     detalhes_ocorrencia = retornoHttp.split("\\|");
+
                     tv_endereco = (TextView) findViewById(R.id.tv_endereco_ocorrencia);
                     tv_tipo_oc = (TextView) findViewById(R.id.tv_desc_endereco_ocorrencia);
 
@@ -728,23 +638,25 @@ public class Ocorrencia_Activity extends Activity {
                     try {
                         Globals.setId_Ocorrencia(IO[1]);
                         params.add(new BasicNameValuePair("io", IO[1]));
-                    } catch (Exception e) {
-
+                    }catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-
+                    //ALTERNA BOTOES NA TELA ####################################
                     findViewById(R.id.btn_j9).setEnabled(true);
-
                     findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
                     findViewById(R.id.btn_play).setEnabled(true);
                     findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
+                    //###########################################################
 
                     play(Ocorrencia_Activity.this, getAlarmSound());
 
+                    //VERIFICADOR MUDA PARA -->TRUE, MONITORAMENTO PARA A EXECUÇÃO
                     parar = true;
+                    //############################################################
+
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-
                     builder.setTitle(getString(R.string.parar_alarme))
                             .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -753,11 +665,16 @@ public class Ocorrencia_Activity extends Activity {
                             });
 
                     AlertDialog alert = builder.create();
-
                     alert.show();
 
+                    //BOTÃO DO MAPA DA OCORRENCIA É LIBERADO################
                     findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
+                    //######################################################
+
+                    //CONTADOR RECEBE OK
                     count = "ok";
+                    //#################
+
                     cancel(true);
 
                 } else if ((retornoHttp.equals("0")) && (!parar)) {
@@ -794,14 +711,13 @@ public class Ocorrencia_Activity extends Activity {
             cancel(true);
         }
     }
+
     private MediaPlayer player;
 
     protected void play(Context context, Uri alert) {
         player = new MediaPlayer();
         try {
             player.setDataSource(context, alert);
-            final AudioManager audio = (AudioManager) context
-                    .getSystemService(Context.AUDIO_SERVICE);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.prepare();
             player.setLooping(true);
@@ -813,16 +729,16 @@ public class Ocorrencia_Activity extends Activity {
         return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_001);
     }
 
-    private void startAlarmReceiver() {
+   /* private void startAlarmReceiver() {
         /**
          * AlarmManager...wakes every 15 sec.
-         */
+
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent pending = PendingIntent.getBroadcast(this, 0, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), Globals.GPS_REPEAT_TIME, pending);
-    }
+    }*/
 
     public boolean isOnline() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
