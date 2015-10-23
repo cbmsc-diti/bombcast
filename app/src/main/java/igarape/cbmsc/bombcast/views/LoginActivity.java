@@ -296,7 +296,6 @@ try{
                 LoginActivity.this.finish();
 */
 
-
         }
 
                 public class Processo extends AsyncTask<String, String, String> {
@@ -361,7 +360,6 @@ try{
 */
                         ManageSharedPreferences.putInSharedPreferences(LoginActivity.this, Globals.PREF_FILE_NAMES, "login", logins);
 
-
                         Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
@@ -397,12 +395,7 @@ try{
                     }
                     cancel(true);
                 }
-
-                @Override
-                protected void onProgressUpdate(String... values) {
-
-                }
-            }
+    }
 
     @Override
     protected void onDestroy() {

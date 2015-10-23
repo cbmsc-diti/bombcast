@@ -3,16 +3,13 @@ package igarape.cbmsc.bombcast.views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -218,11 +215,8 @@ public class Select_Vtr_Activity extends Activity {
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-
-
                // Intent intent3 = new Intent(Select_Vtr_Activity.this, MapaHidrantesActivity.class);
                // startActivity(intent3);
-
             }
         });
 
@@ -276,7 +270,7 @@ public class Select_Vtr_Activity extends Activity {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
 
-                            builder.setTitle("ERRO!")
+                            builder.setTitle("VÍDEOS NO SERVIDOR!")
                                     .setMessage("Não foram encontrados vídeos nesse dispositivo")
                                     .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
@@ -288,12 +282,6 @@ public class Select_Vtr_Activity extends Activity {
                         }
                     }
                 }
-
-
-
-
-
-
 
         });
 
