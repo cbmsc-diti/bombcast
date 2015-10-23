@@ -157,7 +157,9 @@ public class Select_Vtr_Activity extends Activity {
 
 
                     if(!status.isEmpty()){
-                        try { List<String> cmta = Arrays.asList(status.split("\\."));
+
+                        //PROBLEMA COM O WHATSAPP
+                       /* try { List<String> cmta = Arrays.asList(status.split("\\."));
                             String telefone = cmta.get(2);
                             String idCmt = cmta.get(0) +" "+ cmta.get(1);
                             ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
@@ -165,6 +167,8 @@ public class Select_Vtr_Activity extends Activity {
                         }catch (Exception e){
                             e.printStackTrace();
                         }
+*/
+                        ((TextView) findViewById(R.id.tv_nm_cmt)).setText("EM DESENVOLVIMENTO");
 
                     }else{
                         AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
@@ -198,14 +202,26 @@ public class Select_Vtr_Activity extends Activity {
             }
         });
 
-        final Button btn_back = (Button) findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        final Button btn_hidrantes = (Button) findViewById(R.id.btn_hidrantes);
+        btn_hidrantes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent3 = new Intent(Select_Vtr_Activity.this, Server_193Activity.class);
-                startActivity(intent3);
-                Select_Vtr_Activity.this.finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+
+                builder.setTitle("EM DESENVOLVIMENTO!")
+                        .setMessage("OPÇAO DISPONIVEL EM:\n" +
+                                "\n http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/index.php \n  Em seguida clique em 'MAPEAMENTO CBMSC'")
+                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+               // Intent intent3 = new Intent(Select_Vtr_Activity.this, MapaHidrantesActivity.class);
+               // startActivity(intent3);
 
             }
         });

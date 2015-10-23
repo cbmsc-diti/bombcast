@@ -66,10 +66,17 @@
         <activity
             android:name=".views.Select_Vtr_Activity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:screenOrientation="landscape"
             android:launchMode="singleTop"
             />
         <activity
             android:name=".views.Ocorrencia_Activity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:screenOrientation="landscape"
+            android:launchMode="singleTop"
+            />
+        <activity
+            android:name=".views.MapaHidrantesActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:screenOrientation="landscape"
             android:launchMode="singleTop"

@@ -143,12 +143,12 @@
     <string name="hint_fone">Ex: 4891463290</string>
     <string name="fone">4891463290</string>
     <string name="msg_selecione_vtr">Selecione uma viatura:</string>
-    <string name="monitorar">Monitorar</string>
+    <string name="monitorar">Monitorar Viatura</string>
     <string name="vtr_monitorada">A viatura selecionada esta sendo monitorada.</string>
     <string name="back">Voltar</string>
     <string name="edit">Editar</string>
     <string name="text_wpp">Confira abaixo se o telefone que receberá as notificações (via WhatsApp) dessa viatura está correto:</string>
-    <string name="descarregar_videos">Descarregar Videos</string>
+    <string name="descarregar_videos">Descarregar Vídeos</string>
     <string name="next">Avançar</string>
     <string name="msg_servidor">Escolha o servidor na lista abaixo:</string>
     <string name="btnTakePicture">Capture Image</string>
@@ -162,5 +162,6 @@
     <string name="notification_stream_description">Srteaming</string>
     <string name="btn_j9">J9</string>
     <string name="j9">J9</string>
+    <string name="mapa_hidrantes">Mapa de Hidrantes</string>
 
 </resources>
