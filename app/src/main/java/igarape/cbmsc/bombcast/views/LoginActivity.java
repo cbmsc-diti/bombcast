@@ -55,6 +55,10 @@ public class LoginActivity extends Activity {
     EditText txtPwd;
     ProgressDialog pDialog;
     public Set<String> logins;
+    private String retornoHttp = "";
+    protected List<NameValuePair> params = new ArrayList<>();
+    public String txtID;
+    public String txtPwD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +79,10 @@ public class LoginActivity extends Activity {
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-                }
-            });
+            }
+        });
 
-                txtId = (AutoCompleteTextView) findViewById(R.id.txtLoginUser);
+        txtId = (AutoCompleteTextView) findViewById(R.id.txtLoginUser);
 
 
         /**
@@ -104,28 +108,28 @@ public class LoginActivity extends Activity {
             }
         });
 
-try{
-        logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
+        try{
+            logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
 
-        Iterator it = logins.iterator();
-        int cont = 0;
-        String[] arr = new String[logins.size()];
-        while (it.hasNext()) {
-            String aux = (String)it.next();
-            arr[cont] = aux;
-            cont++;
+            Iterator it = logins.iterator();
+            int cont = 0;
+            String[] arr = new String[logins.size()];
+            while (it.hasNext()) {
+                String aux = (String)it.next();
+                arr[cont] = aux;
+                cont++;
+            }
+
+
+
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
+            txtId.setAdapter(adapter);
+        }catch (Exception e){
+
         }
 
-
-
-    ArrayAdapter<String> adapter =
-            new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
-    txtId.setAdapter(adapter);
-}catch (Exception e){
-
-}
-
-                txtPwd = (EditText) findViewById(R.id.txtLoginPassword);
+        txtPwd = (EditText) findViewById(R.id.txtLoginPassword);
 
 
 
@@ -184,223 +188,103 @@ try{
 
     }
 
-            @Override
-            public boolean onCreateOptionsMenu(Menu menu) {
-                getMenuInflater().inflate(R.menu.login, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onOptionsItemSelected(MenuItem item) {
-                return item.getItemId() == R.id.action_settings || super.onOptionsItemSelected(item);
-            }
-
-            public void makeLoginRequest(View view) {
-
-
-         /*     //ACESSO AO MONITORAMENTO DO COPCAST-- AJEITAR NO BANCO DE DADOS ANTES
-                pDialog = ProgressDialog.show(this, getString(R.string.login_in), getString(R.string.please_hold), true);
-
-
-                final String regId = Globals.getRegistrationId(getApplicationContext());
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("username", txtId.getText().toString()));
-                params.add(new BasicNameValuePair("password", txtPwd.getText().toString()));
-                params.add(new BasicNameValuePair("scope", "client"));
-                params.add(new BasicNameValuePair("gcm_registration", regId));
-
-                post(this, Globals.SERVER_URL_WEB + "/token", params, new HttpResponseCallback() {
-                    @Override
-                    public void success(JSONObject response) {
-                        Log.d(TAG, "@JSONRESPONSE=[" + response + "]");
-                        String token = null;
-                        try {
-                            token = (String) response.get("token");
-                            //Globals.setUserName(getApplicationContext(), (String) response.get("userName"));
-                        } catch (JSONException e) {
-                            Log.e(TAG, "error on login", e);
-                        }
-                        if (pDialog != null) {
-                            pDialog.dismiss();
-                            pDialog = null;
-                        }
-                        Globals.setAccessToken(getBaseContext(), token);
-                        Globals.setUserLogin(getBaseContext(), txtId.getText().toString());
-
-                        HistoryUtils.registerHistory(getApplicationContext(), State.NOT_LOGGED, State.LOGGED, Globals.getUserLogin(LoginActivity.this));
-                    }
-
-                    @Override
-                    public void unauthorized() {
-                        showToast(R.string.unauthorized_login);
-                    }
-
-                    private void showToast(final int message) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                if (pDialog != null) {
-                                    pDialog.dismiss();
-                                    pDialog = null;
-                                }
-                                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.TOP, 0, 100);
-                                toast.show();
-
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failure(int statusCode) {
-                        showToast(R.string.server_error);
-                    }
-
-                    @Override
-                    public void noConnection() {
-                        showToast(R.string.network_required);
-                    }
-
-                    @Override
-                    public void badConnection() {
-                        showToast(R.string.connection_error);
-                    }
-
-                    @Override
-                    public void badRequest() {
-                        showToast(R.string.bad_request_error);
-                    }
-
-                    @Override
-                    public void badResponse() {
-                        showToast(R.string.bad_request_error);
-                    }
-                });
-//                #######################################################
-*/
-
-            //MINHA VALIDAÇÂO NO LDAP
-            Processo meu = new Processo(getBaseContext());
-            meu.execute();
-
-                //LOGIN SEM VALIDAÇÂO
-               /* Globals.setUserName(txtId.getText().toString());
-                Globals.setUserPwd(txtPwd.getText().toString());
-
-
-                ManageSharedPreferences.putInSharedPreferences(LoginActivity.this,Globals.PREF_FILE_NAMES,"login",txtId.getText().toString());
-
-                Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
-                startActivity(intent);
-                LoginActivity.this.finish();
-*/
-
-        }
-
-                public class Processo extends AsyncTask<String, String, String> {
-
-
-                private String retornoHttp = "";
-                public Context context;
-                public Processo(Context context) {
-                    this.context = context;
-                }
-                protected List<NameValuePair> params = new ArrayList<>();
-                public String txtID= txtId.getText().toString();
-                public String txtPwD= txtPwd.getText().toString();
-
-                @Override
-                protected void onPreExecute() {
-                    //ANTES DE EXECUTAR (JANELA)
-                    pDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
-                }
-
-                @Override
-                protected String doInBackground(String... paramss) {
-                    try {
-                        String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php";
-                        params.add(new BasicNameValuePair("u",txtID ));
-                        params.add(new BasicNameValuePair("p",txtPwD));
-
-                        retornoHttp = ConexaoHttpClient.executaHttpPost(URL,params);
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return retornoHttp;//0 ou 1
-                }
-
-                @Override
-                protected void onPostExecute(String result) {
-
-                    if (retornoHttp.equalsIgnoreCase("1")) {
-
-                       try{
-                            pDialog.dismiss();
-                            }catch(Exception e){
-                            e.printStackTrace();
-                       }
-                        Globals.setUserName(txtID);
-                        Globals.setUserPwd(txtPwD);
-
-                      try {
-                          logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
-                      }catch (Exception e){}
-                          if (logins == null){
-                            logins = new LinkedHashSet<String>();
-                        }
-                        logins.add(txtID);
-                        Iterator it = logins.iterator();
-/*
-                        while (it.hasNext()) {
-                            String aux = (String)it.next();
-                        }
-*/
-                        ManageSharedPreferences.putInSharedPreferences(LoginActivity.this, Globals.PREF_FILE_NAMES, "login", logins);
-
-                        Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
-                        startActivity(intent);
-                        LoginActivity.this.finish();
-                        cancel(true);
-
-
-                    }else{
-                        if (retornoHttp.equalsIgnoreCase("0")) {
-                            Toast toast = Toast.makeText(getApplicationContext(), "Tente novamente.", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.TOP, 0, 100);
-                            toast.show();
-
-                        txtPwd.setText("");
-
-                            try{
-                                pDialog.dismiss();
-                            }catch(Exception e){
-                                e.printStackTrace();
-                            }
-
-
-                        } else {
-                            Toast toast = Toast.makeText(getApplicationContext(), "Problema ao conectar com o E193.", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.TOP, 0, 100);
-                            toast.show();
-                            try{
-                                pDialog.dismiss();
-                            }catch(Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }
-                    cancel(true);
-                }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.login, menu);
+        return true;
     }
 
     @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return item.getItemId() == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    public void makeLoginRequest(View view) {
+
+        //MINHA VALIDAÇÂO NO LDAP
+
+        new AsyncTask<String, String, String>() {
+
+            public String txtID= txtId.getText().toString();
+            public String txtPwD= txtPwd.getText().toString();
+            @Override
+            protected void onPreExecute() {
+                //ANTES DE EXECUTAR (JANELA)
+                pDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
+            }
+            @Override
+            protected String doInBackground(String... paramss) {
+                try {
+                    String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php";
+                    params.add(new BasicNameValuePair("u",txtID ));
+                    params.add(new BasicNameValuePair("p",txtPwD));
+
+                    retornoHttp = ConexaoHttpClient.executaHttpPost(URL,params);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return retornoHttp;//0 ou 1
+            }
+            @Override
+            protected void onPostExecute(String result) {
+
+                if (retornoHttp.equalsIgnoreCase("1")) {
+
+                    try{
+                        pDialog.dismiss();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    Globals.setUserName(txtID);
+                    Globals.setUserPwd(txtPwD);
+
+                    try {
+                        logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
+                    }catch (Exception e){}
+                    if (logins == null){
+                        logins = new LinkedHashSet<String>();
+                    }
+                    logins.add(txtID);
+                    Iterator it = logins.iterator();
+
+                    ManageSharedPreferences.putInSharedPreferences(LoginActivity.this, Globals.PREF_FILE_NAMES, "login", logins);
+
+                    Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                    cancel(true);
+
+                }else{
+                    if (retornoHttp.equalsIgnoreCase("0")) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Tente novamente.", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.TOP, 0, 100);
+                        toast.show();
+
+                        txtPwd.setText("");
+
+                        try{
+                            pDialog.dismiss();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+
+
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Problema ao conectar com o E193.", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.TOP, 0, 100);
+                        toast.show();
+                        try{
+                            pDialog.dismiss();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+                cancel(true);
+            }
+        }.execute();
+    }
 }
