@@ -2,22 +2,24 @@ package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.webkit.DownloadListener;
+import android.webkit.HttpAuthHandler;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -38,33 +40,71 @@ import igarape.cbmsc.bombcast.service.UploadService;
 import static igarape.cbmsc.bombcast.BuildConfig.requireWifiUpload;
 
 public class Select_Vtr_Activity extends Activity {
-
-    protected String Url;
-    private List<String> vtrs = new ArrayList<>();
-    private String servidor193 = Globals.getServidorSelecionado();
-    private String usuario = Globals.getUserName();
-    private String vtr_sel;
-    public String status;
-    ProgressDialog pDialog;
-    EditText et_telefone;
-    TextView nm_cmt;
-    List<NameValuePair> params = new ArrayList<>();
+    protected PowerManager.WakeLock mWakeLock;
+    protected KeyguardManager.KeyguardLock lock;
     private final GenericExtFilter filter = new GenericExtFilter(".mp4");
     private ArrayList<File> videos;
+    private String vtrs;
+    private String servidor193 = Globals.getServidorSelecionado();
+    private String usuario = Globals.getUserName();
+    private String senha = Globals.getUserPwd();
+    protected String Url;
+    public String status;
+    ProgressDialog pDialog;
+    List<NameValuePair> params = new ArrayList<>();
+    WebView myWebView;
+    String UrlOrdens ="http://"+servidor193+"/web193/modulos/ordens/upload/cadastro.php";
+    String UrlHidrantes = "http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/mapeamento/m/?host="+servidor193;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_vtr);
         findViewById(R.id.btn_next).setEnabled(false);
-        et_telefone = (EditText) findViewById(R.id.et_cel_cmt_area);
-        nm_cmt = (TextView) findViewById(R.id.tv_nm_cmt);
-        Url = Globals.SERVER_CBM + "sel_vtr.bombcast.php";
+        Url = Globals.SERVER_CBM + "sel_vtr.bombcast2.php";
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
+        this.mWakeLock.acquire();
+        KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
+        lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
+        lock.disableKeyguard();
         final Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
 
+        try{
+            myWebView = (WebView) findViewById(R.id.wv_mapa);
+            myWebView.setWebViewClient(new MyWebViewClient());
+            myWebView.getSettings().getAllowContentAccess();
+            myWebView.getSettings().getAllowFileAccess();
+            myWebView.getSettings().getLoadsImagesAutomatically();
+            myWebView.getSettings().setJavaScriptEnabled(true);
+            myWebView.getSettings().setUseWideViewPort(true);
+            myWebView.getSettings().setBuiltInZoomControls(true);
+            myWebView.setHttpAuthUsernamePassword("cbm.sc.gov.br", null, usuario, senha);
+            myWebView.setDownloadListener(new DownloadListener() {
+                public void onDownloadStart(String url, String userAgent,
+                                            String contentDisposition, String mimetype,
+                                            long contentLength) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+            });
 
 
-        new AsyncTask<Void, Void, List>() {
+        }catch (Exception e){
+            e.printStackTrace();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+            builder.setMessage("Não foi possível carregar a página! ")
+                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        new AsyncTask<Void, Void, String>() {
 
             @Override
             protected void onPreExecute() {
@@ -78,14 +118,14 @@ public class Select_Vtr_Activity extends Activity {
                 params.add(new BasicNameValuePair("vf", "0"));
             }
             @Override
-            protected List doInBackground(Void... unused) {
+            protected String doInBackground(Void... unused) {
                 try {
-                    status = ConexaoHttpClient.executaHttpPost(Url,params);
-                    vtrs = Arrays.asList(status.split("\\."));
+                    vtrs = ConexaoHttpClient.executaHttpPost(Url, params);
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    vtrs.add(0,"");
+                    vtrs="";
                 }
 
                 try {
@@ -107,17 +147,17 @@ public class Select_Vtr_Activity extends Activity {
                 return vtrs;
             }
             @Override
-            protected void onPostExecute(List aVoid) {
+            protected void onPostExecute(String aVoid) {
                 super.onPostExecute(aVoid);
                 params.add(new BasicNameValuePair("vf", "1"));
 
-                if (vtrs.get(0).equals("")){
+                if (vtrs.equals("")){
                     AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
                     builder.setMessage(getString(R.string.texto_vtr_nao_cadastrada))
                             .setCancelable(false)
                             .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent2 = new Intent(Select_Vtr_Activity.this, LoginActivity.class);
+                                    Intent intent2 = new Intent(Select_Vtr_Activity.this, Server_193Activity.class);
                                     startActivity(intent2);
                                     Select_Vtr_Activity.this.finish();
                                 }
@@ -131,54 +171,11 @@ public class Select_Vtr_Activity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    Spinner sp_vtrs = (Spinner) findViewById(R.id.sp_vtrs);
-                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(Select_Vtr_Activity.this, R.layout.spinner_item, vtrs);
-                    spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
-                    sp_vtrs.setAdapter(spinnerArrayAdapter);
-                    sp_vtrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
-                            vtr_sel = parent.getItemAtPosition(posicao).toString();
-                        }
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                        }
-                    });
-
                     try {
                         pDialog.dismiss();
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
-
-                    if(!status.isEmpty()){
-
-                        //PROBLEMA COM O WHATSAPP
-                       /* try { List<String> cmta = Arrays.asList(status.split("\\."));
-                            String telefone = cmta.get(2);
-                            String idCmt = cmta.get(0) +" "+ cmta.get(1);
-                            ((EditText) findViewById(R.id.et_cel_cmt_area)).setText(telefone);
-                            ((TextView) findViewById(R.id.tv_nm_cmt)).setText(idCmt);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-*/
-                        ((TextView) findViewById(R.id.tv_nm_cmt)).setText("EM DESENVOLVIMENTO");
-
-                    }else{
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
-                        builder.setMessage(getString(R.string.msg_tel_nao_encontrado))
-                                .setCancelable(false)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                    }
-
                 }
                 findViewById(R.id.btn_next).setEnabled(true);
                 super.cancel(true);
@@ -190,10 +187,8 @@ public class Select_Vtr_Activity extends Activity {
             @Override
             public void onClick(View view) {
 
-
-                Globals.setTelefoneCmt(et_telefone.getText().toString());
-                Globals.setVtrSelecionada(vtr_sel);
-
+                Globals.setVtrSelecionada(vtrs);
+                Select_Vtr_Activity.this.onPause();
                 Intent intent = new Intent(Select_Vtr_Activity.this, Ocorrencia_Activity.class);
                 startActivity(intent);
             }
@@ -206,28 +201,56 @@ public class Select_Vtr_Activity extends Activity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
 
+                if(servidor193.equals("fpolis.cbm.sc.gov.br"))
+                {
+                    myWebView.loadUrl(UrlHidrantes);
+                    findViewById(R.id.btn_hidrantes).setEnabled(false);
+                    findViewById(R.id.btn_hidrantes).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.btn_ordens).setEnabled(true);
+                    findViewById(R.id.btn_ordens).setVisibility(View.VISIBLE);
+                    ;
+                }else{
+
                 builder.setTitle("EM DESENVOLVIMENTO!")
-                        .setMessage("OPÇAO DISPONIVEL EM:\n" +
-                                "\n http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/index.php \n  Em seguida clique em 'MAPEAMENTO CBMSC'")
+                        .setMessage("OPÇAO TEMPORARIAMENTE DISPONÍVEL SOMENTE NO 1º e 10º BBM.")
                         .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                             }
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-               // Intent intent3 = new Intent(Select_Vtr_Activity.this, MapaHidrantesActivity.class);
-               // startActivity(intent3);
+                }
+            }
+        });
+        final Button btn_ordens = (Button) findViewById(R.id.btn_ordens);
+        btn_ordens.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+
+                if(servidor193.equals("fpolis.cbm.sc.gov.br"))
+                {
+                    myWebView.loadUrl(UrlOrdens);
+                    findViewById(R.id.btn_ordens).setEnabled(false);
+                    findViewById(R.id.btn_ordens).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.btn_hidrantes).setEnabled(true);
+                    findViewById(R.id.btn_hidrantes).setVisibility(View.VISIBLE);
+                    ;
+                }else{
+
+                    builder.setTitle("EM DESENVOLVIMENTO!")
+                            .setMessage("OPÇAO TEMPORARIAMENTE DISPONÍVEL SOMENTE NO 1º e 10º BBM.")
+                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
             }
         });
 
-        final Button btn_edit_telefone = (Button) findViewById(R.id.btn_edit_telefone);
-        btn_edit_telefone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.et_cel_cmt_area).setEnabled(true);
-                ((TextView) findViewById(R.id.tv_nm_cmt)).setText(getString(R.string.telefone_editado));
-            }
-        });
         final Button btn_upload = (Button) findViewById(R.id.btn_upload);
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,7 +280,7 @@ public class Select_Vtr_Activity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startService(intent);
 
-                        try{
+                        try {
                             Toast toast = Toast.makeText(Select_Vtr_Activity.this, "Os vídeos estão sendo enviados...", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
                             toast.show();
@@ -268,23 +291,23 @@ public class Select_Vtr_Activity extends Activity {
 
                     } else {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
 
-                            builder.setTitle("VÍDEOS NO SERVIDOR!")
-                                    .setMessage("Não foram encontrados vídeos nesse dispositivo")
-                                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
+                        builder.setTitle("VÍDEOS NO SERVIDOR!")
+                                .setMessage("Não foram encontrados vídeos nesse dispositivo")
+                                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
 
-                        }
                     }
                 }
+            }
 
         });
-
+        myWebView.loadUrl(UrlOrdens);
     }
 
     public static boolean canUpload(Context context, Intent intent) {
@@ -301,7 +324,6 @@ public class Select_Vtr_Activity extends Activity {
     class GenericExtFilter implements FilenameFilter {
 
         private String ext;
-
         public GenericExtFilter(String ext) {
             this.ext = ext;
         }
@@ -309,10 +331,57 @@ public class Select_Vtr_Activity extends Activity {
         public boolean accept(File dir, String name) {
             return (name.endsWith(ext));
         }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+    @Override
+    public void onBackPressed() {
+        lock.reenableKeyguard();
+        this.mWakeLock.release();
+        Intent intent = new Intent(Select_Vtr_Activity.this, Server_193Activity.class);
+        startActivity(intent);
+        Select_Vtr_Activity.this.finish();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            myWebView.loadUrl(UrlOrdens);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        try {
+            myWebView.loadUrl(UrlOrdens);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            myWebView.loadUrl(UrlOrdens);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private class MyWebViewClient extends WebViewClient {
+
+
+
+        @Override
+        public void onReceivedHttpAuthRequest(WebView view,
+                                              HttpAuthHandler handler, String host, String realm) {
+            handler.proceed(usuario, senha);
+            }
     }
 }

@@ -126,7 +126,7 @@ public class VideoRecorderService extends Service implements SurfaceHolder.Callb
         mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW));
 
         mediaRecorder.setOutputFile(
-                FileUtils.getPath(Globals.getUserLogin(getBaseContext())) + //ESSE LOGIN É A VTR
+                FileUtils.getPath(Globals.getUserLogin(getBaseContext())) +
                         android.text.format.DateFormat.format("yyyy-MM-dd_kk-mm-ss", new Date().getTime()) +
                         ".mp4");
 

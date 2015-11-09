@@ -44,8 +44,8 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
         // Start foreground service to avoid unexpected kill
         Notification notification = new Notification.Builder(this)
-                .setContentTitle("Background Video Recorder")
-                .setContentText("")
+                .setContentTitle("Gravando!")
+                .setContentText("Gravando áudio e imagem!")
                 .setSmallIcon(R.drawable.ic_launcher)
                 .build();
         startForeground(mId, notification);
@@ -84,7 +84,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
 
         mediaRecorder.setOutputFile(
                 FileUtils.getPath(Globals.getUserName()) +Globals.getId_Ocorrencia()+"_"+
-                        Globals.getVtrSelecionada() +"_"+
+                        Globals.getviaturaOcorrencia() +"_"+
                         android.text.format.DateFormat.format("yyyy-MM-dd_kk-mm-ss", new Date().getTime()) +
                         ".mp4");
 

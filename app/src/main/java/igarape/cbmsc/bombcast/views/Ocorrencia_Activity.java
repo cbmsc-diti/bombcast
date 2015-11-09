@@ -46,13 +46,13 @@ public class Ocorrencia_Activity extends Activity {
     protected PowerManager.WakeLock mWakeLock;
     protected boolean j11 = true;
     protected String VtrMonitorada = Globals.getVtrSelecionada();
-    protected String TelefoneCmt = Globals.getTelefoneCmt();
+    protected String VtrOc;
     protected String ServidorSelecionado = Globals.getServidorSelecionado();
     protected String UrlJS;
-    protected String[] IO;
+    protected String[] IO = new String[2];
     protected String[] detalhes_ocorrencia;
     protected KeyguardManager.KeyguardLock lock;
-    public int cont;
+    public int cont = 1;
     public String retornoHttp= "";
     public TextView tv_tipo_oc;
     public TextView tv_endereco;
@@ -60,9 +60,10 @@ public class Ocorrencia_Activity extends Activity {
     public String LngOcorrencia;
     public String retornoJS = "";
     public String vf;
-    public String confereJS;
+    public String confereJS= "inicio";
     private Intent intent;
     private String[] endereco_final;
+    private String[] vtr_final;
     private MediaPlayer player;
     List<NameValuePair> params = new ArrayList<>();
     MyTimerTask myTask = new MyTimerTask(); // aqui instacia sua tarefa
@@ -81,12 +82,11 @@ public class Ocorrencia_Activity extends Activity {
         KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
         lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
         lock.disableKeyguard();
-        UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2007.php";
+        UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2.php";
 
 
         params.add(new BasicNameValuePair("nr_vtr", VtrMonitorada));
         params.add(new BasicNameValuePair("h", ServidorSelecionado));
-        params.add(new BasicNameValuePair("fn",TelefoneCmt));
         params.add(new BasicNameValuePair("u", Globals.getUserName()));
         params.add(new BasicNameValuePair("infos","1"));
         params.add(new BasicNameValuePair("status","ON"));
@@ -94,6 +94,7 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("lat_vtr", Globals.getLatitude()));
         params.add(new BasicNameValuePair("lng_vtr", Globals.getLongitude()));
         params.add(new BasicNameValuePair("eo","nao"));
+
 
 
 
@@ -184,14 +185,16 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(String... paramss) {
                 try{
-                    confereJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
-                    retornoHttp = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast.php", params);
+                    if(cont == 2) {
+                        confereJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                        }
+                        retornoHttp = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast2.php", params);
                     params.set(6,new BasicNameValuePair("log","3"));
                 } catch (Exception e) {
                     e.printStackTrace();
                     retornoHttp = "ASC";
                 }
-                return retornoHttp + confereJS;
+                return retornoHttp;
             }
 
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -202,24 +205,32 @@ public class Ocorrencia_Activity extends Activity {
                 verificaHora();
 
                 if ((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty())) {
+                    params.set(8,new BasicNameValuePair("eo","sim"));
+                    params.add(new BasicNameValuePair("vtr_oc", VtrOc));
 
-                    if(!retornoHttp.equals(Globals.getMonitor())) {
+                    if(cont == 1) {
                         //UMA VEZ ###############################################################
                         Globals.setMonitor(retornoHttp);
                         detalhes_ocorrencia = retornoHttp.split("\\|");
                         tv_endereco = (TextView) findViewById(R.id.tv_endereco_ocorrencia);
                         tv_tipo_oc = (TextView) findViewById(R.id.tv_desc_endereco_ocorrencia);
                         try {
-                            tv_endereco.setText(detalhes_ocorrencia[5]);
-                            tv_tipo_oc.setText(detalhes_ocorrencia[0]);
-                            Globals.setEnderecoOcorrencia(detalhes_ocorrencia[5]);
+                            tv_endereco.setText(detalhes_ocorrencia[6]);
+                            tv_tipo_oc.setText(detalhes_ocorrencia[1]);
+                            Globals.setEnderecoOcorrencia(detalhes_ocorrencia[6]);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        endereco_final = detalhes_ocorrencia[5].split(":");
-                        IO = detalhes_ocorrencia[2].split(":");
-                        params.set(9,new BasicNameValuePair("eo","sim"));
 
+                        vtr_final = detalhes_ocorrencia[0].split(":");
+                        VtrOc = vtr_final[1];
+                        Globals.setViaturaOcorrencia(VtrOc);
+                        endereco_final = detalhes_ocorrencia[6].split(":");
+                        try {
+                            IO = detalhes_ocorrencia[3].split(":");
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         //ALTERNA BOTOES NA TELA ####################################
                         findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
                         findViewById(R.id.btn_j9).setEnabled(true);
@@ -229,7 +240,8 @@ public class Ocorrencia_Activity extends Activity {
                         //######################################################
                         //#######################################################################
                     }
-                    if (IO[1].equals(controlador)){
+
+                    if ((IO!=null)&&(IO[1]!=null)&&(IO[1].equals(controlador))){
 
                         switch (confereJS) {
 
@@ -331,8 +343,18 @@ public class Ocorrencia_Activity extends Activity {
                             case "J12":
                                 J12();
                                 break;
+                            case "inicio":
+                                try {
+                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
+                                    toast.show();
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                break;
                             default:
-                                controlador = null;
+                                controlador = "DEFAULT";
 
                                 try {
                                     Toast toast2 = Toast.makeText(Ocorrencia_Activity.this, "Ocorrência encontrada, aguarde...", Toast.LENGTH_LONG);
@@ -346,7 +368,7 @@ public class Ocorrencia_Activity extends Activity {
                         try {
                             Globals.setId_Ocorrencia(IO[1]);
                             controlador = IO[1];
-                            params.add(new BasicNameValuePair("io", IO[1]));
+                            params.set(10,new BasicNameValuePair("io", IO[1]));
                         }catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -498,10 +520,6 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("jota", "j9_i"));
         params.add(new BasicNameValuePair("hr_j9_i", s.format(new Date())));
 
-
-        Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
-        startActivity(intent);
-
         //ALTERNA BOTOES NA TELA ####################################
         findViewById(R.id.btn_j9).setEnabled(false);
         findViewById(R.id.btn_j09_i).setEnabled(false);
@@ -527,6 +545,10 @@ public class Ocorrencia_Activity extends Activity {
                 super.cancel(true);
             }
         }.execute();
+
+        Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
+        startActivity(intent);
+
     }
     protected void J10Intermediario(){
         AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
@@ -671,9 +693,6 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("hr_j11_n", s.format(new Date())));
 
 
-
-
-
         new AsyncTask<Void, Void, String>() {
 
             ProgressDialog pDialog;
@@ -816,32 +835,42 @@ public class Ocorrencia_Activity extends Activity {
         startActivity(intent);
     }
     protected void botaoPlay(){
-        Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(intent);
+        try {
+            Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startService(intent);
 
-        //ALTERNA BOTOES NA TELA ####################################
-        findViewById(R.id.recBall).setVisibility(View.VISIBLE);
-        findViewById(R.id.btn_stop).setVisibility(View.VISIBLE);
-        findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
-        findViewById(R.id.btn_stop).setEnabled(true);
-        findViewById(R.id.btn_play).setEnabled(false);
-        //###########################################################
+            //ALTERNA BOTOES NA TELA ####################################
+            findViewById(R.id.recBall).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_stop).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_play).setVisibility(View.INVISIBLE);
+            findViewById(R.id.btn_stop).setEnabled(true);
+            findViewById(R.id.btn_play).setEnabled(false);
+            //###########################################################
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
     protected void botaoStop(){
-        Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        stopService(intent);
+        try {
+            Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent);
 
 
-        //ALTERNA BOTOES NA TELA ####################################
-        findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
-        findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
-        findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
-        findViewById(R.id.btn_stop).setEnabled(false);
-        findViewById(R.id.btn_play).setEnabled(true);
-        //###########################################################
-    }
+            //ALTERNA BOTOES NA TELA ####################################
+            findViewById(R.id.recBall).setVisibility(View.INVISIBLE);
+            findViewById(R.id.btn_stop).setVisibility(View.INVISIBLE);
+            findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_stop).setEnabled(false);
+            findViewById(R.id.btn_play).setEnabled(true);
+            //###########################################################
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        }
     //#######################################################
     protected void verificaHora(){
         SimpleDateFormat s_hora = new SimpleDateFormat("HH:mm");
@@ -885,6 +914,8 @@ public class Ocorrencia_Activity extends Activity {
     protected void onDestroy() {
         myTimer.cancel();
         params.clear();
+        this.mWakeLock.release();
+
         try{
             Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -899,15 +930,13 @@ public class Ocorrencia_Activity extends Activity {
         }catch( Exception e){
             e.printStackTrace();}
 
-        this.mWakeLock.release();
-
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
                     params.set(5,new BasicNameValuePair("status","OFF"));
                     params.set(6,new BasicNameValuePair("log","2"));
-                    ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast.php",params);
+                    ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast2.php",params);
                     //vf = "0";
                 } catch (Exception e) {
                     e.printStackTrace();

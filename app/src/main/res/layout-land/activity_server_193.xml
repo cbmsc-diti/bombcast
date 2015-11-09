@@ -11,34 +11,33 @@
         android:id="@+id/tv_select_server"
         android:textSize="25sp"
         android:textAlignment="center"
-        android:layout_above="@+id/sp_servidores"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp" />
 
     <Button
         android:layout_width="190dp"
-        android:layout_height="50dp"
+        android:layout_height="76dp"
         android:text="@string/next"
         android:id="@+id/btn_next"
         android:textSize="25sp"
         android:textAlignment="center"
-        android:layout_alignRight="@+id/wv_mapa"
-        android:layout_alignEnd="@+id/wv_mapa"
+        android:textColor="#fe0101"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/wv_mapa"
-        android:layout_alignStart="@+id/wv_mapa"
-        android:textColor="#fe0101" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp" />
 
     <Spinner
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:id="@+id/sp_servidores"
         android:spinnerMode="dialog"
-        android:layout_above="@+id/btn_next"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/tv_select_server"
+        android:layout_toRightOf="@+id/wv_mapa"
+        android:layout_toEndOf="@+id/wv_mapa"
+        android:layout_marginTop="10dp" />
 
     <WebView
         android:layout_width="wrap_content"
@@ -47,10 +46,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/tv_select_server"
         android:layout_toStartOf="@+id/tv_select_server"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_above="@+id/tv_select_server"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp" />
 </RelativeLayout>

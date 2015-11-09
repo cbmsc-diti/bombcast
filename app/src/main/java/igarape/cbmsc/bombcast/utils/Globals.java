@@ -54,6 +54,7 @@ public class Globals {
     private static String Longitude = null ;
     private static String EnderecoOcorrencia = "Santa Catarina";
     private static String Id_Ocorrencia="";
+    private static String viaturaOcorrencia;
 
     public static String getUserPwd() {
         return userPwd;
@@ -306,15 +307,7 @@ public class Globals {
     }
 
     public static void setVtrSelecionada(String VtrSelecionada) {
-
-      try {
-
-          Globals.VtrSelecionada = encode( VtrSelecionada,"ISO-8859-1");
-      }catch (Exception e){
-          e.printStackTrace();
-      }
-
-
+          Globals.VtrSelecionada = VtrSelecionada;
     }
 
     public static String getVtrSelecionada() {
@@ -407,4 +400,12 @@ public class Globals {
     public static boolean isToggling() {
         return toggling;
     }
+
+    public static void setViaturaOcorrencia(String viaturaOcorrencia) {
+        Globals.viaturaOcorrencia = viaturaOcorrencia;
+    }
+    public static String getviaturaOcorrencia() {
+        return viaturaOcorrencia;
+    }
+
 }

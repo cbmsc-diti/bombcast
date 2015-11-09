@@ -33,10 +33,10 @@ public class ListaHospitaisActivity extends Activity {
     ListView lv_hospitais;
     private String hospitais;
     List<NameValuePair> params = new ArrayList<>();
-    String UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2007.php";
+    String UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2.php";
     String retornoJS = "";
     public String vf;
-    protected String VtrMonitorada = Globals.getVtrSelecionada();
+    protected String VtrOc = Globals.getviaturaOcorrencia();
     protected String ServidorSelecionado = Globals.getServidorSelecionado();
     String mensagem;
 
@@ -64,7 +64,7 @@ public class ListaHospitaisActivity extends Activity {
                 Globals.setDeslocando_para(hosp);
                 params.add(new BasicNameValuePair("jota", "hosp"));
                 params.add(new BasicNameValuePair("hsp", hosp));
-                params.add(new BasicNameValuePair("nr_vtr", VtrMonitorada));
+                params.add(new BasicNameValuePair("vtr_oc", VtrOc));
                 params.add(new BasicNameValuePair("h", ServidorSelecionado));
                 params.add(new BasicNameValuePair("u", Globals.getUserName()));
                 params.add(new BasicNameValuePair("io", Globals.getId_Ocorrencia()));

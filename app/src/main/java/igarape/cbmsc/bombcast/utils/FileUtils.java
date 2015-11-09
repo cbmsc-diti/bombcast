@@ -107,7 +107,7 @@ public class FileUtils {
     }
 
     public static void init() {
-        setPath(getAlbumStorageDir("bombcast").getAbsolutePath());
+        setPath(getAlbumStorageDir("firecast").getAbsolutePath());
     }
 
     public static long getDirectorySize() {

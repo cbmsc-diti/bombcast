@@ -3,6 +3,7 @@ package igarape.cbmsc.bombcast.views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +11,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,10 +27,15 @@ import igarape.cbmsc.bombcast.utils.Globals;
 public class Server_193Activity extends Activity {
 
     private Servidores_193 servidor_sel;
+    WebView myWebView;
+    String UrlSocial = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_193);
+        myWebView = (WebView) findViewById(R.id.wv_mapa);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl(UrlSocial);
 
         startGPS();
 
@@ -52,23 +60,19 @@ public class Server_193Activity extends Activity {
             @Override
             public void onClick(View view) {
 
-
+                myWebView.destroy();
+                onPause();
                 Globals.setServidorSelecionado(servidor_sel.getIp());
                 Intent intent = new Intent(Server_193Activity.this, Select_Vtr_Activity.class);
                 startActivity(intent);
                 Server_193Activity.this.finish();
             }
         });
-
-        final Button btn_back = (Button) findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent2 = new Intent(Server_193Activity.this, LoginActivity.class);
-                startActivity(intent2);
-                Server_193Activity.this.finish();
-            }
-        });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        myWebView.loadUrl(UrlSocial);
     }
 
     public void startGPS(){
@@ -108,5 +112,11 @@ public class Server_193Activity extends Activity {
 
         Globals.setLatitude(latitude.toString());
         Globals.setLongitude(longitude.toString());
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Server_193Activity.this, LoginActivity.class);
+        startActivity(intent);
+        Server_193Activity.this.finish();
     }
 }
