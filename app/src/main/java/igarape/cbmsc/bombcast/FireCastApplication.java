@@ -28,7 +28,7 @@ public class FireCastApplication extends Application {
         super.onCreate();
         FileUtils.init();
         analytics = GoogleAnalytics.getInstance(this);
-        analytics.setLocalDispatchPeriod(1800);
+        analytics.setLocalDispatchPeriod(10000);
 
         tracker = analytics.newTracker("UA-64149555-1"); // Replace with actual tracker/property Id
         tracker.enableExceptionReporting(true);
