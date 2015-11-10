@@ -29,15 +29,11 @@ import igarape.cbmsc.bombcast.utils.Globals;
  */
 public class ListaHospitaisActivity extends Activity {
 
-    private List<String> listadeHospitais = new ArrayList<>();
+    List<String> listadeHospitais = new ArrayList<>();
     ListView lv_hospitais;
-    private String hospitais;
     List<NameValuePair> params = new ArrayList<>();
     String UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2.php";
-    String retornoJS = "";
-    public String vf;
-    protected String VtrOc = Globals.getviaturaOcorrencia();
-    protected String ServidorSelecionado = Globals.getServidorSelecionado();
+    String retornoJS;
     String mensagem;
 
 
@@ -64,8 +60,8 @@ public class ListaHospitaisActivity extends Activity {
                 Globals.setDeslocando_para(hosp);
                 params.add(new BasicNameValuePair("jota", "hosp"));
                 params.add(new BasicNameValuePair("hsp", hosp));
-                params.add(new BasicNameValuePair("vtr_oc", VtrOc));
-                params.add(new BasicNameValuePair("h", ServidorSelecionado));
+                params.add(new BasicNameValuePair("vtr_oc", Globals.getviaturaOcorrencia()));
+                params.add(new BasicNameValuePair("h", Globals.getServidorSelecionado()));
                 params.add(new BasicNameValuePair("u", Globals.getUserName()));
                 params.add(new BasicNameValuePair("io", Globals.getId_Ocorrencia()));
 
@@ -76,12 +72,12 @@ public class ListaHospitaisActivity extends Activity {
                         try {
 
                             retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
-                            vf = "ok";
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        return vf;
+                        return null;
                     }
 
                     @Override
