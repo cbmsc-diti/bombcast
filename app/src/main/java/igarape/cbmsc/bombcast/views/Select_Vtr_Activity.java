@@ -137,6 +137,7 @@ public class Select_Vtr_Activity extends Activity {
             }
             @Override
             protected void onPostExecute(String aVoid) {
+                pDialog.dismiss();
                 super.onPostExecute(aVoid);
                 params.add(new BasicNameValuePair("vf", "1"));
 
@@ -161,7 +162,7 @@ public class Select_Vtr_Activity extends Activity {
                         e.printStackTrace();
                     }
                 }
-                pDialog.dismiss();
+
                 findViewById(R.id.btn_next).setEnabled(true);
                 super.cancel(true);
             }
