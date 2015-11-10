@@ -1,6 +1,5 @@
 package igarape.cbmsc.bombcast.views;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
@@ -14,10 +13,8 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,50 +39,49 @@ import igarape.cbmsc.bombcast.utils.Globals;
 
 public class Ocorrencia_Activity extends Activity {
 
-    public SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
-    protected PowerManager.WakeLock mWakeLock;
-    protected boolean j11 = true;
-    protected String VtrMonitorada = Globals.getVtrSelecionada();
-    protected String VtrOc;
-    protected String ServidorSelecionado = Globals.getServidorSelecionado();
-    protected String UrlJS;
-    protected String[] IO = new String[2];
-    protected String[] detalhes_ocorrencia;
-    protected KeyguardManager.KeyguardLock lock;
-    public int cont = 1;
-    public String retornoHttp= "";
-    public TextView tv_tipo_oc;
-    public TextView tv_endereco;
-    public String LatOcorrencia;
-    public String LngOcorrencia;
-    public String retornoJS = "";
-    public String vf;
-    public String confereJS= "inicio";
-    private Intent intent;
-    private String[] endereco_final;
-    private String[] vtr_final;
-    private MediaPlayer player;
+    final String UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2.php";
+    final String UrlOcorrencia = Globals.SERVER_CBM + "rec_coord.bombcast2.php";
+    final SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
+    final MyTimerTask myTask = new MyTimerTask(); // aqui instacia sua tarefa
+    final Timer myTimer = new Timer(); // aqui instancia o agendador
+    final String ServidorSelecionado = Globals.getServidorSelecionado();
+    KeyguardManager.KeyguardLock lock;
+    PowerManager.WakeLock mWakeLock;
+    String[] detalhes_ocorrencia;
+    String[] IO = new String[2];
+    String VtrsMonitoradas = Globals.getVtrSelecionada();
+    String VtrOc;
+    String controlador;
+    String retornoHttp;
+    String LatOcorrencia;
+    String LngOcorrencia;
+    String vf;
+    String confereJS= "inicio";
+    String[] vtr_final;
+    String retornoJS;
+    Boolean j11 = true;
     List<NameValuePair> params = new ArrayList<>();
-    MyTimerTask myTask = new MyTimerTask(); // aqui instacia sua tarefa
-    Timer myTimer = new Timer(); // aqui instancia o agendador
-    String controlador = null;
-
+    Integer cont = 1;
+    TextView tv_tipo_oc;
+    TextView tv_endereco;
+    Intent intent;
+    String[] endereco_final;
+    MediaPlayer player;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_ocorrencia);
         super.onCreate(savedInstanceState);
 
-        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
         this.mWakeLock.acquire();
-        KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
         lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
         lock.disableKeyguard();
-        UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2.php";
 
 
-        params.add(new BasicNameValuePair("nr_vtr", VtrMonitorada));
+        params.add(new BasicNameValuePair("nr_vtr", VtrsMonitoradas));
         params.add(new BasicNameValuePair("h", ServidorSelecionado));
         params.add(new BasicNameValuePair("u", Globals.getUserName()));
         params.add(new BasicNameValuePair("infos","1"));
@@ -96,24 +92,30 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("eo","nao"));
 
 
+        //INICIA OS BOTOES######################################################
+        final  Button btn_j9 = (Button) findViewById(R.id.btn_j9);
+        final  Button btn_j10 = (Button) findViewById(R.id.btn_j10);
+        final  Button btn_j9_i = (Button) findViewById(R.id.btn_j09_i);
+        final  Button btn_j10_i = (Button) findViewById(R.id.btn_j10_i);
+        final  Button btn_j11 = (Button) findViewById(R.id.btn_j11);
+        final  Button btn_j12 = (Button) findViewById(R.id.btn_j12);
+        final  Button btn_detalhes_ocorrencia = (Button) findViewById(R.id.btn_detalhes_ocorrencia);
+        final  Button btn_mapa_ocorrencia = (Button) findViewById(R.id.btn_mapa_ocorrencia);
+        final  Button btn_play = (Button) findViewById(R.id.btn_play);
+        final  Button btn_stop = (Button) findViewById(R.id.btn_stop);
 
-
-        //####################################################################################
-        final Button btn_j9 = (Button) findViewById(R.id.btn_j9);
         btn_j9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 J9();
             }
         });
-        final Button btn_j10 = (Button) findViewById(R.id.btn_j10);
         btn_j10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 J10();
             }
         });
-        final Button btn_j9_i = (Button) findViewById(R.id.btn_j09_i);
         btn_j9_i.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,48 +123,41 @@ public class Ocorrencia_Activity extends Activity {
             }
 
         });
-        final Button btn_j10_i = (Button) findViewById(R.id.btn_j10_i);
         btn_j10_i.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 J10Intermediario();
             }
         });
-        final Button btn_j11 = (Button) findViewById(R.id.btn_j11);
         btn_j11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 J11();
             }
         });
-        final Button btn_j12 = (Button) findViewById(R.id.btn_j12);
         btn_j12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 J12();
             }
         });
-        final Button btn_detalhes_ocorrencia = (Button) findViewById(R.id.btn_detalhes_ocorrencia);
         btn_detalhes_ocorrencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {detalhesOcorrencia();
             }
         });
-        final Button btn_mapa_ocorrencia = (Button) findViewById(R.id.btn_mapa_ocorrencia);
         btn_mapa_ocorrencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mapaOcorrencia();
             }
         });
-        final Button btn_play = (Button) findViewById(R.id.btn_play);
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 botaoPlay();
             }
         });
-        final Button btn_stop = (Button) findViewById(R.id.btn_stop);
         btn_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,25 +165,29 @@ public class Ocorrencia_Activity extends Activity {
             }
         });
         //####################################################################################
-        Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
-        intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(intent2);
 
-        myTimer.schedule(myTask, 1000, 5000); // aqui agenda sua tarefa para rodar daqui 3000 milisegundos e ficar repetindo a cada 1500 milisegundos
+        //TENTA INICIAR O ENVIO DAS COORDENANDAS
+        try {
+            Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
+            intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startService(intent2);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+        // aqui agenda sua tarefa para rodar daqui 1000 milisegundos e ficar repetindo a cada 5000 milisegundos
+        myTimer.schedule(myTask, 1000, 5000);
     }
 
     private void monitoramento(){
-
         new AsyncTask<String, String, String>() {
-
             @Override
             protected String doInBackground(String... paramss) {
                 try{
                     if(cont == 2) {
                         confereJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
                         }
-                        retornoHttp = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast2.php", params);
+                        retornoHttp = ConexaoHttpClient.executaHttpPost(UrlOcorrencia, params);
                     params.set(6,new BasicNameValuePair("log","3"));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -196,13 +195,19 @@ public class Ocorrencia_Activity extends Activity {
                 }
                 return retornoHttp;
             }
-
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
 
                 verificaHora();
+
+                try {
+                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrsMonitoradas, Toast.LENGTH_SHORT);
+                    toast.show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 if ((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty())) {
                     params.set(8,new BasicNameValuePair("eo","sim"));
@@ -221,7 +226,6 @@ public class Ocorrencia_Activity extends Activity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                         vtr_final = detalhes_ocorrencia[0].split(":");
                         VtrOc = vtr_final[1];
                         Globals.setViaturaOcorrencia(VtrOc);
@@ -231,40 +235,20 @@ public class Ocorrencia_Activity extends Activity {
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-                        //ALTERNA BOTOES NA TELA ####################################
                         findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
                         findViewById(R.id.btn_j9).setEnabled(true);
                         findViewById(R.id.btn_play).setEnabled(true);
                         findViewById(R.id.btn_play).setVisibility(View.VISIBLE);
                         findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
-                        //######################################################
                         //#######################################################################
                     }
-
                     if ((IO!=null)&&(IO[1]!=null)&&(IO[1].equals(controlador))){
 
                         switch (confereJS) {
 
                             case "Aguarda-J9":
-                                try {
-                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                                    toast.show();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                                 break;
                             case "J9":
-                                try {
-                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                                    toast.show();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                //J9();
                                 findViewById(R.id.btn_j9).setEnabled(false);
                                 findViewById(R.id.btn_j10).setEnabled(true);
                                 findViewById(R.id.btn_j09_i).setEnabled(false);
@@ -273,15 +257,6 @@ public class Ocorrencia_Activity extends Activity {
                                 findViewById(R.id.btn_j12).setEnabled(false);
                                 break;
                             case "J10":
-                                try {
-                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                                    toast.show();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                //J10();
                                 findViewById(R.id.btn_j9).setEnabled(false);
                                 findViewById(R.id.btn_j10).setEnabled(false);
                                 findViewById(R.id.btn_j09_i).setEnabled(true);
@@ -290,15 +265,6 @@ public class Ocorrencia_Activity extends Activity {
                                 findViewById(R.id.btn_j12).setEnabled(false);
                                 break;
                             case "J9I":
-                                try {
-                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                                    toast.show();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                //J9Intermediario();
                                 findViewById(R.id.btn_j9).setEnabled(false);
                                 findViewById(R.id.btn_j10).setEnabled(false);
                                 findViewById(R.id.btn_j09_i).setEnabled(false);
@@ -307,15 +273,6 @@ public class Ocorrencia_Activity extends Activity {
                                 findViewById(R.id.btn_j12).setEnabled(false);
                                 break;
                             case "J10I":
-                                try {
-                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                                    toast.show();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                //J10Intermediario();
                                 findViewById(R.id.btn_j9).setEnabled(false);
                                 findViewById(R.id.btn_j10).setEnabled(false);
                                 findViewById(R.id.btn_j09_i).setEnabled(false);
@@ -324,15 +281,6 @@ public class Ocorrencia_Activity extends Activity {
                                 findViewById(R.id.btn_j12).setEnabled(false);
                                 break;
                             case "J11":
-                                try {
-                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                                    toast.show();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                //J11();
                                 findViewById(R.id.btn_j9).setEnabled(false);
                                 findViewById(R.id.btn_j10).setEnabled(false);
                                 findViewById(R.id.btn_j09_i).setEnabled(false);
@@ -344,18 +292,9 @@ public class Ocorrencia_Activity extends Activity {
                                 J12();
                                 break;
                             case "inicio":
-                                try {
-                                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                                    toast.show();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                                 break;
                             default:
                                 controlador = "DEFAULT";
-
                                 try {
                                     Toast toast2 = Toast.makeText(Ocorrencia_Activity.this, "Ocorrência encontrada, aguarde...", Toast.LENGTH_LONG);
                                     toast2.show();
@@ -388,23 +327,25 @@ public class Ocorrencia_Activity extends Activity {
 
                             AlertDialog alert = builder.create();
                             alert.show();
-
                         }
+                        //CONTADOR RECEBE 2 PARA NÃO CAIR NO ALARME DENOVO
                         cont = 2;
+                        //################################################
                     }
 
                 } else if ((retornoHttp.equals("0"))) {
-
-                   if(cont == 2) {
+                    //SE EXISTIA OCORRENCIA E A MESMA FOI ENCERRADA O APP EXECUTA O J12 PARA REINICIAR OS BOTOES
+                    if(cont == 2) {
                        try{
                            J12();
                        }catch(Exception e){
                            e.printStackTrace();
                        }
-                   }
-
-                        cont = 1;
-                        try{
+                    }
+                    //###########################################################
+                    cont = 1;
+                    //LIMPA O FORMULARIO DA OCORRENCIA
+                    try{
                             params.remove(10);
                             params.remove(11);
                             params.remove(12);
@@ -422,28 +363,16 @@ public class Ocorrencia_Activity extends Activity {
                             params.remove(24);
                             params.remove(25);
                             params.remove(26);
-                        } catch (Exception e) {
+                    } catch (Exception e) {
                             e.printStackTrace();
-                        }
-
-
-
-                        try {
-                            Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrMonitorada, Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
-                            toast.show();
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    }
+                    //###########################################################
 
                     } else {
-                        Toast toast = Toast.makeText(Ocorrencia_Activity.this, "SEM CONEXÃO", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
+                        Toast toast = Toast.makeText(Ocorrencia_Activity.this, "ATENÇÃO!!! PERDA DE CONEXÃO", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 }
-
         }.execute();
     }
 
@@ -452,27 +381,20 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("jota", "j9"));
         params.add(new BasicNameValuePair("hr_j9", s.format(new Date())));
 
-        //ALTERNA BOTOES NA TELA ####################################
         findViewById(R.id.btn_j9).setEnabled(false);
         findViewById(R.id.btn_j10).setEnabled(true);
         findViewById(R.id.btn_j11).setEnabled(true);
-        //###########################################################
 
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
                     retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
-                    vf = "0";
-
                 } catch (Exception e) {
                     e.printStackTrace();
-                    vf = "1";
-
                 }
-                return vf;
+                return retornoJS;
             }
-
             @Override
             protected void onPostExecute(String aVoid) {
                 super.onPostExecute(aVoid);
@@ -501,12 +423,10 @@ public class Ocorrencia_Activity extends Activity {
             protected String doInBackground(Void... unused) {
                 try {
                     retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
-                    vf = "0";
                 } catch (Exception e) {
                     e.printStackTrace();
-                    vf = "1";
                 }
-                return vf;
+                return retornoJS;
             }
             @Override
             protected void onPostExecute(String aVoid) {
@@ -531,13 +451,11 @@ public class Ocorrencia_Activity extends Activity {
             protected String doInBackground(Void... unused) {
                 try {
                     retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
-                    vf = "0";
                 } catch (Exception e) {
                     e.printStackTrace();
-                    vf = "1";
                 }
 
-                return vf;
+                return retornoJS;
             }
             @Override
             protected void onPostExecute(String aVoid) {
@@ -576,13 +494,10 @@ public class Ocorrencia_Activity extends Activity {
                             protected String doInBackground(Void... unused) {
                                 try {
                                     retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
-                                    vf = "0";
-
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    vf = "1";
-                                }
-                                return vf;
+                                    }
+                                return retornoJS;
                             }
 
                             @Override
@@ -604,18 +519,15 @@ public class Ocorrencia_Activity extends Activity {
                         params.add(new BasicNameValuePair("lng_r", LngLocalRecusa));
                         params.add(new BasicNameValuePair("hr_j10_i_s", s.format(new Date())));
 
-
                         new AsyncTask<Void, Void, String>() {
                             @Override
                             protected String doInBackground(Void... unused) {
                                 try {
                                     retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
-                                    vf = "0";
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    vf = "1";
                                 }
-                                return vf;
+                                return retornoJS;
                             }
 
                             @Override
@@ -651,7 +563,6 @@ public class Ocorrencia_Activity extends Activity {
                             params.add(new BasicNameValuePair("lng_m", LngLocalMaca));
                             params.add(new BasicNameValuePair("hr_j11_s", s.format(new Date())));
 
-
                             new AsyncTask<Void, Void, String>() {
 
                                 ProgressDialog pDialog;
@@ -666,13 +577,11 @@ public class Ocorrencia_Activity extends Activity {
                                 protected String doInBackground(Void... unused) {
                                     try {
                                         retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
-                                        vf = "0";
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
-                                        vf = "1";
                                     }
-                                    return vf;
+                                    return retornoJS;
                                 }
 
                                 @Override
@@ -692,7 +601,6 @@ public class Ocorrencia_Activity extends Activity {
         params.add(new BasicNameValuePair("jota", "j11_n"));
         params.add(new BasicNameValuePair("hr_j11_n", s.format(new Date())));
 
-
         new AsyncTask<Void, Void, String>() {
 
             ProgressDialog pDialog;
@@ -705,13 +613,10 @@ public class Ocorrencia_Activity extends Activity {
             protected String doInBackground(Void... unused) {
                 try {
                     retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
-                    vf = "0";
-
                 } catch (Exception e) {
                     e.printStackTrace();
-                    vf = "1";
                 }
-                return vf;
+                return retornoJS;
             }
             @Override
             protected void onPostExecute(String aVoid) {
@@ -805,7 +710,7 @@ public class Ocorrencia_Activity extends Activity {
                     //MUDA TEXTO DA TELA, INSERE O NOME DA VIATURA
                    try {
                        tv_endereco.setText(getString(R.string.msg_sem_ocorrencia));
-                       tv_tipo_oc.setText(VtrMonitorada);
+                       tv_tipo_oc.setText(VtrsMonitoradas);
                    }catch (Exception e){
                        e.printStackTrace();
                    }
@@ -822,7 +727,6 @@ public class Ocorrencia_Activity extends Activity {
         }else{
             try{
                 Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Mapa disponível somente com a internet funcionando...", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
                 toast.show();
 
             } catch (Exception e) {
@@ -869,8 +773,7 @@ public class Ocorrencia_Activity extends Activity {
         }catch(Exception e){
             e.printStackTrace();
         }
-
-        }
+    }
     //#######################################################
     protected void verificaHora(){
         SimpleDateFormat s_hora = new SimpleDateFormat("HH:mm");
@@ -879,7 +782,7 @@ public class Ocorrencia_Activity extends Activity {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
             builder.setTitle("Novo login!")
-                    .setMessage("Faça o login com um membro da guarnição atual!")
+                    .setMessage("Bom dia! Seu login expirou, reconecte!")
                     .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent intent = new Intent(Ocorrencia_Activity.this, LoginActivity.class);
@@ -906,50 +809,60 @@ public class Ocorrencia_Activity extends Activity {
     }
     public boolean isOnline() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return manager.getActiveNetworkInfo() != null &&
                 manager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
-    @Override
-    protected void onDestroy() {
-        myTimer.cancel();
-        params.clear();
-        this.mWakeLock.release();
 
-        try{
-            Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            stopService(intent);
-        }catch( Exception e){
-            e.printStackTrace();}
-
-        try{
-            Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
-            intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            stopService(intent2);
-        }catch( Exception e){
-            e.printStackTrace();}
+    private void encerraMonitoramento(){
 
         new AsyncTask<Void, Void, String>() {
+
+            ProgressDialog pDialog;
+            protected void onPreExecute() {
+                super.onPreExecute();
+                //ANTES DE EXECUTAR (JANELA)
+                pDialog  = ProgressDialog.show(Ocorrencia_Activity.this, "Aguarde", "Encerrando monitoramento, aguarde...", true);
+            }
             @Override
             protected String doInBackground(Void... unused) {
                 try {
                     params.set(5,new BasicNameValuePair("status","OFF"));
                     params.set(6,new BasicNameValuePair("log","2"));
-                    ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "rec_coord.bombcast2.php",params);
-                    //vf = "0";
+                    ConexaoHttpClient.executaHttpPost(UrlOcorrencia,params);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    vf = "1";
                 }
-                return vf;
+                return null;
             }
             @Override
             protected void onPostExecute(String aVoid) {
                 super.cancel(true);
+                try{
+                    Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    stopService(intent);
+                }catch( Exception e){
+                    e.printStackTrace();}
+
+                try{
+                    Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    stopService(intent2);
+                }catch( Exception e){
+                    e.printStackTrace();}
+                myTimer.cancel();
+                params.clear();
+                lock.reenableKeyguard();
+                Ocorrencia_Activity.this.mWakeLock.release();
+                pDialog.dismiss();
+                Ocorrencia_Activity.this.finish();
             }
         }.execute();
-        lock.reenableKeyguard();
+
+    }
+    @Override
+    protected void onDestroy() {
+
         super.onDestroy();
     }
     @Override
@@ -962,7 +875,7 @@ public class Ocorrencia_Activity extends Activity {
 
         alertDialog.setPositiveButton(res.getText(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
-                Ocorrencia_Activity.this.finish();
+                encerraMonitoramento();
             }
         });
         alertDialog.setNegativeButton(res.getText(R.string.cancel), new DialogInterface.OnClickListener() {

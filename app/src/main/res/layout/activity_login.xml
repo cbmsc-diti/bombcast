@@ -35,6 +35,8 @@
         android:hint="@string/login_hint"
         android:layout_below="@+id/horizontalRule"
         android:imeOptions="actionNext"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
 
 
         android:layout_marginTop="16dp"

@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.view.Gravity;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.HttpAuthHandler;
@@ -48,7 +47,7 @@ public class Select_Vtr_Activity extends Activity {
     private String servidor193 = Globals.getServidorSelecionado();
     private String usuario = Globals.getUserName();
     private String senha = Globals.getUserPwd();
-    protected String Url;
+    protected String Url= Globals.SERVER_CBM + "sel_vtr.bombcast2.php";
     public String status;
     ProgressDialog pDialog;
     List<NameValuePair> params = new ArrayList<>();
@@ -61,14 +60,13 @@ public class Select_Vtr_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_vtr);
         findViewById(R.id.btn_next).setEnabled(false);
-        Url = Globals.SERVER_CBM + "sel_vtr.bombcast2.php";
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        final Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
         this.mWakeLock.acquire();
         KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
         lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
         lock.disableKeyguard();
-        final Intent intent = new Intent(Select_Vtr_Activity.this, UploadService.class);
 
         try{
             myWebView = (WebView) findViewById(R.id.wv_mapa);
@@ -89,16 +87,12 @@ public class Select_Vtr_Activity extends Activity {
                     startActivity(i);
                 }
             });
-
-
         }catch (Exception e){
             e.printStackTrace();
             AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
             builder.setMessage("Não foi possível carregar a página! ")
                     .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
+                        public void onClick(DialogInterface dialog, int id) {}
                     });
             AlertDialog alert = builder.create();
             alert.show();
@@ -111,7 +105,7 @@ public class Select_Vtr_Activity extends Activity {
                 try {
                     pDialog = ProgressDialog.show(Select_Vtr_Activity.this,"Verificando cadastro no E193", getString(R.string.please_hold), true);
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
                 params.add(new BasicNameValuePair("u", usuario));
                 params.add(new BasicNameValuePair("h", servidor193));
@@ -121,8 +115,6 @@ public class Select_Vtr_Activity extends Activity {
             protected String doInBackground(Void... unused) {
                 try {
                     vtrs = ConexaoHttpClient.executaHttpPost(Url, params);
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     vtrs="";
@@ -141,9 +133,6 @@ public class Select_Vtr_Activity extends Activity {
                     List<String> hosp = Arrays.asList(erro);
                     Globals.setListaHospitais(hosp);
                 }
-
-
-
                 return vtrs;
             }
             @Override
@@ -171,12 +160,8 @@ public class Select_Vtr_Activity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    try {
-                        pDialog.dismiss();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
                 }
+                pDialog.dismiss();
                 findViewById(R.id.btn_next).setEnabled(true);
                 super.cancel(true);
             }
@@ -271,18 +256,13 @@ public class Select_Vtr_Activity extends Activity {
 
                 } else {
                     String path = FileUtils.getPath(Globals.getUserName());
-
                     File dir = new File(path);
                     File[] files = dir.listFiles(filter);
-
                     if (files != null && files.length > 0) {
-
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startService(intent);
-
                         try {
                             Toast toast = Toast.makeText(Select_Vtr_Activity.this, "Os vídeos estão sendo enviados...", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 100);
                             toast.show();
 
                         } catch (Exception e) {

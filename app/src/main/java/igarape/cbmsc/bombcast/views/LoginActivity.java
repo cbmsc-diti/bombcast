@@ -51,21 +51,28 @@ import static igarape.cbmsc.bombcast.utils.NetworkUtils.post;
 public class LoginActivity extends Activity {
 
     public static String TAG = LoginActivity.class.getName();
+    String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php";
     AutoCompleteTextView txtId;
     EditText txtPwd;
     ProgressDialog pDialog;
     public Set<String> logins;
-    private String retornoHttp = "";
+    private String retornoHttp;
     protected List<NameValuePair> params = new ArrayList<>();
-    public String txtID;
-    public String txtPwD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        final CheckBox cbShowPassword = (CheckBox) findViewById(R.id.show_password);
         final Button btn_ajuda = (Button) findViewById(R.id.btn_ajuda);
+        final ImageButton icon_face = (ImageButton) findViewById(R.id.icon_face);
+        final ImageButton icon_twitter = (ImageButton) findViewById(R.id.icon_twitter);
+        final ImageButton icon_igarape = (ImageButton) findViewById(R.id.icon_igarape);
+        final ImageButton icon_cbm = (ImageButton) findViewById(R.id.icon_cbm);
+
+
         btn_ajuda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,15 +90,6 @@ public class LoginActivity extends Activity {
         });
 
         txtId = (AutoCompleteTextView) findViewById(R.id.txtLoginUser);
-
-
-        /**
-         * Appears a hack
-         * On login_activity I added
-         * android:focusable="true"
-         * android:focusableInTouchMode="true"
-         */
-
         txtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -103,7 +101,7 @@ public class LoginActivity extends Activity {
                                     getSystemService(Context.INPUT_METHOD_SERVICE);
                             keyboard.showSoftInput(txtId, 0);
                         }
-                    }, 500);
+                    }, 200);
                 }
             }
         });
@@ -119,21 +117,14 @@ public class LoginActivity extends Activity {
                 arr[cont] = aux;
                 cont++;
             }
-
-
-
             ArrayAdapter<String> adapter =
                     new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
             txtId.setAdapter(adapter);
         }catch (Exception e){
-
+            e.printStackTrace();
         }
-
         txtPwd = (EditText) findViewById(R.id.txtLoginPassword);
 
-
-
-        final CheckBox cbShowPassword = (CheckBox) findViewById(R.id.show_password);
         cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -143,46 +134,33 @@ public class LoginActivity extends Activity {
                     txtPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
             }
         });
-
-        final ImageButton icon_face = (ImageButton) findViewById(R.id.icon_face);
         icon_face.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Globals.setUrlSocial("http://pt-br.facebook.com/CBMSC");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
-                startActivity(intent);
-            }
+                startActivity(intent);            }
         });
-
-        final ImageButton icon_twitter = (ImageButton) findViewById(R.id.icon_twitter);
         icon_twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Globals.setUrlSocial("http://twitter.com/CBMSC193");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
-                startActivity(intent);
-            }
+                startActivity(intent);            }
         });
-
-        final ImageButton icon_igarape = (ImageButton) findViewById(R.id.icon_igarape);
         icon_igarape.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Globals.setUrlSocial("http://www.igarape.org.br/");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
-                startActivity(intent);
-            }
+                startActivity(intent);            }
         });
-
-        final ImageButton icon_cbm = (ImageButton) findViewById(R.id.icon_cbm);
         icon_cbm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Globals.setUrlSocial("http://portal.cbm.sc.gov.br/");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
-                startActivity(intent);
-            }
+                startActivity(intent);            }
         });
 
 
@@ -209,18 +187,16 @@ public class LoginActivity extends Activity {
             public String txtPwD= txtPwd.getText().toString();
             @Override
             protected void onPreExecute() {
-                //ANTES DE EXECUTAR (JANELA)
                 pDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.login_in), getString(R.string.please_hold), true);
             }
             @Override
             protected String doInBackground(String... paramss) {
                 try {
-                    String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php";
+
                     params.add(new BasicNameValuePair("u",txtID ));
                     params.add(new BasicNameValuePair("p",txtPwD));
 
                     retornoHttp = ConexaoHttpClient.executaHttpPost(URL,params);
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -229,14 +205,15 @@ public class LoginActivity extends Activity {
             }
             @Override
             protected void onPostExecute(String result) {
+                try{
+                    pDialog.dismiss();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
 
                 if (retornoHttp.equalsIgnoreCase("1")) {
 
-                    try{
-                        pDialog.dismiss();
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
+
                     Globals.setUserName(txtID);
                     Globals.setUserPwd(txtPwD);
 
@@ -258,30 +235,14 @@ public class LoginActivity extends Activity {
 
                 }else{
                     if (retornoHttp.equalsIgnoreCase("0")) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Tente novamente.", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.TOP, 0, 100);
+                        Toast toast = Toast.makeText(getApplicationContext(), "Usuário ou senha incorretos.", Toast.LENGTH_LONG);
                         toast.show();
 
                         txtPwd.setText("");
-
-                        try{
-                            pDialog.dismiss();
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
-
-
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "Problema ao conectar com o E193.", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.TOP, 0, 100);
                         toast.show();
-                        try{
-                            pDialog.dismiss();
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
                     }
-
                 }
                 cancel(true);
             }
