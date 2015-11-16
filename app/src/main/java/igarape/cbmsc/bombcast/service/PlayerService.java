@@ -12,12 +12,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import android.view.SurfaceHolder;
 
 import java.io.IOException;
 
 import igarape.cbmsc.bombcast.R;
-import igarape.cbmsc.bombcast.views.Ocorrencia_Activity;
 
 /**
  * Created by barcellos on 16/11/15.
