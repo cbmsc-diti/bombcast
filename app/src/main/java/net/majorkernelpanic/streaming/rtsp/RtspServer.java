@@ -548,7 +548,7 @@ public class RtspServer extends Service {
                         ";client_port=" + p1 + "-" + p2 +
                         ";server_port=" + src[0] + "-" + src[1] +
                         ";ssrc=" + Integer.toHexString(ssrc) +
-                        ";mode=play\r\n" +
+                        ";mode=playAlarme\r\n" +
                         "Session: " + "1185d20035702ca" + "\r\n" +
                         "Cache-Control: no-cache\r\n";
                 response.status = Response.STATUS_OK;

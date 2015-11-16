@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -67,7 +65,6 @@ public class Ocorrencia_Activity extends Activity {
     TextView tv_endereco;
     Intent intent;
     String[] endereco_final;
-    MediaPlayer player;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -799,9 +796,7 @@ public class Ocorrencia_Activity extends Activity {
         startService(intent);
 
     }
-    private Uri getAlarmSound() {
-        return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_001);
-    }
+
     public boolean isOnline() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return manager.getActiveNetworkInfo() != null &&
