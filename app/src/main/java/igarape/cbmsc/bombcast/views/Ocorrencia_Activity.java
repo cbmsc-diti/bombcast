@@ -21,7 +21,6 @@ import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -304,15 +303,13 @@ public class Ocorrencia_Activity extends Activity {
                     }else{
                         if(cont != 2){
                             //TOCA ALARME
-                            play();
+                            playAlarme();
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
                             builder.setTitle(getString(R.string.parar_alarme))
                                     .setCancelable(false)
                                     .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            Intent intent = new Intent(Ocorrencia_Activity.this, PlayerService.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            stopService(intent);
+                                            stopAlarme();
                                         }
                                     });
                             AlertDialog alert = builder.create();
@@ -790,10 +787,16 @@ public class Ocorrencia_Activity extends Activity {
             alert.show();
         }
     }
-    protected void play() {
+    protected void playAlarme() {
         Intent intent = new Intent(Ocorrencia_Activity.this, PlayerService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
+
+    }
+    protected void stopAlarme() {
+        Intent intent = new Intent(Ocorrencia_Activity.this, PlayerService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        stopService(intent);
 
     }
 
@@ -839,6 +842,8 @@ public class Ocorrencia_Activity extends Activity {
                     Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     stopService(intent2);
+
+                    stopAlarme();
                 }catch( Exception e){
                     e.printStackTrace();}
                 myTimer.cancel();

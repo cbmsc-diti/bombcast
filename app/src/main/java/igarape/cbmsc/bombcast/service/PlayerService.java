@@ -2,6 +2,7 @@ package igarape.cbmsc.bombcast.service;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -24,26 +25,23 @@ import igarape.cbmsc.bombcast.views.Ocorrencia_Activity;
 public class PlayerService  extends Service {
     private MediaPlayer player = null;;
     private boolean isPlaying;
-    protected SurfaceHolder surfaceHolder;
     private int mId = 1;
     Context context;
     Uri caminho;
 
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate() {
-
+        context = this.getApplicationContext();
+        player = new MediaPlayer();
         // Start foreground service to avoid unexpected kill
         Notification notification = new Notification.Builder(this)
                 .setContentTitle("Alarme!")
                 .setContentText("Alarme disparando")
                 .setSmallIcon(R.drawable.ic_launcher)
+                .setAutoCancel(true)
                 .build();
         startForeground(mId, notification);
-
-        context = this.getApplicationContext();
-        player = new MediaPlayer();
 
         caminho =  Uri.parse("android.resource://igarape.cbmsc.bombcast/" + R.raw.alarme_001);
         try {
