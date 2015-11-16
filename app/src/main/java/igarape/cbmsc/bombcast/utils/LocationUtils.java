@@ -152,7 +152,7 @@ public class LocationUtils {
         json.put("lat", latitude);
         json.put("lng", longitude);
         json.put("data", date);
-        json.put("nr_vtr",Globals.getVtrSelecionada());
+        json.put("nr_vtr",Globals.getviaturaOcorrencia());
         json.put("id_ocorrencia",Globals.getId_Ocorrencia());
         json.put("servidor", Globals.getServidorSelecionado());
 

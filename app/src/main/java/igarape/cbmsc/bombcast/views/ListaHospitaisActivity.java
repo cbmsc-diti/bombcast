@@ -86,7 +86,7 @@ public class ListaHospitaisActivity extends Activity {
 
                         Toast.makeText(getApplicationContext(), mensagem, Toast.LENGTH_LONG)
                                 .show();
-
+                        finish();
 
                     }
                 }.execute();
@@ -95,7 +95,7 @@ public class ListaHospitaisActivity extends Activity {
         });
         AlertDialog.Builder builder = new AlertDialog.Builder(ListaHospitaisActivity.this);
         builder.setTitle("Deslocando para:")
-                .setMessage("SELECIONE UM DESTINO E CLIQUE NO BOTÃO 'VOLTAR' DO TELEFONE.")
+                .setMessage("SELECIONE O DESTINO:")
                 .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }

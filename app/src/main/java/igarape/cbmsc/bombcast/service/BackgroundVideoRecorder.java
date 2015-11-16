@@ -34,7 +34,7 @@ public class BackgroundVideoRecorder extends Service implements SurfaceHolder.Ca
     private MediaRecorder mediaRecorder = null;
     private boolean isRecording;
     protected SurfaceHolder surfaceHolder;
-    public static final int MAX_DURATION_MS = 300000;
+    public static final int MAX_DURATION_MS = 30000000;
     public static final long MAX_SIZE_BYTES = 7500000;
     private int mId = 1;
 

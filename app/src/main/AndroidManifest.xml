@@ -92,6 +92,8 @@
         <service android:name=".service.UploadService" />
         <service android:name=".service.BackgroundVideoRecorder" />
         <service android:name=".service.LocationService" />
+        <service android:name=".service.PlayerService" />
+
 
 
         <receiver

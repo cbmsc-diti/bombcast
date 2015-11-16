@@ -34,6 +34,7 @@ import java.util.TimerTask;
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
 import igarape.cbmsc.bombcast.service.LocationService;
+import igarape.cbmsc.bombcast.service.PlayerService;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 
@@ -174,7 +175,6 @@ public class Ocorrencia_Activity extends Activity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         // aqui agenda sua tarefa para rodar daqui 1000 milisegundos e ficar repetindo a cada 5000 milisegundos
         myTimer.schedule(myTask, 1000, 5000);
     }
@@ -186,14 +186,14 @@ public class Ocorrencia_Activity extends Activity {
                 try{
                     if(cont == 2) {
                         confereJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
-                        }
-                        retornoHttp = ConexaoHttpClient.executaHttpPost(UrlOcorrencia, params);
+                    }
+                    retornoHttp = ConexaoHttpClient.executaHttpPost(UrlOcorrencia, params);
                     params.set(6,new BasicNameValuePair("log","3"));
                 } catch (Exception e) {
                     e.printStackTrace();
                     retornoHttp = "ASC";
                 }
-                return retornoHttp;
+                return retornoHttp + confereJS;
             }
             @Override
             protected void onPostExecute(String result) {
@@ -201,40 +201,41 @@ public class Ocorrencia_Activity extends Activity {
 
                 verificaHora();
 
-                try {
-                    Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrsMonitoradas, Toast.LENGTH_SHORT);
-                    toast.show();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrsMonitoradas, Toast.LENGTH_SHORT);
+                toast.show();
 
                 if ((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty())) {
-                    params.set(8,new BasicNameValuePair("eo","sim"));
-                    params.add(new BasicNameValuePair("vtr_oc", VtrOc));
+
 
                     if(cont == 1) {
-                        //UMA VEZ ###############################################################
-                        Globals.setMonitor(retornoHttp);
-                        detalhes_ocorrencia = retornoHttp.split("\\|");
-                        tv_endereco = (TextView) findViewById(R.id.tv_endereco_ocorrencia);
-                        tv_tipo_oc = (TextView) findViewById(R.id.tv_desc_endereco_ocorrencia);
+                        //EXECUTA UMA VEZ ###############################################################
                         try {
-                            tv_endereco.setText(detalhes_ocorrencia[6]);
+                            Globals.setMonitor(retornoHttp);
+
+                            tv_endereco = (TextView) findViewById(R.id.tv_endereco_ocorrencia);
+                            tv_tipo_oc = (TextView) findViewById(R.id.tv_desc_endereco_ocorrencia);
+
+                            detalhes_ocorrencia = retornoHttp.split("\\|");
+                            vtr_final = detalhes_ocorrencia[0].split(":");
+                            IO = detalhes_ocorrencia[3].split(":");
                             tv_tipo_oc.setText(detalhes_ocorrencia[1]);
+                            tv_endereco.setText(detalhes_ocorrencia[6]);
+                            endereco_final = detalhes_ocorrencia[6].split(":");
+
+
+
+                            VtrOc = vtr_final[1];
+                            Globals.setViaturaOcorrencia(VtrOc);
+                            Globals.setId_Ocorrencia(IO[1]);
                             Globals.setEnderecoOcorrencia(detalhes_ocorrencia[6]);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        vtr_final = detalhes_ocorrencia[0].split(":");
-                        VtrOc = vtr_final[1];
-                        Globals.setViaturaOcorrencia(VtrOc);
-                        endereco_final = detalhes_ocorrencia[6].split(":");
-                        try {
-                            IO = detalhes_ocorrencia[3].split(":");
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+
+                        params.set(8,new BasicNameValuePair("eo","sim"));
+                        params.add(new BasicNameValuePair("vtr_oc", VtrOc));
+
                         findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
                         findViewById(R.id.btn_j9).setEnabled(true);
                         findViewById(R.id.btn_play).setEnabled(true);
@@ -304,29 +305,27 @@ public class Ocorrencia_Activity extends Activity {
                                 break;
                         }
                     }else{
-                        try {
-                            Globals.setId_Ocorrencia(IO[1]);
-                            controlador = IO[1];
-                            params.set(10,new BasicNameValuePair("io", IO[1]));
-                        }catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
                         if(cont != 2){
                             //TOCA ALARME
-                            play(Ocorrencia_Activity.this, getAlarmSound());
-
+                            play();
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
                             builder.setTitle(getString(R.string.parar_alarme))
                                     .setCancelable(false)
                                     .setNeutralButton("PARAR", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            player.stop();
+                                            Intent intent = new Intent(Ocorrencia_Activity.this, PlayerService.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            stopService(intent);
                                         }
                                     });
-
                             AlertDialog alert = builder.create();
                             alert.show();
+                        }
+                        try {
+                            controlador = IO[1];
+                            params.add(new BasicNameValuePair("io", IO[1]));
+                        }catch (Exception e) {
+                            e.printStackTrace();
                         }
                         //CONTADOR RECEBE 2 PARA NÃO CAIR NO ALARME DENOVO
                         cont = 2;
@@ -336,43 +335,42 @@ public class Ocorrencia_Activity extends Activity {
                 } else if ((retornoHttp.equals("0"))) {
                     //SE EXISTIA OCORRENCIA E A MESMA FOI ENCERRADA O APP EXECUTA O J12 PARA REINICIAR OS BOTOES
                     if(cont == 2) {
-                       try{
-                           J12();
-                       }catch(Exception e){
-                           e.printStackTrace();
-                       }
+                        try{
+                            J12();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     //###########################################################
                     cont = 1;
                     //LIMPA O FORMULARIO DA OCORRENCIA
                     try{
-                            params.remove(10);
-                            params.remove(11);
-                            params.remove(12);
-                            params.remove(13);
-                            params.remove(14);
-                            params.remove(15);
-                            params.remove(16);
-                            params.remove(17);
-                            params.remove(18);
-                            params.remove(19);
-                            params.remove(20);
-                            params.remove(21);
-                            params.remove(22);
-                            params.remove(23);
-                            params.remove(24);
-                            params.remove(25);
-                            params.remove(26);
+                        params.remove(10);
+                        params.remove(11);
+                        params.remove(12);
+                        params.remove(13);
+                        params.remove(14);
+                        params.remove(15);
+                        params.remove(16);
+                        params.remove(17);
+                        params.remove(18);
+                        params.remove(19);
+                        params.remove(20);
+                        params.remove(21);
+                        params.remove(22);
+                        params.remove(23);
+                        params.remove(24);
+                        params.remove(25);
+                        params.remove(26);
                     } catch (Exception e) {
-                            e.printStackTrace();
+                        e.printStackTrace();
                     }
                     //###########################################################
-
-                    } else {
-                        Toast toast = Toast.makeText(Ocorrencia_Activity.this, "ATENÇÃO!!! PERDA DE CONEXÃO", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
+                } else {
+                   Toast toast2 = Toast.makeText(Ocorrencia_Activity.this, "ATENÇÃO!!! PERDA DE CONEXÃO", Toast.LENGTH_SHORT);
+                    toast2.show();
                 }
+            }
         }.execute();
     }
 
@@ -496,7 +494,7 @@ public class Ocorrencia_Activity extends Activity {
                                     retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    }
+                                }
                                 return retornoJS;
                             }
 
@@ -638,6 +636,7 @@ public class Ocorrencia_Activity extends Activity {
         }.execute();
     }
     protected void J12(){
+        cont = 1;
         params.add(new BasicNameValuePair("jota", "j12"));
         params.add(new BasicNameValuePair("hr_j12", s.format(new Date())));
 
@@ -708,12 +707,12 @@ public class Ocorrencia_Activity extends Activity {
                     //###########################################################
 
                     //MUDA TEXTO DA TELA, INSERE O NOME DA VIATURA
-                   try {
-                       tv_endereco.setText(getString(R.string.msg_sem_ocorrencia));
-                       tv_tipo_oc.setText(VtrsMonitoradas);
-                   }catch (Exception e){
-                       e.printStackTrace();
-                   }
+                    try {
+                        tv_endereco.setText(getString(R.string.msg_sem_ocorrencia));
+                        tv_tipo_oc.setText(VtrsMonitoradas);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 super.cancel(true);
             }
@@ -794,15 +793,11 @@ public class Ocorrencia_Activity extends Activity {
             alert.show();
         }
     }
-    protected void play(Context context, Uri alert) {
-        player = new MediaPlayer();
-        try {
-            player.setDataSource(context, alert);
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.prepare();
-            player.setLooping(true);
-            player.start();
-        } catch (IOException e) {e.printStackTrace();}
+    protected void play() {
+        Intent intent = new Intent(Ocorrencia_Activity.this, PlayerService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
+
     }
     private Uri getAlarmSound() {
         return Uri.parse("android.resource://igarape.cbmsc.bombcast/"+R.raw.alarme_001);
@@ -815,6 +810,9 @@ public class Ocorrencia_Activity extends Activity {
 
     private void encerraMonitoramento(){
 
+        params.set(5,new BasicNameValuePair("status","OFF"));
+        params.set(6,new BasicNameValuePair("log","2"));
+
         new AsyncTask<Void, Void, String>() {
 
             ProgressDialog pDialog;
@@ -826,13 +824,11 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
-                    params.set(5,new BasicNameValuePair("status","OFF"));
-                    params.set(6,new BasicNameValuePair("log","2"));
-                    ConexaoHttpClient.executaHttpPost(UrlOcorrencia,params);
+                    retornoHttp = ConexaoHttpClient.executaHttpPost(UrlOcorrencia,params);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return null;
+                return retornoHttp;
             }
             @Override
             protected void onPostExecute(String aVoid) {
