@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -47,7 +49,7 @@ public class Select_Vtr_Activity extends Activity {
     private String servidor193 = Globals.getServidorSelecionado();
     private String usuario = Globals.getUserName();
     private String senha = Globals.getUserPwd();
-    protected String Url= Globals.SERVER_CBM + "sel_vtr.bombcast2.php";
+    protected String Url= Globals.getPaginaViaturas();
     public String status;
     ProgressDialog pDialog;
     List<NameValuePair> params = new ArrayList<>();
@@ -68,34 +70,62 @@ public class Select_Vtr_Activity extends Activity {
         lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
         lock.disableKeyguard();
 
-        try{
-            myWebView = (WebView) findViewById(R.id.wv_mapa);
-            myWebView.setWebViewClient(new MyWebViewClient());
-            myWebView.getSettings().getAllowContentAccess();
-            myWebView.getSettings().getAllowFileAccess();
-            myWebView.getSettings().getLoadsImagesAutomatically();
-            myWebView.getSettings().setJavaScriptEnabled(true);
-            myWebView.getSettings().setUseWideViewPort(true);
-            myWebView.getSettings().setBuiltInZoomControls(true);
-            myWebView.setHttpAuthUsernamePassword("cbm.sc.gov.br", null, usuario, senha);
-            myWebView.setDownloadListener(new DownloadListener() {
-                public void onDownloadStart(String url, String userAgent,
-                                            String contentDisposition, String mimetype,
-                                            long contentLength) {
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                }
-            });
-        }catch (Exception e){
-            e.printStackTrace();
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        int ip = wifiInfo.getIpAddress();
+        String strIP = String.format("%d.%d.%d.%d",
+                (ip & 0xff),
+                (ip >> 8 & 0xff),
+                (ip >> 16 & 0xff),
+                (ip >> 24 & 0xff));
+
+        String ipSeparado[] = strIP.split("\\.");
+        if (!ipSeparado[0].equals("10")){
+
+            findViewById(R.id.btn_hidrantes).setEnabled(false);
+            findViewById(R.id.btn_ordens).setEnabled(false);
+            findViewById(R.id.btn_ordens).setVisibility(View.INVISIBLE);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
-            builder.setMessage("Não foi possível carregar a página! ")
+            builder.setMessage("Conecte-se na rede do quartel se quiser visualizar as ordens de serviço e/ou mapa de hidrantes.")
+                    .setCancelable(true)
                     .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {}
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
                     });
             AlertDialog alert = builder.create();
             alert.show();
+        }else{
+
+            try{
+                myWebView = (WebView) findViewById(R.id.wv_mapa);
+                myWebView.setWebViewClient(new MyWebViewClient());
+                myWebView.getSettings().getAllowContentAccess();
+                myWebView.getSettings().getAllowFileAccess();
+                myWebView.getSettings().getLoadsImagesAutomatically();
+                myWebView.getSettings().setJavaScriptEnabled(true);
+                myWebView.getSettings().setUseWideViewPort(true);
+                myWebView.getSettings().setBuiltInZoomControls(true);
+                myWebView.setHttpAuthUsernamePassword("cbm.sc.gov.br", null, usuario, senha);
+                myWebView.setDownloadListener(new DownloadListener() {
+                    public void onDownloadStart(String url, String userAgent,
+                                                String contentDisposition, String mimetype,
+                                                long contentLength) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+                AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
+                builder.setMessage("Não foi possível carregar a página! ")
+                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {}
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
 
         new AsyncTask<Void, Void, String>() {
@@ -197,14 +227,14 @@ public class Select_Vtr_Activity extends Activity {
                     ;
                 }else{
 
-                builder.setTitle("EM DESENVOLVIMENTO!")
-                        .setMessage("OPÇAO TEMPORARIAMENTE DISPONÍVEL SOMENTE NO 1º e 10º BBM.")
-                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+                    builder.setTitle("EM DESENVOLVIMENTO!")
+                            .setMessage("OPÇAO TEMPORARIAMENTE DISPONÍVEL SOMENTE NO 1º e 10º BBM.")
+                            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             }
         });
@@ -288,7 +318,11 @@ public class Select_Vtr_Activity extends Activity {
             }
 
         });
-        myWebView.loadUrl(UrlOrdens);
+        try {
+            myWebView.loadUrl(UrlOrdens);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static boolean canUpload(Context context, Intent intent) {
@@ -327,42 +361,11 @@ public class Select_Vtr_Activity extends Activity {
         startActivity(intent);
         Select_Vtr_Activity.this.finish();
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            myWebView.loadUrl(UrlOrdens);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        try {
-            myWebView.loadUrl(UrlOrdens);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        try {
-            myWebView.loadUrl(UrlOrdens);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
     private class MyWebViewClient extends WebViewClient {
-
-
-
         @Override
         public void onReceivedHttpAuthRequest(WebView view,
                                               HttpAuthHandler handler, String host, String realm) {
             handler.proceed(usuario, senha);
-            }
+        }
     }
 }

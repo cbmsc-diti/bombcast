@@ -36,6 +36,9 @@ public class Globals {
     public static final String DIRECTORY_SIZE = "DIRECTORY_SIZE";
     public static final String DIRECTORY_UPLOADED_SIZE = "DIRECTORY_UPLOADED_SIZE";
     public static final String AUTH = "AUTH";
+    public static final String PAGINA_JOTAS = SERVER_CBM +"j_ocorrencia.bombcast2.php";
+    public static final String PAGINA_OCORRENCIAS = SERVER_CBM + "rec_coord.bombcast2.php";
+    public static final String PAGINA_VIATURAS = SERVER_CBM + "sel_vtr.bombcast2.php";
     private static String accessToken = null;
     private static String userLogin = null;
     private static String serverIpAddress = "";
@@ -56,8 +59,20 @@ public class Globals {
     private static String Id_Ocorrencia="";
     private static String viaturaOcorrencia;
 
+    public static String getPaginaViaturas() {
+        return PAGINA_VIATURAS;
+    }
+
+    public static String getPaginaOcorrencias() {
+        return PAGINA_OCORRENCIAS;
+    }
+
     public static String getUserPwd() {
         return userPwd;
+    }
+
+    public static String getPaginaJotas() {
+        return PAGINA_JOTAS;
     }
 
     public static void setUserPwd(String userPwd) {

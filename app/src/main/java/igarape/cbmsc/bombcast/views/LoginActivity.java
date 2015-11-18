@@ -200,6 +200,7 @@ public class LoginActivity extends Activity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    retornoHttp = "2";
                 }
                 return retornoHttp;//0 ou 1
             }

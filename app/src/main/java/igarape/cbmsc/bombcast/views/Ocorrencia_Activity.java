@@ -37,8 +37,8 @@ import igarape.cbmsc.bombcast.utils.Globals;
 
 public class Ocorrencia_Activity extends Activity {
 
-    final String UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2.php";
-    final String UrlOcorrencia = Globals.SERVER_CBM + "rec_coord.bombcast2.php";
+    final String UrlJS = Globals.getPaginaJotas();
+    final String UrlOcorrencia = Globals.getPaginaOcorrencias();
     final SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
     final MyTimerTask myTask = new MyTimerTask(); // aqui instacia sua tarefa
     final Timer myTimer = new Timer(); // aqui instancia o agendador
@@ -364,6 +364,7 @@ public class Ocorrencia_Activity extends Activity {
                    Toast toast2 = Toast.makeText(Ocorrencia_Activity.this, "ATENÇÃO!!! PERDA DE CONEXÃO", Toast.LENGTH_SHORT);
                     toast2.show();
                 }
+                super.cancel(true);
             }
         }.execute();
     }
@@ -788,6 +789,7 @@ public class Ocorrencia_Activity extends Activity {
         }
     }
     protected void playAlarme() {
+
         Intent intent = new Intent(Ocorrencia_Activity.this, PlayerService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);

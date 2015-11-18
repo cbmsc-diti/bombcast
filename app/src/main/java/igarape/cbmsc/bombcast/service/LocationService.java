@@ -93,6 +93,9 @@ public class LocationService extends Service implements
         final Intent resultIntent = new Intent(this, Ocorrencia_Activity.class);
         final Context context = getApplicationContext();
 
+        PendingIntent pendingIntent;
+        Intent intentNotification = new Intent(context,StopService.class);
+        pendingIntent = PendingIntent.getActivity(getBaseContext(), mId,intentNotification , PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(getString(R.string.notification_location_title))
@@ -109,7 +112,7 @@ public class LocationService extends Service implements
                         0,
                         PendingIntent.FLAG_NO_CREATE
                 );
-        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setContentIntent(pendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.

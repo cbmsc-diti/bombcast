@@ -23,23 +23,32 @@ import igarape.cbmsc.bombcast.R;
 public class PlayerService  extends Service {
     private MediaPlayer player = null;;
     private boolean isPlaying;
-    private int mId = 1;
+    private int mId = 5;
     Context context;
     Uri caminho;
+    PendingIntent pendingIntent;
+
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate() {
+
         context = this.getApplicationContext();
         player = new MediaPlayer();
+        Intent intentNotification = new Intent(context,StopService.class);
+        pendingIntent = PendingIntent.getActivity(getBaseContext(), mId,intentNotification , PendingIntent.FLAG_UPDATE_CURRENT);
         // Start foreground service to avoid unexpected kill
         Notification notification = new Notification.Builder(this)
                 .setContentTitle("Alarme!")
-                .setContentText("Alarme disparando")
+                .setContentIntent(pendingIntent)
+                .setContentText("Clique para parar!")
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setAutoCancel(true)
                 .build();
+
+
         startForeground(mId, notification);
+
 
         caminho =  Uri.parse("android.resource://igarape.cbmsc.bombcast/" + R.raw.alarme_001);
         try {
@@ -83,6 +92,8 @@ public class PlayerService  extends Service {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
+
+
             if (player != null) {
                 player.start();
                 isPlaying = true;

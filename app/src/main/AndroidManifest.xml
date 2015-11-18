@@ -4,6 +4,7 @@
 
     >
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -84,6 +85,13 @@
             />
         <activity
             android:name=".views.ListaHospitaisActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+
+            />
+        <activity
+            android:name=".service.StopService"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
