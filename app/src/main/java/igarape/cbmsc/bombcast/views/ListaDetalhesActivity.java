@@ -56,7 +56,7 @@ public class ListaDetalhesActivity extends Activity {
     }
 
     public void saveBitmap(Bitmap bitmap) {
-        File imagePath = new File(FileUtils.getPath(Globals.getUserName())+Globals.getId_Ocorrencia()+ "_detalhes.png");
+        File imagePath = new File(FileUtils.getPath(Globals.getUserName())+Globals.getId_Ocorrencia()+ "_detalhes.jpg");
         FileOutputStream fos;
         try {
             fos = new FileOutputStream(imagePath);
