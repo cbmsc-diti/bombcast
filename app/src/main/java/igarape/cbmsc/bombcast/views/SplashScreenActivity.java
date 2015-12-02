@@ -16,7 +16,11 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
+import igarape.cbmsc.bombcast.FireCastApplication;
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
+import igarape.cbmsc.bombcast.service.LocationService;
+import igarape.cbmsc.bombcast.service.PlayerService;
 import igarape.cbmsc.bombcast.utils.FileUtils;
 import igarape.cbmsc.bombcast.utils.Globals;
 
@@ -34,6 +38,25 @@ public class SplashScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        try{
+            Intent intent2 = new Intent(getApplicationContext(), LocationService.class);
+            intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent2);
+        }catch( Exception e){
+            e.printStackTrace();}
+        try{
+            Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent);
+        }catch( Exception e){
+            e.printStackTrace();}
+        try{
+            Intent intent3 = new Intent(getApplicationContext(), PlayerService.class);
+            intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent3);
+        }catch( Exception e){
+            e.printStackTrace();}
 
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -141,10 +164,6 @@ public class SplashScreenActivity extends Activity {
 
             Intent i = new Intent(SplashScreenActivity.this,
                     LoginActivity.class);
-            // any info loaded can during splash_show
-            // can be passed to main activity using
-            // below
-            i.putExtra("loaded_info", " ");
             startActivity(i);
             finish();
         }

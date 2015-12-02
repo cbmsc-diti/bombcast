@@ -32,6 +32,7 @@ import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
 import igarape.cbmsc.bombcast.service.LocationService;
 import igarape.cbmsc.bombcast.service.PlayerService;
+import igarape.cbmsc.bombcast.service.StopService;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 
@@ -790,6 +791,7 @@ public class Ocorrencia_Activity extends Activity {
     }
     protected void playAlarme() {
 
+
         Intent intent = new Intent(Ocorrencia_Activity.this, PlayerService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
@@ -810,9 +812,12 @@ public class Ocorrencia_Activity extends Activity {
 
     private void encerraMonitoramento(){
 
-        params.set(5,new BasicNameValuePair("status","OFF"));
-        params.set(6,new BasicNameValuePair("log","2"));
-
+        try {
+            params.set(5, new BasicNameValuePair("status", "OFF"));
+            params.set(6, new BasicNameValuePair("log", "2"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         new AsyncTask<Void, Void, String>() {
 
             ProgressDialog pDialog;
@@ -833,26 +838,21 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected void onPostExecute(String aVoid) {
                 super.cancel(true);
-                try{
-                    Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    stopService(intent);
-                }catch( Exception e){
-                    e.printStackTrace();}
 
-                try{
-                    Intent intent2 = new Intent(Ocorrencia_Activity.this, LocationService.class);
-                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    stopService(intent2);
-
-                    stopAlarme();
-                }catch( Exception e){
-                    e.printStackTrace();}
                 myTimer.cancel();
                 params.clear();
                 lock.reenableKeyguard();
-                Ocorrencia_Activity.this.mWakeLock.release();
-                pDialog.dismiss();
+
+                try {
+                    Ocorrencia_Activity.this.mWakeLock.release();
+                    pDialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(Ocorrencia_Activity.this, StopService.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
                 Ocorrencia_Activity.this.finish();
             }
         }.execute();
@@ -860,8 +860,9 @@ public class Ocorrencia_Activity extends Activity {
     }
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
+
+        encerraMonitoramento();
     }
     @Override
     public void onBackPressed() {

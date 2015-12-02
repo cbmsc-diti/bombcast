@@ -14,29 +14,18 @@ public class StopService extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            Intent intent = new Intent(StopService.this, PlayerService.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            stopService(intent);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try {
-            Intent intent = new Intent(StopService.this, LocationService.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            stopService(intent);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try {
-            Intent intent = new Intent(StopService.this, BackgroundVideoRecorder.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            stopService(intent);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
+        try{
+            Intent intent3 = new Intent(getApplicationContext(), PlayerService.class);
+            intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent3);
+        }catch( Exception e){
+            e.printStackTrace();}
+        try{
+            Intent intent4 = new Intent(getApplicationContext(), RadioOnlineService.class);
+            intent4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            stopService(intent4);
+        }catch( Exception e){
+            e.printStackTrace();}
 
         finish();
     }

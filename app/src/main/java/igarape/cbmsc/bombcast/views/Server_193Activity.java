@@ -26,7 +26,7 @@ public class Server_193Activity extends Activity {
 
     private Servidores_193 servidor_sel;
     WebView myWebView;
-    String UrlSocial = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
+    String UrlSocial = Globals.getPaginaCobom();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

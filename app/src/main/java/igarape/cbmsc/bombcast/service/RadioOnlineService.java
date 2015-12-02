@@ -3,30 +3,34 @@ package igarape.cbmsc.bombcast.service;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
+import android.view.WindowManager;
 
 import java.io.IOException;
 
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.utils.Globals;
+import igarape.cbmsc.bombcast.views.LoginActivity;
 
 /**
- * Created by barcellos on 16/11/15.
+ * Created by barcellos on 24/11/15.
  */
-public class PlayerService  extends Service {
-    private MediaPlayer player = null;;
-    private boolean isPlaying;
-    private int mId = 5;
-    Context context;
-    Uri caminho;
-    PendingIntent pendingIntent;
+public class RadioOnlineService extends Service{
+
+    protected MediaPlayer player = null;;
+    protected boolean isPlaying;
+    protected int mId = 6;
+    protected Context context;
+    protected String caminho;
+    protected PendingIntent pendingIntent;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -39,37 +43,27 @@ public class PlayerService  extends Service {
         pendingIntent = PendingIntent.getActivity(getBaseContext(), mId,intentNotification , PendingIntent.FLAG_UPDATE_CURRENT);
         // Start foreground service to avoid unexpected kill
         Notification notification = new Notification.Builder(this)
-                .setContentTitle("Alarme!")
+                .setContentTitle("Rádio Online")
                 .setContentIntent(pendingIntent)
-                .setContentText("Clique para silenciar o alarme!")
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setAutoCancel(true)
-                .build();
+                .setContentText("Ouvindo a comunicação de " + Globals.getNomeServidorRadioSelecionado())
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setAutoCancel(true)
+                        .build();
 
 
         startForeground(mId, notification);
 
-
-        caminho =  Uri.parse("android.resource://igarape.cbmsc.bombcast/" + R.raw.alarme_001);
-        try {
-            player.setDataSource(context, caminho);
-            player.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        player.setLooping(true);
+        caminho = Globals.getServidorRadioSelecionado();
+
+
 
         new MediaPrepareTask().execute(null, null, null);
 
     }
     @Override
     public void onDestroy() {
-        try {
-            releasePlayer();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+       releasePlayer();
     }
 
     @Override
@@ -88,27 +82,37 @@ public class PlayerService  extends Service {
         } catch (IllegalStateException i) {
         }
     }
+
+
     class MediaPrepareTask extends AsyncTask<Void, Void, Boolean> {
+       @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected Boolean doInBackground(Void... voids) {
 
+            try {
+                player.setDataSource(caminho);
+                player.prepare();
+                if (player != null) {
+                    player.start();
+                    isPlaying = true;
+                } else {
+                    releasePlayer();
+                    return false;
+                }
 
-            if (player != null) {
-                player.start();
-                isPlaying = true;
-            } else {
-                player.release();
-                isPlaying = false;
-                return false;
+            }catch (Exception e){
+                e.printStackTrace();
+                releasePlayer();
             }
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-
         }
     }
-
 }

@@ -6,16 +6,17 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -23,12 +24,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,13 +38,10 @@ import java.util.List;
 import java.util.Set;
 
 import igarape.cbmsc.bombcast.R;
-import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
-import igarape.cbmsc.bombcast.service.LocationService;
-import igarape.cbmsc.bombcast.state.State;
+import igarape.cbmsc.bombcast.entity.ServidoresRadioOnline;
+import igarape.cbmsc.bombcast.service.RadioOnlineService;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
-import igarape.cbmsc.bombcast.utils.HistoryUtils;
-import igarape.cbmsc.bombcast.utils.HttpResponseCallback;
 import igarape.cbmsc.bombcast.utils.ManageSharedPreferences;
 
 import static igarape.cbmsc.bombcast.utils.NetworkUtils.post;
@@ -57,6 +55,7 @@ public class LoginActivity extends Activity {
     ProgressDialog pDialog;
     public Set<String> logins;
     private String retornoHttp;
+    private ServidoresRadioOnline servidoresRadioOnline;
     protected List<NameValuePair> params = new ArrayList<>();
 
     @Override
@@ -71,6 +70,76 @@ public class LoginActivity extends Activity {
         final ImageButton icon_twitter = (ImageButton) findViewById(R.id.icon_twitter);
         final ImageButton icon_igarape = (ImageButton) findViewById(R.id.icon_igarape);
         final ImageButton icon_cbm = (ImageButton) findViewById(R.id.icon_cbm);
+        final ToggleButton btn_radioonline = (ToggleButton) findViewById(R.id.btn_radioonline);
+
+
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        int ip = wifiInfo.getIpAddress();
+        String strIP = String.format("%d.%d.%d.%d",
+                (ip & 0xff),
+                (ip >> 8 & 0xff),
+                (ip >> 16 & 0xff),
+                (ip >> 24 & 0xff));
+
+        String ipSeparado[] = strIP.split("\\.");
+        if (ipSeparado[0].equals("10")){
+
+            Spinner sp_servidores = (Spinner) findViewById(R.id.sp_servidores_radioonline);
+            ArrayAdapter<ServidoresRadioOnline> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, ServidoresRadioOnline.listaServidores());
+            spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+            sp_servidores.setAdapter(spinnerArrayAdapter);
+            sp_servidores.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
+                    btn_radioonline.setChecked(false);
+                    servidoresRadioOnline = (ServidoresRadioOnline) parent.getItemAtPosition(posicao);
+                    Globals.setServidorRadioSelecionado(servidoresRadioOnline.getUrl());
+                    Globals.setNomeServidorRadioSelecionado(servidoresRadioOnline.getNome());
+
+                    try{
+                        Intent intent = new Intent(LoginActivity.this, RadioOnlineService.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        stopService(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }else{
+            Spinner sp_servidores = (Spinner) findViewById(R.id.sp_servidores_radioonline);
+            ArrayAdapter<ServidoresRadioOnline> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, ServidoresRadioOnline.listaServidoresExterno());
+            spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+            sp_servidores.setAdapter(spinnerArrayAdapter);
+            sp_servidores.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
+                    btn_radioonline.setChecked(false);
+                    servidoresRadioOnline = (ServidoresRadioOnline) parent.getItemAtPosition(posicao);
+                    Globals.setServidorRadioSelecionado(servidoresRadioOnline.getUrl());
+                    Globals.setNomeServidorRadioSelecionado(servidoresRadioOnline.getNome());
+                    try{
+                        Intent intent = new Intent(LoginActivity.this, RadioOnlineService.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        stopService(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
+
 
 
         btn_ajuda.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +208,8 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 Globals.setUrlSocial("http://pt-br.facebook.com/CBMSC");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
-                startActivity(intent);            }
+                startActivity(intent);
+            }
         });
         icon_twitter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,8 +230,37 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 Globals.setUrlSocial("http://portal.cbm.sc.gov.br/");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
-                startActivity(intent);            }
+                startActivity(intent);
+            }
         });
+
+
+
+
+        btn_radioonline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(btn_radioonline.isChecked()){
+                    try{
+                    Intent intent = new Intent(LoginActivity.this, RadioOnlineService.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startService(intent);
+                        }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    try{
+                        Intent intent = new Intent(LoginActivity.this, RadioOnlineService.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        stopService(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
 
 
     }
@@ -175,6 +274,10 @@ public class LoginActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return item.getItemId() == R.id.action_settings || super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onConfigurationChanged(Configuration cfg) {
+
     }
 
     public void makeLoginRequest(View view) {
@@ -229,9 +332,8 @@ public class LoginActivity extends Activity {
 
                     ManageSharedPreferences.putInSharedPreferences(LoginActivity.this, Globals.PREF_FILE_NAMES, "login", logins);
 
-                    Intent intent = new Intent(LoginActivity.this, Server_193Activity.class);
-                    startActivity(intent);
-                    LoginActivity.this.finish();
+                    Intent intent2 = new Intent(LoginActivity.this, Server_193Activity.class);
+                    startActivity(intent2);
                     cancel(true);
 
                 }else{

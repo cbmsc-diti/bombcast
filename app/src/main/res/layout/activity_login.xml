@@ -155,4 +155,56 @@
         android:layout_alignRight="@+id/horizontalRule"
         android:layout_alignEnd="@+id/horizontalRule" />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sp_servidores_radioonline"
+        android:spinnerMode="dialog"
+        android:layout_above="@+id/tv_acesse"
+        android:layout_toLeftOf="@+id/btn_radioonline"
+        android:layout_toStartOf="@+id/btn_radioonline" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Escolha uma região e clique no botão ao lado para ouvir:"
+        android:id="@+id/tv_desc_radio"
+        android:textColor="@color/text_dark"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/sp_servidores_radioonline"
+        android:layout_alignLeft="@+id/tv_radioonline_titulo"
+        android:layout_alignStart="@+id/tv_radioonline_titulo" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn_radioonline"
+        android:id="@+id/btn_radioonline"
+        android:checked="false"
+        android:layout_alignBottom="@+id/sp_servidores_radioonline"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RÁDIO ONLINE CBMSC:"
+        android:id="@+id/tv_radioonline_titulo"
+        android:textSize="20sp"
+        android:layout_above="@+id/tv_desc_radio"
+        android:layout_alignLeft="@+id/btn_login_ok"
+        android:layout_alignStart="@+id/btn_login_ok" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_radio"
+        android:src="@drawable/radio"
+        android:layout_alignTop="@+id/tv_radioonline_titulo"
+        android:layout_toLeftOf="@+id/tv_desc_radio"
+        android:layout_toStartOf="@+id/tv_desc_radio"
+        android:layout_above="@+id/btn_radioonline" />
+
 </RelativeLayout>

@@ -17,7 +17,7 @@
         android:text="@string/login_title"
         android:id="@+id/loggedUserLabel"
         android:textColor="@color/text_dark"
-        android:layout_alignBottom="@+id/btn_ajuda"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -69,9 +69,8 @@
         android:text="@android:string/ok"
         android:onClick="makeLoginRequest"
         android:gravity="center"
-        android:layout_alignBottom="@+id/tv_acesse"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_below="@+id/show_password"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -114,9 +113,9 @@
         android:src="@drawable/icon_igarape_bc_2"
         android:focusableInTouchMode="false"
         android:background="@color/bg_dark_block"
-        android:layout_alignTop="@+id/icon_twitter"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/btn_radioonline"
+        android:layout_toRightOf="@+id/icon_cbm"
+        android:layout_toEndOf="@+id/icon_cbm" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -137,9 +136,9 @@
         android:src="@drawable/icon_cbm180_2"
         android:clickable="true"
         android:background="@color/bg_dark_block"
-        android:layout_alignBottom="@+id/icon_igarape"
-        android:layout_toLeftOf="@+id/icon_igarape"
-        android:layout_toStartOf="@+id/icon_igarape" />
+        android:layout_alignTop="@+id/icon_twitter"
+        android:layout_toRightOf="@+id/icon_twitter"
+        android:layout_toEndOf="@+id/icon_twitter" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -154,5 +153,60 @@
         android:layout_toStartOf="@+id/icon_cbm"
         android:layout_alignRight="@+id/horizontalRule"
         android:layout_alignEnd="@+id/horizontalRule" />
+    <Spinner
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/sp_servidores_radioonline"
+        android:spinnerMode="dialog"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/icon_igarape"
+        android:layout_alignTop="@+id/icon_igarape"
+        android:layout_toLeftOf="@+id/btn_ajuda"
+        android:layout_toStartOf="@+id/btn_ajuda" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Escolha uma região e clique no botão abaixo:"
+        android:id="@+id/tv_desc_radio"
+        android:textColor="@color/text_dark"
+        android:layout_below="@+id/tv_radioonline_titulo"
+        android:layout_toRightOf="@+id/iv_radio"
+        android:layout_toEndOf="@+id/iv_radio" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn_radioonline"
+        android:id="@+id/btn_radioonline"
+        android:checked="false"
+        android:layout_alignBottom="@+id/icon_cbm"
+        android:layout_alignRight="@+id/tv_desc_radio"
+        android:layout_alignEnd="@+id/tv_desc_radio" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RÁDIO ONLINE CBMSC:"
+        android:id="@+id/tv_radioonline_titulo"
+        android:textSize="20sp"
+        android:layout_alignTop="@+id/iv_radio"
+        android:layout_alignRight="@+id/show_password"
+        android:layout_alignEnd="@+id/show_password"
+        android:layout_marginTop="5dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_radio"
+        android:src="@drawable/radio"
+        android:layout_below="@+id/btn_login_ok"
+        android:layout_alignLeft="@+id/sp_servidores_radioonline"
+        android:layout_alignStart="@+id/sp_servidores_radioonline"
+        android:layout_toLeftOf="@+id/tv_radioonline_titulo"
+        android:layout_toStartOf="@+id/tv_radioonline_titulo"
+        android:layout_above="@+id/sp_servidores_radioonline"
+        android:layout_marginTop="5dp" />
+
 
 </RelativeLayout>

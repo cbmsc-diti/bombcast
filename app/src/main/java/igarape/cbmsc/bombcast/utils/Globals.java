@@ -39,6 +39,13 @@ public class Globals {
     public static final String PAGINA_JOTAS = SERVER_CBM +"j_ocorrencia.bombcast2.php";
     public static final String PAGINA_OCORRENCIAS = SERVER_CBM + "rec_coord.bombcast2.php";
     public static final String PAGINA_VIATURAS = SERVER_CBM + "sel_vtr.bombcast2.php";
+
+    public static String getPaginaCobom() {
+        return PAGINA_COBOM;
+    }
+
+    public static final String PAGINA_COBOM = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
+
     private static String accessToken = null;
     private static String userLogin = null;
     private static String serverIpAddress = "";
@@ -58,6 +65,13 @@ public class Globals {
     private static String EnderecoOcorrencia = "Santa Catarina";
     private static String Id_Ocorrencia="";
     private static String viaturaOcorrencia;
+    private static String servidorRadioSelecionado;
+
+    public static String getNomeServidorRadioSelecionado() {
+        return nomeServidorRadioSelecionado;
+    }
+
+    private static String nomeServidorRadioSelecionado;
 
     public static String getPaginaViaturas() {
         return PAGINA_VIATURAS;
@@ -65,6 +79,10 @@ public class Globals {
 
     public static String getPaginaOcorrencias() {
         return PAGINA_OCORRENCIAS;
+    }
+
+    public static String getServidorRadioSelecionado() {
+        return servidorRadioSelecionado;
     }
 
     public static String getUserPwd() {
@@ -423,4 +441,11 @@ public class Globals {
         return viaturaOcorrencia;
     }
 
+    public static void setServidorRadioSelecionado(String servidorRadioSelecionado) {
+        Globals.servidorRadioSelecionado = servidorRadioSelecionado;
+    }
+
+    public static void setNomeServidorRadioSelecionado(String nomeServidorRadioSelecionado) {
+        Globals.nomeServidorRadioSelecionado = nomeServidorRadioSelecionado;
+    }
 }

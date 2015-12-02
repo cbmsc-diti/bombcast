@@ -94,12 +94,11 @@ public class LocationService extends Service implements
         final Context context = getApplicationContext();
 
         PendingIntent pendingIntent;
-        Intent intentNotification = new Intent(context,StopService.class);
-        pendingIntent = PendingIntent.getActivity(getBaseContext(), mId,intentNotification , PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getActivity(getBaseContext(), mId,resultIntent , PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setContentTitle(getString(R.string.notification_location_title))
-                .setContentText(getString(R.string.notification_location_description))
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("Clique aqui para abrir o app!")
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setOngoing(true);
 

@@ -10,6 +10,7 @@ import com.splunk.mint.Mint;
 
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
 import igarape.cbmsc.bombcast.service.LocationService;
+import igarape.cbmsc.bombcast.service.PlayerService;
 import igarape.cbmsc.bombcast.utils.FileUtils;
 
 public class FireCastApplication extends Application {
@@ -36,7 +37,6 @@ public class FireCastApplication extends Application {
         tracker.enableAutoActivityTracking(true);
 
         Mint.initAndStartSession(FireCastApplication.this, "c58077d2");
-
     }
 
 
@@ -47,22 +47,10 @@ public class FireCastApplication extends Application {
 
     @Override
     public void onTerminate() {
-
-        try{
-            Intent intent2 = new Intent(getApplicationContext(), LocationService.class);
-            intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            stopService(intent2);
-        }catch( Exception e){
-            e.printStackTrace();}
-        try{
-            Intent intent = new Intent(getApplicationContext(), BackgroundVideoRecorder.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            stopService(intent);
-        }catch( Exception e){
-            e.printStackTrace();}
-
         super.onTerminate();
+
     }
+
 
 
 }
