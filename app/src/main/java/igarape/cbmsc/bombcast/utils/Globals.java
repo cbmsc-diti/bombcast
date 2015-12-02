@@ -32,6 +32,7 @@ public class Globals {
     public static final String PAGINA_VIATURAS = SERVER_CBM + "sel_vtr.bombcast2.php";
     public static final String PAGINA_LOCATIONS = SERVER_CBM + "locations/rec_locations.php";
     public static final String PAGINA_COBOM = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
+    public static final String PAGINA_HIDRANTES =  "http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/mapeamento/m/?host=";
     private static String accessToken = null;
     private static String userName = null;
     private static Long directoryUploadedSize;
@@ -46,9 +47,13 @@ public class Globals {
     private static Double LatAlteracao = 0.0;
     private static Double LngAlteracao = 0.0;
 
-
     public static String getPaginaLocations() {
         return PAGINA_LOCATIONS;
+    }
+
+
+    public static String getPaginaHidrantes() {
+        return PAGINA_HIDRANTES;
     }
     public static String getNomeServidorRadioSelecionado() {
         return nomeServidorRadioSelecionado;

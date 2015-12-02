@@ -54,7 +54,7 @@ public class Select_Vtr_Activity extends Activity {
     List<NameValuePair> params = new ArrayList<>();
     WebView myWebView;
     String UrlOrdens ="http://"+servidor193+"/web193/modulos/ordens/upload/cadastro.php";
-    String UrlHidrantes = "http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/mapeamento/m/?host="+servidor193;
+    String UrlHidrantes =Globals.getPaginaHidrantes()+servidor193;
 
 
     protected void onCreate(Bundle savedInstanceState) {

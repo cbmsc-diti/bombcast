@@ -26,14 +26,14 @@ public class Server_193Activity extends Activity {
 
     private Servidores_193 servidor_sel;
     WebView myWebView;
-    String UrlSocial = Globals.getPaginaCobom();
+    String UrlCobom = Globals.getPaginaCobom();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_193);
         myWebView = (WebView) findViewById(R.id.wv_mapa);
         myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl(UrlSocial);
+        myWebView.loadUrl(UrlCobom);
 
         startGPS();
 
@@ -70,7 +70,7 @@ public class Server_193Activity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        myWebView.loadUrl(UrlSocial);
+        myWebView.loadUrl(UrlCobom);
     }
 
     public void startGPS(){
