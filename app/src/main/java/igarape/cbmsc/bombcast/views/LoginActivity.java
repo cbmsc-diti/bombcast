@@ -44,8 +44,6 @@ import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 import igarape.cbmsc.bombcast.utils.ManageSharedPreferences;
 
-import static igarape.cbmsc.bombcast.utils.NetworkUtils.post;
-
 public class LoginActivity extends Activity {
 
     public static String TAG = LoginActivity.class.getName();
@@ -187,7 +185,7 @@ public class LoginActivity extends Activity {
                 cont++;
             }
             ArrayAdapter<String> adapter =
-                    new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
+                    new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arr);
             txtId.setAdapter(adapter);
         }catch (Exception e){
             e.printStackTrace();
@@ -323,12 +321,12 @@ public class LoginActivity extends Activity {
 
                     try {
                         logins = ManageSharedPreferences.getSetStringFromSharedPreference(LoginActivity.this, Globals.PREF_FILE_NAMES, "login");
-                    }catch (Exception e){}
+                    }catch (Exception ignored){}
                     if (logins == null){
-                        logins = new LinkedHashSet<String>();
+                        logins = new LinkedHashSet<>();
                     }
                     logins.add(txtID);
-                    Iterator it = logins.iterator();
+                    logins.iterator();
 
                     ManageSharedPreferences.putInSharedPreferences(LoginActivity.this, Globals.PREF_FILE_NAMES, "login", logins);
 

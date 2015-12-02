@@ -1,7 +1,6 @@
 package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
-
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,10 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,25 +18,21 @@ import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.FileUtils;
 import igarape.cbmsc.bombcast.utils.Globals;
 
-/**
- * Created by barcellos on 03/03/15.
- */
+ //* Created by barcellos on 03/03/15.
+
 public class ListaDetalhesActivity extends Activity {
 
-    private List<String> listadeDetalhes = new ArrayList<>();
     ListView lv_detalhesOcorrencia;
-    private String monitor;
-
 
     protected void onCreate(Bundle savedInstanceState) {
+        String monitor;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listadetalhes);
         monitor = Globals.getMonitor();
-        listadeDetalhes = Arrays.asList(monitor.split("\\|"));
+        List<String> listadeDetalhes = Arrays.asList(monitor.split("\\|"));
         lv_detalhesOcorrencia = (ListView) findViewById(R.id.lv_detalhesOcorrencia);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ListaDetalhesActivity.this, R.layout.listview_detalhes, listadeDetalhes);
-        ArrayAdapter<String> ListArrayAdapter = arrayAdapter;
+        ArrayAdapter<String> ListArrayAdapter = new ArrayAdapter<>(this, R.layout.listview_detalhes, listadeDetalhes);
         lv_detalhesOcorrencia.setAdapter(ListArrayAdapter);
     }
 
@@ -57,8 +50,6 @@ public class ListaDetalhesActivity extends Activity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.e("GREC", e.getMessage(), e);
         } catch (IOException e) {
             Log.e("GREC", e.getMessage(), e);
         }

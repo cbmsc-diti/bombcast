@@ -3,7 +3,6 @@ package igarape.cbmsc.bombcast.utils;
 import android.content.Context;
 import android.util.Log;
 
-import igarape.cbmsc.bombcast.state.State;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+import igarape.cbmsc.bombcast.state.State;
 
 /**
  * Created by brunosiqueira on 23/09/2014.

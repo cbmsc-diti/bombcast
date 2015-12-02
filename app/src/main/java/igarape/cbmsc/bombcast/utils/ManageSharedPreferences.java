@@ -29,7 +29,7 @@ public class ManageSharedPreferences {
                 Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void putInSharedPreferences(Context context, String fileName,
@@ -38,7 +38,7 @@ public class ManageSharedPreferences {
                 Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putInt(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void putInSharedPreferences(Context context, String fileName,
@@ -47,7 +47,7 @@ public class ManageSharedPreferences {
                 Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putFloat(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void putInSharedPreferences(Context context, String fileName,
@@ -56,7 +56,7 @@ public class ManageSharedPreferences {
                 Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void putInSharedPreferences(Context context, String fileName,
@@ -65,7 +65,7 @@ public class ManageSharedPreferences {
                 Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putLong(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     //para realizar putSet<String> Ã© necessÃ¡rio APT LVL 11
@@ -77,7 +77,7 @@ public class ManageSharedPreferences {
                 Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putStringSet(key, values);
-        editor.commit();
+        editor.apply();
     }
 
     public static Integer getIntFromSharedPreference(Context context,
@@ -140,7 +140,7 @@ public class ManageSharedPreferences {
                 Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.remove(key);
-        editor.commit();
+        editor.apply();
     }
 
 }

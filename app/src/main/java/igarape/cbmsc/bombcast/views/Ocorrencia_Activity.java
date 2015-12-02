@@ -224,7 +224,6 @@ public class Ocorrencia_Activity extends Activity {
                             VtrOc = vtr_final[1];
                             Globals.setViaturaOcorrencia(VtrOc);
                             Globals.setId_Ocorrencia(IO[1]);
-                            Globals.setEnderecoOcorrencia(detalhes_ocorrencia[6]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -317,6 +316,7 @@ public class Ocorrencia_Activity extends Activity {
                             alert.show();
                         }
                         try {
+                            assert IO != null;
                             controlador = IO[1];
                             params.add(new BasicNameValuePair("io", IO[1]));
                         }catch (Exception e) {

@@ -1,18 +1,15 @@
 package igarape.cbmsc.bombcast.service;
 
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -40,7 +37,6 @@ import igarape.cbmsc.bombcast.utils.Globals;
 import igarape.cbmsc.bombcast.utils.HttpResponseCallback;
 import igarape.cbmsc.bombcast.utils.NetworkUtils;
 import igarape.cbmsc.bombcast.utils.ServiceUtils;
-import igarape.cbmsc.bombcast.views.Ocorrencia_Activity;
 import igarape.cbmsc.bombcast.views.Select_Vtr_Activity;
 
 import static igarape.cbmsc.bombcast.utils.Globals.getDirectoryUploadedSize;

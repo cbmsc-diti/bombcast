@@ -3,20 +3,13 @@ package igarape.cbmsc.bombcast.utils;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,18 +17,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import igarape.cbmsc.bombcast.views.Ocorrencia_Activity;
+// * Created by bruno on 11/5/14.
 
-/**
- * Created by bruno on 11/5/14.
- */
 
 public class LocationUtils {
     /*
   * Define a request code to send to Google Play services
   * This code is returned in Activity.onActivityResult
   */
-    public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+   // public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     /*
      * Constants for location update parameters
@@ -102,7 +92,7 @@ public class LocationUtils {
             new AsyncTask<Void, Void, String>() {
                 String vf;
                 String rec_location;
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                List<NameValuePair> params = new ArrayList<>();
 
                 @Override
                 protected String doInBackground(Void... unused) {
@@ -113,7 +103,7 @@ public class LocationUtils {
                            vf = "1";
                        }else{
                                params.add(new BasicNameValuePair("p", buildJson(location).toString()));
-                               rec_location = ConexaoHttpClient.executaHttpPost(Globals.SERVER_CBM + "locations/rec_locations.php", params);
+                               rec_location = ConexaoHttpClient.executaHttpPost(Globals.getPaginaLocations(), params);
                                vf = rec_location;
                        }
                     } catch (Exception e) {
@@ -130,7 +120,6 @@ public class LocationUtils {
                 }
             }.execute();
 
-          //  NetworkUtils.post(context, Globals.SERVER_CBM+"locations/rec_locations.php", buildJson(location), callback);
         } catch (Exception e) {
             Log.e(TAG, "json error", e);
         }

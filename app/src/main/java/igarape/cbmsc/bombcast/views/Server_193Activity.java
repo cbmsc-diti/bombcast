@@ -108,8 +108,8 @@ public class Server_193Activity extends Activity {
         Globals.setLatAlteracao(latitude);
         Globals.setLngAlteracao(longitude);
 
-        Globals.setLatitude(latitude.toString());
-        Globals.setLongitude(longitude.toString());
+        Globals.setLatitude();
+        Globals.setLongitude();
     }
     @Override
     public void onBackPressed() {

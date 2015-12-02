@@ -4,22 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.location.Location;
 import android.util.Log;
-
-import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.BuildConfig;
 
-import static java.net.URLEncoder.encode;
 
-/**
- * Created by fcavalcanti on 28/10/2014.
- */
 public class Globals {
 
     public static String TAG = Globals.class.getName();
@@ -28,7 +20,6 @@ public class Globals {
     public static final String PREF_FILE_NAMES = "PREF_FILE_NAMES";
     public static final String DATA = "DATA";
     private static final String PREF_TIME_LOGIN = "PREF_TIME_LOGIN";
-    private static final String PREF_USER_LOGIN = "PREF_USER_LOGIN";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     public static final String SERVER_URL_WEB = BuildConfig.serverUrl;
@@ -39,34 +30,26 @@ public class Globals {
     public static final String PAGINA_JOTAS = SERVER_CBM +"j_ocorrencia.bombcast2.php";
     public static final String PAGINA_OCORRENCIAS = SERVER_CBM + "rec_coord.bombcast2.php";
     public static final String PAGINA_VIATURAS = SERVER_CBM + "sel_vtr.bombcast2.php";
-
-    public static String getPaginaCobom() {
-        return PAGINA_COBOM;
-    }
-
+    public static final String PAGINA_LOCATIONS = SERVER_CBM + "locations/rec_locations.php";
     public static final String PAGINA_COBOM = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
-
     private static String accessToken = null;
-    private static String userLogin = null;
-    private static String serverIpAddress = "";
-    private static Integer streamingPort = 1935;
-    private static String streamingUser = "";
-    private static String streamingPassword = "";
-    private static String streamingPath = "";
     private static String userName = null;
-    private static Bitmap userImage = null;
-    private static Long directorySize;
     private static Long directoryUploadedSize;
     private static String ServidorSelecionado = null;
     private static String VtrSelecionada = "";
     private static String Monitor = "";
     private static String Latitude = null;
     private static String Longitude = null ;
-    private static String EnderecoOcorrencia = "Santa Catarina";
     private static String Id_Ocorrencia="";
     private static String viaturaOcorrencia;
     private static String servidorRadioSelecionado;
+    private static Double LatAlteracao = 0.0;
+    private static Double LngAlteracao = 0.0;
 
+
+    public static String getPaginaLocations() {
+        return PAGINA_LOCATIONS;
+    }
     public static String getNomeServidorRadioSelecionado() {
         return nomeServidorRadioSelecionado;
     }
@@ -89,6 +72,10 @@ public class Globals {
         return userPwd;
     }
 
+    public static String getPaginaCobom() {
+        return PAGINA_COBOM;
+    }
+
     public static String getPaginaJotas() {
         return PAGINA_JOTAS;
     }
@@ -98,7 +85,6 @@ public class Globals {
     }
 
     private static String userPwd="";
-
 
     public static List<String> getListaHospitais() {
         return listaHospitais;
@@ -110,35 +96,7 @@ public class Globals {
 
     private static List<String> listaHospitais = new ArrayList<>();
 
-    public static String getDeslocando_para() {
-        return deslocando_para;
-    }
-
-    public static void setDeslocando_para(String deslocando_para) {
-        Globals.deslocando_para = deslocando_para;
-    }
-
-    private static String deslocando_para = null;
-    private static Double LatAlteracao = 0.0;
-    private static Double LngAlteracao = 0.0;
-    public static final long GPS_REPEAT_TIME = 1000 * 15; // 15 seconds
-    private static boolean toggling;
-
-
-    public static Location getLastKnownLocation() {
-        return lastKnownLocation;
-    }
-
-    public static void setLastKnownLocation(Location lastKnownLocation) {
-        Globals.lastKnownLocation = lastKnownLocation;
-    }
-
-    private static Location lastKnownLocation = null;
-
-
     private static String UrlSocial = "";
-
-    private static String TelefoneCmt = "";
 
     public static String getUrlSocial() {
         return UrlSocial;
@@ -147,15 +105,6 @@ public class Globals {
     public static void setUrlSocial(String urlSocial) {
         UrlSocial = urlSocial;
     }
-
-    public static String getTelefoneCmt() {
-        return TelefoneCmt;
-    }
-
-    public static void setTelefoneCmt(String telefoneCmt) {
-        TelefoneCmt = telefoneCmt;
-    }
-
 
     public static Double getLngAlteracao() {
         return LngAlteracao;
@@ -181,19 +130,11 @@ public class Globals {
         Id_Ocorrencia = id_Ocorrencia;
     }
 
-    public static String getEnderecoOcorrencia() {
-        return EnderecoOcorrencia;
-    }
-
-    public static void setEnderecoOcorrencia(String enderecoOcorrencia) {
-        EnderecoOcorrencia = enderecoOcorrencia;
-    }
-
     public static String getLatitude() {
         return Latitude;
     }
 
-    public static void setLatitude(String latitude) {
+    public static void setLatitude() {
         Latitude = getLatAlteracao().toString();
     }
 
@@ -201,10 +142,9 @@ public class Globals {
         return Longitude;
     }
 
-    public static void setLongitude(String longitude) {
+    public static void setLongitude() {
         Longitude = getLngAlteracao().toString();
     }
-
 
     public static String getMonitor() {
         return Monitor;
@@ -214,7 +154,6 @@ public class Globals {
         Monitor = monitor;
     }
 
-
     public synchronized static String getAccessToken(Context context) {
         if (accessToken == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
@@ -223,32 +162,13 @@ public class Globals {
         return accessToken != null ? "Bearer " + accessToken : null;
     }
 
-    public synchronized static String getAccessTokenStraight(Context context) {
-        if (accessToken == null) {
-            SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
-            accessToken = sharedPrefs.getString(PREF_ACCESS_TOKEN, null);
-        }
-        return accessToken != null ? accessToken : null;
-    }
-
     public synchronized static void setAccessToken(Context context, String token) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(PREF_ACCESS_TOKEN, token);
         editor.putLong(PREF_TIME_LOGIN, java.lang.System.currentTimeMillis());
-        editor.commit();
+        editor.apply();
         accessToken = token;
-        if (accessToken == null) {
-            setUserImage(null);
-        }
-    }
-
-    public synchronized static String getUserLogin(Context context) {
-        if (userLogin == null) {
-            SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
-            userLogin = sharedPrefs.getString(PREF_USER_LOGIN, null);
-        }
-        return userLogin;
     }
 
     public synchronized static void storeRegistrationId(Context context, String regId) {
@@ -258,7 +178,7 @@ public class Globals {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
-        editor.commit();
+        editor.apply();
     }
 
     public synchronized static String getRegistrationId(Context context) {
@@ -288,41 +208,6 @@ public class Globals {
         }
     }
 
-    public synchronized static void setUserLogin(Context context, String login) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putString(PREF_USER_LOGIN, login);
-        editor.commit();
-    }
-
-    public static Bitmap getUserImage() {
-        return userImage;
-    }
-
-    public static void setUserImage(Bitmap userImage) {
-        Globals.userImage = userImage;
-    }
-
-    public static void setStreamingPort(Integer streamingPort) {
-        Globals.streamingPort = streamingPort;
-    }
-
-    public static void setStreamingUser(String streamingUser) {
-        Globals.streamingUser = streamingUser;
-    }
-
-    public static void setServerIpAddress(String serverIpAddress) {
-        Globals.serverIpAddress = serverIpAddress;
-    }
-
-    public static void setStreamingPassword(String streamingPassword) {
-        Globals.streamingPassword = streamingPassword;
-    }
-
-    public static void setStreamingPath(String streamingPath) {
-        Globals.streamingPath = streamingPath;
-    }
-
     public static void setUserName(String userName) {
         Globals.userName = userName;
     }
@@ -347,34 +232,21 @@ public class Globals {
         return Globals.VtrSelecionada;
     }
 
-
-    public static void setAccessToken(String accessToken) {
-        Globals.accessToken = accessToken;
-    }
-
     public static void clear(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.clear().commit();
+        editor.clear().apply();
 
         accessToken = null;
-        userLogin = null;
-        serverIpAddress = "";
-        streamingPort = 1935;
-        streamingUser = "";
-        streamingPassword = "";
-        streamingPath = "";
         userName = null;
-        userImage = null;
     }
 
     public static void setDirectorySize(Context context,Long directorySize) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putLong(DIRECTORY_SIZE, directorySize);
-        editor.commit();
-        Globals.directorySize = directorySize;
-        setDirectoryUploadedSize(context, Long.valueOf(0));
+        editor.apply();
+        setDirectoryUploadedSize(context, (long) 0);
     }
 
     public static Long getDirectoryUploadedSize(Context context) {
@@ -390,48 +262,8 @@ public class Globals {
         SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putLong(DIRECTORY_UPLOADED_SIZE, directoryUploadedSize);
-        editor.commit();
+        editor.apply();
         Globals.directoryUploadedSize = directoryUploadedSize;
-    }
-
-    public static Long getDirectorySize(Context context) {
-        if (directorySize == null) {
-            SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
-            directorySize = sharedPrefs.getLong(DIRECTORY_SIZE, 0);
-        }
-        return directorySize;
-    }
-
-    public static Long getDirectorySize() {
-        return directorySize;
-    }
-
-    public static String getServerIpAddress() {
-        return serverIpAddress;
-    }
-
-    public static Integer getStreamingPort() {
-        return streamingPort;
-    }
-
-    public static String getStreamingUser() {
-        return streamingUser;
-    }
-
-    public static String getStreamingPassword() {
-        return streamingPassword;
-    }
-
-    public static String getStreamingPath() {
-        return streamingPath;
-    }
-
-    public static void setToggling(boolean toggling) {
-        Globals.toggling = toggling;
-    }
-
-    public static boolean isToggling() {
-        return toggling;
     }
 
     public static void setViaturaOcorrencia(String viaturaOcorrencia) {
@@ -444,7 +276,6 @@ public class Globals {
     public static void setServidorRadioSelecionado(String servidorRadioSelecionado) {
         Globals.servidorRadioSelecionado = servidorRadioSelecionado;
     }
-
     public static void setNomeServidorRadioSelecionado(String nomeServidorRadioSelecionado) {
         Globals.nomeServidorRadioSelecionado = nomeServidorRadioSelecionado;
     }

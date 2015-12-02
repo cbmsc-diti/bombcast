@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -23,10 +22,7 @@ import igarape.cbmsc.bombcast.utils.Globals;
 import igarape.cbmsc.bombcast.utils.LocationUtils;
 import igarape.cbmsc.bombcast.views.Ocorrencia_Activity;
 
-
-/**
- * Created by bruno on 5/11/2014.
- */
+// * Created by bruno on 5/11/2014.
 public class LocationService extends Service implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
@@ -38,7 +34,6 @@ public class LocationService extends Service implements
     private LocationClient mLocationClient;
 
     private int mId = 2;
-    private Handler handler;
 
     @Override
     public void onDestroy() {
@@ -59,7 +54,6 @@ public class LocationService extends Service implements
         return null;
     }
 
-
     @Override
     public void onConnected(Bundle bundle) {
         mLocationClient.requestLocationUpdates(mLocationRequest, this);
@@ -67,20 +61,15 @@ public class LocationService extends Service implements
 
     @Override
     public void onDisconnected() {
-
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 
     @Override
     public void onLocationChanged(Location location) {
         LocationUtils.sendLocation(this, Globals.getUserName(), location);
-        if(null != location){
-            Globals.setLastKnownLocation(location);
-        }
     }
 
     @Override
@@ -106,11 +95,6 @@ public class LocationService extends Service implements
         stackBuilder.addParentStack(Ocorrencia_Activity.class);
         stackBuilder.addNextIntent(resultIntent);
 
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_NO_CREATE
-                );
         mBuilder.setContentIntent(pendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

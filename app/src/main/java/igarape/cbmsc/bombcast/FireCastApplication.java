@@ -1,23 +1,18 @@
 package igarape.cbmsc.bombcast;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.res.Configuration;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.splunk.mint.Mint;
 
-import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
-import igarape.cbmsc.bombcast.service.LocationService;
-import igarape.cbmsc.bombcast.service.PlayerService;
 import igarape.cbmsc.bombcast.utils.FileUtils;
 
 public class FireCastApplication extends Application {
 
     public static GoogleAnalytics analytics;
     public static Tracker tracker;
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

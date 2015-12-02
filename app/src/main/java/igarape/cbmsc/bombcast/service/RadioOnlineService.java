@@ -3,7 +3,6 @@ package igarape.cbmsc.bombcast.service;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,13 +11,9 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import android.view.WindowManager;
-
-import java.io.IOException;
 
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.Globals;
-import igarape.cbmsc.bombcast.views.LoginActivity;
 
 /**
  * Created by barcellos on 24/11/15.

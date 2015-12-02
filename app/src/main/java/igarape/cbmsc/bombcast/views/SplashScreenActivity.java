@@ -16,7 +16,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
-import igarape.cbmsc.bombcast.FireCastApplication;
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.service.BackgroundVideoRecorder;
 import igarape.cbmsc.bombcast.service.LocationService;

@@ -33,10 +33,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
+import igarape.cbmsc.bombcast.service.UploadService;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.FileUtils;
 import igarape.cbmsc.bombcast.utils.Globals;
-import igarape.cbmsc.bombcast.service.UploadService;
 
 import static igarape.cbmsc.bombcast.BuildConfig.requireWifiUpload;
 
@@ -44,7 +44,6 @@ public class Select_Vtr_Activity extends Activity {
     protected PowerManager.WakeLock mWakeLock;
     protected KeyguardManager.KeyguardLock lock;
     private final GenericExtFilter filter = new GenericExtFilter(".mp4");
-    private ArrayList<File> videos;
     private String vtrs;
     private String servidor193 = Globals.getServidorSelecionado();
     private String usuario = Globals.getUserName();
@@ -224,7 +223,7 @@ public class Select_Vtr_Activity extends Activity {
                     findViewById(R.id.btn_hidrantes).setVisibility(View.INVISIBLE);
                     findViewById(R.id.btn_ordens).setEnabled(true);
                     findViewById(R.id.btn_ordens).setVisibility(View.VISIBLE);
-                    ;
+
                 }else{
 
                     builder.setTitle("EM DESENVOLVIMENTO!")
@@ -252,7 +251,6 @@ public class Select_Vtr_Activity extends Activity {
                     findViewById(R.id.btn_ordens).setVisibility(View.INVISIBLE);
                     findViewById(R.id.btn_hidrantes).setEnabled(true);
                     findViewById(R.id.btn_hidrantes).setVisibility(View.VISIBLE);
-                    ;
                 }else{
 
                     builder.setTitle("EM DESENVOLVIMENTO!")

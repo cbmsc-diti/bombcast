@@ -7,9 +7,8 @@ import android.webkit.WebView;
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.Globals;
 
-/**
- * Created by barcellos on 01/07/15.
- */
+// * Created by barcellos on 01/07/15.
+
 public class SocialActivity extends Activity {
     protected WebView myWebView;
 

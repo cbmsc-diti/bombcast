@@ -3,10 +3,8 @@ package igarape.cbmsc.bombcast.views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,22 +15,20 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
 
-/**
- * Created by barcellos on 20/08/15.
- */
+ //* Created by barcellos on 20/08/15.
+
 public class ListaHospitaisActivity extends Activity {
 
     List<String> listadeHospitais = new ArrayList<>();
     ListView lv_hospitais;
     List<NameValuePair> params = new ArrayList<>();
-    String UrlJS = Globals.SERVER_CBM +"j_ocorrencia.bombcast2.php";
+    String UrlJS = Globals.getPaginaJotas();
     String retornoJS;
     String mensagem;
 
@@ -42,8 +38,7 @@ public class ListaHospitaisActivity extends Activity {
         setContentView(R.layout.activity_lista_hospitais);
         listadeHospitais =Globals.getListaHospitais();
         lv_hospitais = (ListView) findViewById(R.id.lv_listahospitais);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ListaHospitaisActivity.this, R.layout.listview_detalhes, listadeHospitais);
-        ArrayAdapter<String> ListArrayAdapter = arrayAdapter;
+        ArrayAdapter<String> ListArrayAdapter = new ArrayAdapter<>(this, R.layout.listview_detalhes, listadeHospitais);
         lv_hospitais.setAdapter(ListArrayAdapter);
 
         lv_hospitais.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,7 +52,6 @@ public class ListaHospitaisActivity extends Activity {
                 mensagem = "Deslocando para: " + obj;
                 String hosp = obj.toString();
 
-                Globals.setDeslocando_para(hosp);
                 params.add(new BasicNameValuePair("jota", "hosp"));
                 params.add(new BasicNameValuePair("hsp", hosp));
                 params.add(new BasicNameValuePair("vtr_oc", Globals.getviaturaOcorrencia()));
