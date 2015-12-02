@@ -2,17 +2,12 @@ package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
-import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.FileUtils;
 import igarape.cbmsc.bombcast.utils.Globals;
 
