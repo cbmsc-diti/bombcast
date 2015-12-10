@@ -2,19 +2,22 @@ package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.HttpAuthHandler;
@@ -38,8 +41,7 @@ import igarape.cbmsc.bombcast.service.UploadService;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.FileUtils;
 import igarape.cbmsc.bombcast.utils.Globals;
-
-import static igarape.cbmsc.bombcast.BuildConfig.requireWifiUpload;
+import igarape.cbmsc.bombcast.utils.NetworkUtils;
 
 public class Select_Vtr_Activity extends Activity {
     protected PowerManager.WakeLock mWakeLock;
@@ -271,7 +273,7 @@ public class Select_Vtr_Activity extends Activity {
             @Override
             public void onClick(View view) {
 
-                if (!canUpload(getBaseContext(), intent)) {
+                if (!NetworkUtils.canUpload(getBaseContext(), intent)) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(Select_Vtr_Activity.this);
 
@@ -322,19 +324,9 @@ public class Select_Vtr_Activity extends Activity {
         }catch (Exception e){
             e.printStackTrace();
         }
+        startGPS();
     }
 
-    public static boolean canUpload(Context context, Intent intent) {
-        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        if (networkInfo == null || !networkInfo.isConnectedOrConnecting() || intent == null) {
-            return false;
-        }
-
-        boolean isWiFi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-        return (isWiFi || !requireWifiUpload);
-    }
     class GenericExtFilter implements FilenameFilter {
 
         private String ext;
@@ -346,6 +338,46 @@ public class Select_Vtr_Activity extends Activity {
             return (name.endsWith(ext));
         }
 
+    }
+
+
+    public void startGPS(){
+        final LocationManager lManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        if(!lManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.gps_desativado));
+            builder.setMessage(getString(R.string.gps_desativado_text));
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+            Dialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+        }
+
+        LocationListener lListener = new LocationListener() {
+            public void onLocationChanged(Location locat) {
+                updateView(locat);
+            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onProviderEnabled(String provider) {}
+            public void onProviderDisabled(String provider) {}
+        };
+        lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, lListener);
+
+    }
+    public void updateView(Location locat){
+        Double latitude = locat.getLatitude();
+        Double longitude = locat.getLongitude();
+
+        Globals.setLatAlteracao(latitude);
+        Globals.setLngAlteracao(longitude);
+
+        Globals.setLatitude();
+        Globals.setLongitude();
     }
 
     @Override

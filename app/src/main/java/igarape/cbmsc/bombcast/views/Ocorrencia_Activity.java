@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -849,7 +848,6 @@ public class Ocorrencia_Activity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         encerraMonitoramento();
     }
     @Override

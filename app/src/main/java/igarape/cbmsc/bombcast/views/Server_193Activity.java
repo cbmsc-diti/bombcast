@@ -1,16 +1,8 @@
 package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.AdapterView;
@@ -34,8 +26,6 @@ public class Server_193Activity extends Activity {
         myWebView = (WebView) findViewById(R.id.wv_mapa);
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.loadUrl(UrlCobom);
-
-        startGPS();
 
         Spinner sp_servidores = (Spinner) findViewById(R.id.sp_servidores);
         ArrayAdapter<Servidores_193> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, Servidores_193.listaServidores());
@@ -74,44 +64,6 @@ public class Server_193Activity extends Activity {
         myWebView.loadUrl(UrlCobom);
     }
 
-    public void startGPS(){
-        final LocationManager lManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        if(!lManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.gps_desativado));
-            builder.setMessage(getString(R.string.gps_desativado_text));
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                }
-            });
-            Dialog alertDialog = builder.create();
-            alertDialog.setCanceledOnTouchOutside(false);
-            alertDialog.show();
-        }
-
-        LocationListener lListener = new LocationListener() {
-            public void onLocationChanged(Location locat) {
-                updateView(locat);
-            }
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-            public void onProviderEnabled(String provider) {}
-            public void onProviderDisabled(String provider) {}
-        };
-        lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, lListener);
-
-    }
-    public void updateView(Location locat){
-        Double latitude = locat.getLatitude();
-        Double longitude = locat.getLongitude();
-
-        Globals.setLatAlteracao(latitude);
-        Globals.setLngAlteracao(longitude);
-
-        Globals.setLatitude();
-        Globals.setLongitude();
-    }
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Server_193Activity.this, LoginActivity.class);

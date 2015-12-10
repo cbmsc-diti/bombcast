@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -44,7 +43,6 @@ import igarape.cbmsc.bombcast.utils.ManageSharedPreferences;
 
 public class LoginActivity extends Activity {
 
-    public static String TAG = LoginActivity.class.getName();
     String URL = Globals.getPaginaConexao();
     AutoCompleteTextView txtId;
     EditText txtPwd;
@@ -68,7 +66,6 @@ public class LoginActivity extends Activity {
         final ImageButton icon_igarape = (ImageButton) findViewById(R.id.icon_igarape);
         final ImageButton icon_cbm = (ImageButton) findViewById(R.id.icon_cbm);
         final ToggleButton btn_radioonline = (ToggleButton) findViewById(R.id.btn_radioonline);
-
 
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -217,9 +214,6 @@ public class LoginActivity extends Activity {
             }
         });
 
-
-
-
         btn_radioonline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -248,8 +242,6 @@ public class LoginActivity extends Activity {
         myWebView = (WebView) findViewById(R.id.wv_cidades);
         myWebView.loadUrl(UrlCidades);
 
-
-
     }
 
     @Override
@@ -261,10 +253,6 @@ public class LoginActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return item.getItemId() == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-    @Override
-    public void onConfigurationChanged(Configuration cfg) {
-
     }
 
     public void makeLoginRequest(View view) {
@@ -304,7 +292,6 @@ public class LoginActivity extends Activity {
 
                 if (retornoHttp.equalsIgnoreCase("1")) {
 
-
                     Globals.setUserName(txtID);
                     Globals.setUserPwd(txtPwD);
 
@@ -322,7 +309,6 @@ public class LoginActivity extends Activity {
                     Intent intent2 = new Intent(LoginActivity.this, Server_193Activity.class);
                     startActivity(intent2);
                     cancel(true);
-
                 }else{
                     if (retornoHttp.equalsIgnoreCase("0")) {
                         Toast toast = Toast.makeText(getApplicationContext(), "Usuário ou senha incorretos.", Toast.LENGTH_LONG);
