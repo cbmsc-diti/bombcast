@@ -784,7 +784,6 @@ public class Ocorrencia_Activity extends Activity {
             e.printStackTrace();
         }
     }
-
     protected void playAlarme() {
 
 
