@@ -35,7 +35,7 @@ public class RadioOnlineService extends Service{
         context = this.getApplicationContext();
         player = new MediaPlayer();
         Intent intentNotification = new Intent(context,StopService.class);
-        pendingIntent = PendingIntent.getActivity(getBaseContext(), mId,intentNotification , PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getActivity(getBaseContext(), mId, intentNotification, PendingIntent.FLAG_UPDATE_CURRENT);
         // Start foreground service to avoid unexpected kill
         Notification notification = new Notification.Builder(this)
                 .setContentTitle("Rádio Online")
@@ -50,7 +50,6 @@ public class RadioOnlineService extends Service{
 
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
         caminho = Globals.getServidorRadioSelecionado();
-
 
 
         new MediaPrepareTask().execute(null, null, null);

@@ -35,6 +35,7 @@ import igarape.cbmsc.bombcast.service.PlayerService;
 import igarape.cbmsc.bombcast.service.StopService;
 import igarape.cbmsc.bombcast.utils.ConexaoHttpClient;
 import igarape.cbmsc.bombcast.utils.Globals;
+import igarape.cbmsc.bombcast.utils.ServiceUtils;
 
 public class Ocorrencia_Activity extends Activity {
 
@@ -65,6 +66,8 @@ public class Ocorrencia_Activity extends Activity {
     TextView tv_endereco;
     Intent intent;
     String[] endereco_final;
+
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +180,26 @@ public class Ocorrencia_Activity extends Activity {
     }
 
     private void monitoramento(){
+        if (ServiceUtils.verificaHora()){
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
+            builder.setTitle("Novo login!")
+                    .setMessage("Bom dia! Seu login expirou, reconecte!")
+                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(Ocorrencia_Activity.this, LoginActivity.class);
+                            startActivity(intent);
+                            encerraMonitoramento();
+                        }
+                    });
+            try {
+                AlertDialog alert = builder.create();
+                alert.show();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }else{
+
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... paramss) {
@@ -196,7 +219,7 @@ public class Ocorrencia_Activity extends Activity {
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
 
-                verificaHora();
+
 
                 Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrsMonitoradas, Toast.LENGTH_SHORT);
                 toast.show();
@@ -368,6 +391,7 @@ public class Ocorrencia_Activity extends Activity {
                 super.cancel(true);
             }
         }.execute();
+        }
     }
 
     //FUNÇOES DOS BOTOES ####################################
@@ -715,19 +739,10 @@ public class Ocorrencia_Activity extends Activity {
         }.execute();
     }
     protected void mapaOcorrencia(){
-        if(isOnline()) {
+
             intent = new Intent(android.content.Intent.ACTION_VIEW,
                     Uri.parse("google.navigation:q=" + endereco_final[1]));
             startActivity(intent);
-        }else{
-            try{
-                Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Mapa disponível somente com a internet funcionando...", Toast.LENGTH_SHORT);
-                toast.show();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
     protected void detalhesOcorrencia(){
         Intent intent = new Intent(Ocorrencia_Activity.this, ListaDetalhesActivity.class);
@@ -769,26 +784,7 @@ public class Ocorrencia_Activity extends Activity {
             e.printStackTrace();
         }
     }
-    //#######################################################
-    protected void verificaHora(){
-        SimpleDateFormat s_hora = new SimpleDateFormat("HH:mm");
-        String verifica_hora =  s_hora.format(new Date());
-        if(verifica_hora.equals("08:00")){
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
-            builder.setTitle("Novo login!")
-                    .setMessage("Bom dia! Seu login expirou, reconecte!")
-                    .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(Ocorrencia_Activity.this, LoginActivity.class);
-                            startActivity(intent);
-                            onDestroy();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
     protected void playAlarme() {
 
 
@@ -803,13 +799,6 @@ public class Ocorrencia_Activity extends Activity {
         stopService(intent);
 
     }
-
-    public boolean isOnline() {
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return manager.getActiveNetworkInfo() != null &&
-                manager.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
-
     private void encerraMonitoramento(){
 
         try {

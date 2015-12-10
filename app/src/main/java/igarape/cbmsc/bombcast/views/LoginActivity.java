@@ -1,10 +1,8 @@
 package igarape.cbmsc.bombcast.views;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
@@ -16,10 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -47,9 +45,10 @@ import igarape.cbmsc.bombcast.utils.ManageSharedPreferences;
 public class LoginActivity extends Activity {
 
     public static String TAG = LoginActivity.class.getName();
-    String URL = Globals.SERVER_CBM + "ldap.conf.bombcast.php";
+    String URL = Globals.getPaginaConexao();
     AutoCompleteTextView txtId;
     EditText txtPwd;
+    WebView myWebView;
     ProgressDialog pDialog;
     public Set<String> logins;
     private String retornoHttp;
@@ -61,9 +60,9 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        String UrlCidades = Globals.getPaginaCidades();
 
         final CheckBox cbShowPassword = (CheckBox) findViewById(R.id.show_password);
-        final Button btn_ajuda = (Button) findViewById(R.id.btn_ajuda);
         final ImageButton icon_face = (ImageButton) findViewById(R.id.icon_face);
         final ImageButton icon_twitter = (ImageButton) findViewById(R.id.icon_twitter);
         final ImageButton icon_igarape = (ImageButton) findViewById(R.id.icon_igarape);
@@ -79,6 +78,9 @@ public class LoginActivity extends Activity {
                 (ip >> 8 & 0xff),
                 (ip >> 16 & 0xff),
                 (ip >> 24 & 0xff));
+
+        WifiManager.WifiLock lock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "LockTag");
+        lock.acquire();
 
         String ipSeparado[] = strIP.split("\\.");
         if (ipSeparado[0].equals("10")){
@@ -137,24 +139,6 @@ public class LoginActivity extends Activity {
                 }
             });
         }
-
-
-
-        btn_ajuda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-
-                builder.setTitle(getString(R.string.title_help))
-                        .setMessage(getString(R.string.help_text))
-                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
 
         txtId = (AutoCompleteTextView) findViewById(R.id.txtLoginUser);
         txtId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -221,7 +205,8 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 Globals.setUrlSocial("http://www.igarape.org.br/");
                 Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
-                startActivity(intent);            }
+                startActivity(intent);
+            }
         });
         icon_cbm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +243,10 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
+
+        myWebView = (WebView) findViewById(R.id.wv_cidades);
+        myWebView.loadUrl(UrlCidades);
 
 
 

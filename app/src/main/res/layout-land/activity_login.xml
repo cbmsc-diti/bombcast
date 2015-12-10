@@ -16,48 +16,59 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/login_title"
         android:id="@+id/loggedUserLabel"
-        android:textColor="@color/text_dark"
-        android:layout_alignParentTop="true"
+        android:textColor="#ffffff"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/tv_radioonline_titulo"
+        android:layout_alignEnd="@+id/tv_radioonline_titulo" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="2dip"
-        android:layout_below="@+id/loggedUserLabel"
         android:background="#484849"
-        android:id="@+id/horizontalRule"></RelativeLayout>
+        android:id="@+id/horizontalRule"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/loggedUserLabel"
+        android:layout_alignRight="@+id/loggedUserLabel"
+        android:layout_alignEnd="@+id/loggedUserLabel"></RelativeLayout>
 
     <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtLoginUser"
         android:hint="@string/login_hint"
-        android:layout_below="@+id/horizontalRule"
         android:imeOptions="actionNext"
         android:focusable="true"
         android:focusableInTouchMode="true"
 
-        android:layout_marginTop="16dp"
         android:inputType="text"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorLink="#FFFFFF"
         android:textIsSelectable="true"
-        android:layout_marginLeft="10dp" />
+        android:layout_below="@+id/horizontalRule"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/horizontalRule"
+        android:layout_alignEnd="@+id/horizontalRule" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtLoginPassword"
         android:hint="@string/password_hint"
-        android:layout_below="@+id/txtLoginUser"
 
         android:inputType="textPassword"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorLink="#FFFFFF"
-        android:layout_marginLeft="10dp" />
+        android:layout_below="@+id/txtLoginUser"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/txtLoginUser"
+        android:layout_alignEnd="@+id/txtLoginUser" />
 
     <Button
         android:id="@+id/btn_login_ok"
@@ -70,20 +81,8 @@
         android:onClick="makeLoginRequest"
         android:gravity="center"
         android:layout_below="@+id/show_password"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ajuda"
-        android:id="@+id/btn_ajuda"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@color/bg_dark_block"
-        android:enabled="true"
-        android:textColor="@color/text_dark" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -92,8 +91,8 @@
         android:src="@drawable/icon_face_2"
         android:clickable="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toLeftOf="@+id/icon_twitter"
+        android:layout_toStartOf="@+id/icon_twitter" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -102,9 +101,8 @@
         android:src="@drawable/icon_twitter_2"
         android:clickable="true"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/icon_face"
-        android:layout_toEndOf="@+id/icon_face"
-        android:layout_marginLeft="4dp" />
+        android:layout_toLeftOf="@+id/icon_cbm"
+        android:layout_toStartOf="@+id/icon_cbm" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -113,9 +111,9 @@
         android:src="@drawable/icon_igarape_bc_2"
         android:focusableInTouchMode="false"
         android:background="@color/bg_dark_block"
-        android:layout_alignTop="@+id/btn_radioonline"
-        android:layout_toRightOf="@+id/icon_cbm"
-        android:layout_toEndOf="@+id/icon_cbm" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -124,10 +122,9 @@
         android:text="Acesse:"
         android:id="@+id/tv_acesse"
         android:textColor="@color/text_dark"
-        android:layout_above="@+id/icon_face"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_above="@+id/icon_cbm"
+        android:layout_toLeftOf="@+id/icon_twitter"
+        android:layout_toStartOf="@+id/icon_twitter" />
 
     <ImageButton
         android:layout_width="60dp"
@@ -136,33 +133,31 @@
         android:src="@drawable/icon_cbm180_2"
         android:clickable="true"
         android:background="@color/bg_dark_block"
-        android:layout_alignTop="@+id/icon_twitter"
-        android:layout_toRightOf="@+id/icon_twitter"
-        android:layout_toEndOf="@+id/icon_twitter" />
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/icon_igarape"
+        android:layout_toStartOf="@+id/icon_igarape" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mostrar senha"
         android:id="@+id/show_password"
-        android:layout_below="@+id/txtLoginPassword"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:checked="false"
         android:textColor="@color/text_dark"
-        android:layout_toStartOf="@+id/icon_cbm"
-        android:layout_alignRight="@+id/horizontalRule"
-        android:layout_alignEnd="@+id/horizontalRule" />
+        android:layout_below="@+id/txtLoginPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <Spinner
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:id="@+id/sp_servidores_radioonline"
         android:spinnerMode="dialog"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/icon_igarape"
-        android:layout_alignTop="@+id/icon_igarape"
-        android:layout_toLeftOf="@+id/btn_ajuda"
-        android:layout_toStartOf="@+id/btn_ajuda" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/btn_radioonline"
+        android:layout_toStartOf="@+id/btn_radioonline"
+        android:layout_below="@+id/iv_radio"
+        android:layout_alignBottom="@+id/btn_radioonline" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -173,7 +168,8 @@
         android:textColor="@color/text_dark"
         android:layout_below="@+id/tv_radioonline_titulo"
         android:layout_toRightOf="@+id/iv_radio"
-        android:layout_toEndOf="@+id/iv_radio" />
+        android:layout_alignRight="@+id/tv_radioonline_titulo"
+        android:layout_alignEnd="@+id/tv_radioonline_titulo" />
 
     <ToggleButton
         android:layout_width="wrap_content"
@@ -181,32 +177,51 @@
         android:text="btn_radioonline"
         android:id="@+id/btn_radioonline"
         android:checked="false"
-        android:layout_alignBottom="@+id/icon_cbm"
-        android:layout_alignRight="@+id/tv_desc_radio"
-        android:layout_alignEnd="@+id/tv_desc_radio" />
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/icon_face"
+        android:layout_toStartOf="@+id/icon_face" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RÁDIO ONLINE CBMSC:"
         android:id="@+id/tv_radioonline_titulo"
         android:textSize="20sp"
-        android:layout_alignTop="@+id/iv_radio"
-        android:layout_alignRight="@+id/show_password"
-        android:layout_alignEnd="@+id/show_password"
-        android:layout_marginTop="5dp" />
+        android:layout_below="@+id/relativeLayout"
+        android:layout_toRightOf="@+id/iv_radio"
+        android:layout_toEndOf="@+id/iv_radio"
+        android:textColor="#ffffff" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/iv_radio"
         android:src="@drawable/radio"
+        android:layout_alignTop="@+id/relativeLayout"
+        android:layout_alignLeft="@+id/btn_login_ok"
+        android:layout_alignStart="@+id/btn_login_ok"
+        android:layout_alignBottom="@+id/tv_desc_radio" />
+
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wv_cidades"
+        android:layout_alignLeft="@+id/tv_acesse"
+        android:layout_alignStart="@+id/tv_acesse"
+        android:layout_above="@+id/tv_acesse"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#484849"
+        android:id="@+id/relativeLayout"
         android:layout_below="@+id/btn_login_ok"
-        android:layout_alignLeft="@+id/sp_servidores_radioonline"
-        android:layout_alignStart="@+id/sp_servidores_radioonline"
-        android:layout_toLeftOf="@+id/tv_radioonline_titulo"
-        android:layout_toStartOf="@+id/tv_radioonline_titulo"
-        android:layout_above="@+id/sp_servidores_radioonline"
-        android:layout_marginTop="5dp" />
+        android:layout_alignRight="@+id/tv_radioonline_titulo"
+        android:layout_alignEnd="@+id/tv_radioonline_titulo"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp" />
 
 
 </RelativeLayout>

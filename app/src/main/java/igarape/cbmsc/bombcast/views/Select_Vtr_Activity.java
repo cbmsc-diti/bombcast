@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import igarape.cbmsc.bombcast.R;
@@ -43,18 +44,18 @@ import static igarape.cbmsc.bombcast.BuildConfig.requireWifiUpload;
 public class Select_Vtr_Activity extends Activity {
     protected PowerManager.WakeLock mWakeLock;
     protected KeyguardManager.KeyguardLock lock;
-    private final GenericExtFilter filter = new GenericExtFilter(".mp4");
-    private String vtrs;
-    private String servidor193 = Globals.getServidorSelecionado();
-    private String usuario = Globals.getUserName();
-    private String senha = Globals.getUserPwd();
-    protected String Url= Globals.getPaginaViaturas();
-    public String status;
+    final GenericExtFilter filter = new GenericExtFilter(".mp4");
+    String vtrs;
+    String status;
     ProgressDialog pDialog;
     List<NameValuePair> params = new ArrayList<>();
     WebView myWebView;
-    String UrlOrdens ="http://"+servidor193+"/web193/modulos/ordens/upload/cadastro.php";
-    String UrlHidrantes =Globals.getPaginaHidrantes()+servidor193;
+    String servidor193  =  Globals.getServidorSelecionado();
+    String usuario      =  Globals.getUserName();
+    String senha        =  Globals.getUserPwd();
+    String Url          =  Globals.getPaginaViaturas();
+    String UrlHidrantes =  Globals.getPaginaHidrantes()+servidor193;
+    String UrlOrdens    =  "http://"+servidor193+"/web193/modulos/ordens/upload/cadastro.php";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +160,7 @@ public class Select_Vtr_Activity extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                     String erro = "Não foi possivel carregar os destinos.";
-                    List<String> hosp = Arrays.asList(erro);
+                    List<String> hosp = Collections.singletonList(erro);
                     Globals.setListaHospitais(hosp);
                 }
                 return vtrs;

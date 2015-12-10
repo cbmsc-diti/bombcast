@@ -3,6 +3,8 @@ package igarape.cbmsc.bombcast.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import java.util.Calendar;
+
 /**
  * Created by bruno on 11/14/14.
  */
@@ -17,4 +19,24 @@ public class ServiceUtils {
         }
         return false;
     }
+
+    //#######################################################
+    public static boolean verificaHora(){
+        Calendar calendar = Calendar.getInstance();
+
+        int horaAtual = calendar.get(Calendar.HOUR_OF_DAY);
+        int minAtual = calendar.get(Calendar.MINUTE);
+
+        int horaAntes = 7;
+        int minAntes = 59;
+
+        int horaDepois = 8;
+        int minDepois = 01;
+
+
+        if ((horaAtual > horaAntes) && (minAntes < minAtual)||(horaAtual == horaDepois) && (minAtual < minDepois) ){
+            return true;
+        } return false;
+    }
+
 }

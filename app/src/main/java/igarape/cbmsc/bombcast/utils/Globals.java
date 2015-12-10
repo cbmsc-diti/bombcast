@@ -33,6 +33,8 @@ public class Globals {
     public static final String PAGINA_LOCATIONS = SERVER_CBM + "locations/rec_locations.php";
     public static final String PAGINA_COBOM = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
     public static final String PAGINA_HIDRANTES =  "http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/mapeamento/m/?host=";
+    public static final String PAGINA_CONEXAO = SERVER_CBM + "ldap.conf.bombcast.php";
+    public static final String PAGINA_CIDADES =  "http://aplicativosweb.cbm.sc.gov.br/ebm/firecast_cidades.php";
     private static String accessToken = null;
     private static String userName = null;
     private static Long directoryUploadedSize;
@@ -45,120 +47,97 @@ public class Globals {
     private static String viaturaOcorrencia;
     private static String servidorRadioSelecionado;
     private static Double LatAlteracao = 0.0;
+    private static String nomeServidorRadioSelecionado;
+    private static String userPwd="";
     private static Double LngAlteracao = 0.0;
+    private static String UrlSocial = "";
+
 
     public static String getPaginaLocations() {
         return PAGINA_LOCATIONS;
     }
-
-
     public static String getPaginaHidrantes() {
         return PAGINA_HIDRANTES;
+    }
+    public static String getPaginaConexao() {
+        return PAGINA_CONEXAO;
     }
     public static String getNomeServidorRadioSelecionado() {
         return nomeServidorRadioSelecionado;
     }
-
-    private static String nomeServidorRadioSelecionado;
-
     public static String getPaginaViaturas() {
         return PAGINA_VIATURAS;
     }
-
     public static String getPaginaOcorrencias() {
         return PAGINA_OCORRENCIAS;
     }
-
     public static String getServidorRadioSelecionado() {
         return servidorRadioSelecionado;
     }
-
     public static String getUserPwd() {
         return userPwd;
     }
-
     public static String getPaginaCobom() {
         return PAGINA_COBOM;
     }
-
+    public static String getPaginaCidades() {
+        return PAGINA_CIDADES;
+    }
     public static String getPaginaJotas() {
         return PAGINA_JOTAS;
     }
-
     public static void setUserPwd(String userPwd) {
         Globals.userPwd = userPwd;
     }
-
-    private static String userPwd="";
-
     public static List<String> getListaHospitais() {
         return listaHospitais;
     }
-
     public static void setListaHospitais(List<String> listaHospitais) {
         Globals.listaHospitais = listaHospitais;
     }
-
     private static List<String> listaHospitais = new ArrayList<>();
-
-    private static String UrlSocial = "";
-
     public static String getUrlSocial() {
         return UrlSocial;
     }
-
     public static void setUrlSocial(String urlSocial) {
         UrlSocial = urlSocial;
     }
-
     public static Double getLngAlteracao() {
         return LngAlteracao;
     }
-
     public static void setLngAlteracao(Double lngAlteracao) {
         LngAlteracao = lngAlteracao;
     }
-
     public static Double getLatAlteracao() {
         return LatAlteracao;
     }
-
     public static void setLatAlteracao(Double latAlteracao) {
         LatAlteracao = latAlteracao;
     }
-
     public static String getId_Ocorrencia() {
         return Id_Ocorrencia;
     }
-
     public static void setId_Ocorrencia(String id_Ocorrencia) {
         Id_Ocorrencia = id_Ocorrencia;
     }
-
     public static String getLatitude() {
         return Latitude;
     }
-
     public static void setLatitude() {
         Latitude = getLatAlteracao().toString();
     }
-
     public static String getLongitude() {
         return Longitude;
     }
-
     public static void setLongitude() {
         Longitude = getLngAlteracao().toString();
     }
-
     public static String getMonitor() {
         return Monitor;
     }
-
     public static void setMonitor(String monitor) {
         Monitor = monitor;
     }
-
     public synchronized static String getAccessToken(Context context) {
         if (accessToken == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
@@ -166,7 +145,6 @@ public class Globals {
         }
         return accessToken != null ? "Bearer " + accessToken : null;
     }
-
     public synchronized static void setAccessToken(Context context, String token) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(AUTH, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -175,7 +153,6 @@ public class Globals {
         editor.apply();
         accessToken = token;
     }
-
     public synchronized static void storeRegistrationId(Context context, String regId) {
         final SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
         int appVersion = getAppVersion(context);
@@ -185,7 +162,6 @@ public class Globals {
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
         editor.apply();
     }
-
     public synchronized static String getRegistrationId(Context context) {
         final SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
         String registrationId = sharedPrefs.getString(PROPERTY_REG_ID, "");
@@ -201,7 +177,6 @@ public class Globals {
         }
         return registrationId;
     }
-
     private static int getAppVersion(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
@@ -212,31 +187,24 @@ public class Globals {
             throw new RuntimeException("Could not get package name: " + e);
         }
     }
-
     public static void setUserName(String userName) {
         Globals.userName = userName;
     }
-
     public static String getUserName() {
         return Globals.userName;
     }
-
     public static void setServidorSelecionado(String ServidorSelecionado) {
         Globals.ServidorSelecionado = ServidorSelecionado;
     }
-
     public static String getServidorSelecionado() {
         return Globals.ServidorSelecionado;
     }
-
     public static void setVtrSelecionada(String VtrSelecionada) {
           Globals.VtrSelecionada = VtrSelecionada;
     }
-
     public static String getVtrSelecionada() {
         return Globals.VtrSelecionada;
     }
-
     public static void clear(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -245,7 +213,6 @@ public class Globals {
         accessToken = null;
         userName = null;
     }
-
     public static void setDirectorySize(Context context,Long directorySize) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -253,7 +220,6 @@ public class Globals {
         editor.apply();
         setDirectoryUploadedSize(context, (long) 0);
     }
-
     public static Long getDirectoryUploadedSize(Context context) {
 
         if (directoryUploadedSize == null) {
@@ -262,7 +228,6 @@ public class Globals {
         }
         return directoryUploadedSize;
     }
-
     public static void setDirectoryUploadedSize(Context context,Long directoryUploadedSize) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -270,14 +235,12 @@ public class Globals {
         editor.apply();
         Globals.directoryUploadedSize = directoryUploadedSize;
     }
-
     public static void setViaturaOcorrencia(String viaturaOcorrencia) {
         Globals.viaturaOcorrencia = viaturaOcorrencia;
     }
     public static String getviaturaOcorrencia() {
         return viaturaOcorrencia;
     }
-
     public static void setServidorRadioSelecionado(String servidorRadioSelecionado) {
         Globals.servidorRadioSelecionado = servidorRadioSelecionado;
     }
