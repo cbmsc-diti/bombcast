@@ -15,26 +15,30 @@ import igarape.cbmsc.bombcast.BuildConfig;
 public class Globals {
 
     public static String TAG = Globals.class.getName();
-    public static final String SENDER_ID = "559090531786";
+
+    private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final String PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN";
+    private static final String PREF_TIME_LOGIN = "PREF_TIME_LOGIN";
+
+    public static final String SENDER_ID = "559090531786";
     public static final String PREF_FILE_NAMES = "PREF_FILE_NAMES";
     public static final String DATA = "DATA";
-    private static final String PREF_TIME_LOGIN = "PREF_TIME_LOGIN";
     public static final String PROPERTY_REG_ID = "registration_id";
-    private static final String PROPERTY_APP_VERSION = "appVersion";
     public static final String SERVER_URL_WEB = BuildConfig.serverUrl;
     public static final String SERVER_CBM = BuildConfig.serverCBM;
     public static final String DIRECTORY_SIZE = "DIRECTORY_SIZE";
     public static final String DIRECTORY_UPLOADED_SIZE = "DIRECTORY_UPLOADED_SIZE";
     public static final String AUTH = "AUTH";
-    public static final String PAGINA_JOTAS = SERVER_CBM +"j_ocorrencia.bombcast2.php";
+
+    public static final String PAGINA_JOTAS       = SERVER_CBM +"j_ocorrencia.bombcast2.php";
     public static final String PAGINA_OCORRENCIAS = SERVER_CBM + "rec_coord.bombcast2.php";
-    public static final String PAGINA_VIATURAS = SERVER_CBM + "sel_vtr.bombcast2.php";
-    public static final String PAGINA_LOCATIONS = SERVER_CBM + "locations/rec_locations.php";
-    public static final String PAGINA_COBOM = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
-    public static final String PAGINA_HIDRANTES =  "http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/mapeamento/m/?host=";
-    public static final String PAGINA_CONEXAO = SERVER_CBM + "ldap.conf.bombcast.php";
-    public static final String PAGINA_CIDADES =  "http://aplicativosweb.cbm.sc.gov.br/ebm/firecast_cidades.php";
+    public static final String PAGINA_VIATURAS    = SERVER_CBM + "sel_vtr.bombcast2.php";
+    public static final String PAGINA_LOCATIONS   = SERVER_CBM + "locations/rec_locations.php";
+    public static final String PAGINA_CONEXAO     = SERVER_CBM + "ldap.conf.bombcast.php";
+    public static final String PAGINA_CIDADES     = SERVER_CBM +"firecast_cidades.php";
+    public static final String PAGINA_COBOM       = "http://aplicativosweb.cbm.sc.gov.br/cobom/e193/#";
+    public static final String PAGINA_HIDRANTES   = "http://www.cbm.sc.gov.br/intranet/relatorios_gestores/relatorio_administrativo/mapeamento/m/?host=";
+
     private static String accessToken = null;
     private static String userName = null;
     private static Long directoryUploadedSize;
@@ -56,32 +60,17 @@ public class Globals {
     public static String getPaginaLocations() {
         return PAGINA_LOCATIONS;
     }
-    public static String getPaginaHidrantes() {
-        return PAGINA_HIDRANTES;
-    }
-    public static String getPaginaConexao() {
-        return PAGINA_CONEXAO;
-    }
     public static String getNomeServidorRadioSelecionado() {
         return nomeServidorRadioSelecionado;
     }
     public static String getPaginaViaturas() {
         return PAGINA_VIATURAS;
     }
-    public static String getPaginaOcorrencias() {
-        return PAGINA_OCORRENCIAS;
-    }
     public static String getServidorRadioSelecionado() {
         return servidorRadioSelecionado;
     }
     public static String getUserPwd() {
         return userPwd;
-    }
-    public static String getPaginaCobom() {
-        return PAGINA_COBOM;
-    }
-    public static String getPaginaCidades() {
-        return PAGINA_CIDADES;
     }
     public static String getPaginaJotas() {
         return PAGINA_JOTAS;

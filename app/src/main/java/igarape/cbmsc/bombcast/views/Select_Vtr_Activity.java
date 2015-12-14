@@ -52,12 +52,12 @@ public class Select_Vtr_Activity extends Activity {
     ProgressDialog pDialog;
     List<NameValuePair> params = new ArrayList<>();
     WebView myWebView;
-    String servidor193  =  Globals.getServidorSelecionado();
-    String usuario      =  Globals.getUserName();
-    String senha        =  Globals.getUserPwd();
-    String Url          =  Globals.getPaginaViaturas();
-    String UrlHidrantes =  Globals.getPaginaHidrantes()+servidor193;
-    String UrlOrdens    =  "http://"+servidor193+"/web193/modulos/ordens/upload/cadastro.php";
+    String servidor193   =  Globals.getServidorSelecionado();
+    String usuario       =  Globals.getUserName();
+    String senha         =  Globals.getUserPwd();
+    String Url           =  Globals.getPaginaViaturas();
+    String URL_HIDRANTES =  Globals.PAGINA_HIDRANTES+servidor193;
+    String URL_ORDENS =  "http://"+servidor193+"/web193/modulos/ordens/upload/cadastro.php";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +221,7 @@ public class Select_Vtr_Activity extends Activity {
 
                 if(servidor193.equals("fpolis.cbm.sc.gov.br"))
                 {
-                    myWebView.loadUrl(UrlHidrantes);
+                    myWebView.loadUrl(URL_HIDRANTES);
                     findViewById(R.id.btn_hidrantes).setEnabled(false);
                     findViewById(R.id.btn_hidrantes).setVisibility(View.INVISIBLE);
                     findViewById(R.id.btn_ordens).setEnabled(true);
@@ -249,7 +249,7 @@ public class Select_Vtr_Activity extends Activity {
 
                 if(servidor193.equals("fpolis.cbm.sc.gov.br"))
                 {
-                    myWebView.loadUrl(UrlOrdens);
+                    myWebView.loadUrl(URL_ORDENS);
                     findViewById(R.id.btn_ordens).setEnabled(false);
                     findViewById(R.id.btn_ordens).setVisibility(View.INVISIBLE);
                     findViewById(R.id.btn_hidrantes).setEnabled(true);
@@ -320,7 +320,7 @@ public class Select_Vtr_Activity extends Activity {
 
         });
         try {
-            myWebView.loadUrl(UrlOrdens);
+            myWebView.loadUrl(URL_ORDENS);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -357,27 +357,6 @@ public class Select_Vtr_Activity extends Activity {
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.show();
         }
-
-        LocationListener lListener = new LocationListener() {
-            public void onLocationChanged(Location locat) {
-                updateView(locat);
-            }
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-            public void onProviderEnabled(String provider) {}
-            public void onProviderDisabled(String provider) {}
-        };
-        lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, lListener);
-
-    }
-    public void updateView(Location locat){
-        Double latitude = locat.getLatitude();
-        Double longitude = locat.getLongitude();
-
-        Globals.setLatAlteracao(latitude);
-        Globals.setLngAlteracao(longitude);
-
-        Globals.setLatitude();
-        Globals.setLongitude();
     }
 
     @Override

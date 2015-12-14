@@ -70,6 +70,15 @@ public class LocationService extends Service implements
     @Override
     public void onLocationChanged(Location location) {
         LocationUtils.sendLocation(this, Globals.getUserName(), location);
+
+        Double latitude = location.getLatitude();
+        Double longitude = location.getLongitude();
+
+        Globals.setLatAlteracao(latitude);
+        Globals.setLngAlteracao(longitude);
+
+        Globals.setLatitude();
+        Globals.setLongitude();
     }
 
     @Override
@@ -89,7 +98,9 @@ public class LocationService extends Service implements
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Clique aqui para abrir o app!")
                 .setSmallIcon(R.drawable.ic_launcher)
+                .setAutoCancel(true)
                 .setOngoing(true);
+
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(Ocorrencia_Activity.class);

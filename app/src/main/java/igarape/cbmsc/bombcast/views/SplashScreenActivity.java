@@ -26,7 +26,6 @@ import igarape.cbmsc.bombcast.utils.Globals;
 public class SplashScreenActivity extends Activity {
 
     private static final int SPLASH_SHOW_TIME = 5000;
-    public static String TAG = SplashScreenActivity.class.getName();
     private static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001;
     private Context context;
     private GoogleCloudMessaging gcm;

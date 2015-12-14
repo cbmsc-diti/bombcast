@@ -16,16 +16,16 @@ import igarape.cbmsc.bombcast.utils.Globals;
 
 public class Server_193Activity extends Activity {
 
-    private Servidores_193 servidor_sel;
+    final String URL_COBOM = Globals.PAGINA_COBOM;
+    Servidores_193 servidor_sel;
     WebView myWebView;
-    String UrlCobom = Globals.getPaginaCobom();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_193);
         myWebView = (WebView) findViewById(R.id.wv_mapa);
         myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl(UrlCobom);
+        myWebView.loadUrl(URL_COBOM);
 
         Spinner sp_servidores = (Spinner) findViewById(R.id.sp_servidores);
         ArrayAdapter<Servidores_193> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, Servidores_193.listaServidores());
@@ -61,7 +61,7 @@ public class Server_193Activity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        myWebView.loadUrl(UrlCobom);
+        myWebView.loadUrl(URL_COBOM);
     }
 
     @Override

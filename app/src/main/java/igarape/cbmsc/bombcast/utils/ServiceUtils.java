@@ -3,6 +3,8 @@ package igarape.cbmsc.bombcast.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -21,7 +23,7 @@ public class ServiceUtils {
     }
 
     //#######################################################
-    public static boolean verificaHora(){
+    public static boolean verificaHora() {
         Calendar calendar = Calendar.getInstance();
 
         int horaAtual = calendar.get(Calendar.HOUR_OF_DAY);
@@ -34,9 +36,15 @@ public class ServiceUtils {
         int minDepois = 01;
 
 
-        if ((horaAtual > horaAntes) && (minAntes < minAtual)||(horaAtual == horaDepois) && (minAtual < minDepois) ){
+        if ((horaAtual > horaAntes) && (minAntes < minAtual) || (horaAtual == horaDepois) && (minAtual < minDepois)) {
             return true;
-        } return false;
+        }
+        return false;
+    }
+
+    public static SimpleDateFormat formatoData() {
+        final SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
+        return s;
     }
 
 }

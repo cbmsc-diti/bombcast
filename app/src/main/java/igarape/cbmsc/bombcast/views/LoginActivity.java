@@ -43,22 +43,23 @@ import igarape.cbmsc.bombcast.utils.ManageSharedPreferences;
 
 public class LoginActivity extends Activity {
 
-    String URL = Globals.getPaginaConexao();
+    final String URL_LDAP = Globals.PAGINA_CONEXAO;
+    final String URL_CIDADES = Globals.PAGINA_CIDADES;
+
     AutoCompleteTextView txtId;
     EditText txtPwd;
     WebView myWebView;
     ProgressDialog pDialog;
-    public Set<String> logins;
-    private String retornoHttp;
-    private ServidoresRadioOnline servidoresRadioOnline;
-    protected List<NameValuePair> params = new ArrayList<>();
+    Set<String> logins;
+    String retornoHttp;
+    ServidoresRadioOnline servidoresRadioOnline;
+    List<NameValuePair> params = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        String UrlCidades = Globals.getPaginaCidades();
 
         final CheckBox cbShowPassword = (CheckBox) findViewById(R.id.show_password);
         final ImageButton icon_face = (ImageButton) findViewById(R.id.icon_face);
@@ -240,7 +241,7 @@ public class LoginActivity extends Activity {
 
 
         myWebView = (WebView) findViewById(R.id.wv_cidades);
-        myWebView.loadUrl(UrlCidades);
+        myWebView.loadUrl(URL_CIDADES);
 
     }
 
@@ -274,7 +275,7 @@ public class LoginActivity extends Activity {
                     params.add(new BasicNameValuePair("u",txtID ));
                     params.add(new BasicNameValuePair("p",txtPwD));
 
-                    retornoHttp = ConexaoHttpClient.executaHttpPost(URL,params);
+                    retornoHttp = ConexaoHttpClient.executaHttpPost(URL_LDAP,params);
 
                 } catch (Exception e) {
                     e.printStackTrace();

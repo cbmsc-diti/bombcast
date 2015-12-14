@@ -38,33 +38,33 @@ import igarape.cbmsc.bombcast.utils.ServiceUtils;
 
 public class Ocorrencia_Activity extends Activity {
 
-    final String UrlJS = Globals.getPaginaJotas();
-    final String UrlOcorrencia = Globals.getPaginaOcorrencias();
-    final SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
+    final String URL_JOTAS = Globals.PAGINA_JOTAS;
+    final String URL_OCORRENCIAS = Globals.PAGINA_OCORRENCIAS;
+    final SimpleDateFormat formatoData = ServiceUtils.formatoData();
     final MyTimerTask myTask = new MyTimerTask(); // aqui instacia sua tarefa
     final Timer myTimer = new Timer(); // aqui instancia o agendador
     final String ServidorSelecionado = Globals.getServidorSelecionado();
+    String VtrsMonitoradas = Globals.getVtrSelecionada();
     KeyguardManager.KeyguardLock lock;
     PowerManager.WakeLock mWakeLock;
-    String[] detalhes_ocorrencia;
-    String[] IO = new String[2];
-    String VtrsMonitoradas = Globals.getVtrSelecionada();
-    String VtrOc;
-    String controlador;
-    String retornoHttp;
+    String[] DETALHES_OCORRENCIA;
+    String[] ID_OCORRENCIA = new String[2];
+    String VTR_OCORRENCIA;
+    String CONTROLADOR_ID_OCORRENCIA;
+    String DADOS_HTTP_OCORRENCIA;
     String LatOcorrencia;
     String LngOcorrencia;
     String vf;
-    String confereJS= "inicio";
-    String[] vtr_final;
-    String retornoJS;
+    String VERIFICADOR_JOTAS = "inicio";
+    String[] VTR_FINAL;
+    String RETORNO_JOTAS;
     Boolean j11 = true;
-    List<NameValuePair> params = new ArrayList<>();
-    Integer cont = 1;
+    List<NameValuePair> PARAMETROS_OCORRENCIA = new ArrayList<>();
+    Integer CONTADOR = 1;
     TextView tv_tipo_oc;
     TextView tv_endereco;
     Intent intent;
-    String[] endereco_final;
+    String[] ENDERECO_FINAL;
 
 
 
@@ -81,28 +81,28 @@ public class Ocorrencia_Activity extends Activity {
         lock.disableKeyguard();
 
 
-        params.add(new BasicNameValuePair("nr_vtr", VtrsMonitoradas));
-        params.add(new BasicNameValuePair("h", ServidorSelecionado));
-        params.add(new BasicNameValuePair("u", Globals.getUserName()));
-        params.add(new BasicNameValuePair("infos","1"));
-        params.add(new BasicNameValuePair("status","ON"));
-        params.add(new BasicNameValuePair("log","1"));
-        params.add(new BasicNameValuePair("lat_vtr", Globals.getLatitude()));
-        params.add(new BasicNameValuePair("lng_vtr", Globals.getLongitude()));
-        params.add(new BasicNameValuePair("eo","nao"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("nr_vtr", VtrsMonitoradas));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("h", ServidorSelecionado));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("u", Globals.getUserName()));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("infos", "1"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("status", "ON"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("log", "1"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lat_vtr", Globals.getLatitude()));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lng_vtr", Globals.getLongitude()));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("eo", "nao"));
 
 
         //INICIA OS BOTOES######################################################
-        final  Button btn_j9 = (Button) findViewById(R.id.btn_j9);
-        final  Button btn_j10 = (Button) findViewById(R.id.btn_j10);
-        final  Button btn_j9_i = (Button) findViewById(R.id.btn_j09_i);
-        final  Button btn_j10_i = (Button) findViewById(R.id.btn_j10_i);
-        final  Button btn_j11 = (Button) findViewById(R.id.btn_j11);
-        final  Button btn_j12 = (Button) findViewById(R.id.btn_j12);
+        final  Button btn_j9    =  (Button) findViewById(R.id.btn_j9);
+        final  Button btn_j10   =  (Button) findViewById(R.id.btn_j10);
+        final  Button btn_j9_i  =  (Button) findViewById(R.id.btn_j09_i);
+        final  Button btn_j10_i =  (Button) findViewById(R.id.btn_j10_i);
+        final  Button btn_j11   =  (Button) findViewById(R.id.btn_j11);
+        final  Button btn_j12   =  (Button) findViewById(R.id.btn_j12);
         final  Button btn_detalhes_ocorrencia = (Button) findViewById(R.id.btn_detalhes_ocorrencia);
         final  Button btn_mapa_ocorrencia = (Button) findViewById(R.id.btn_mapa_ocorrencia);
-        final  Button btn_play = (Button) findViewById(R.id.btn_play);
-        final  Button btn_stop = (Button) findViewById(R.id.btn_stop);
+        final  Button btn_play  =  (Button) findViewById(R.id.btn_play);
+        final  Button btn_stop  =  (Button) findViewById(R.id.btn_stop);
 
         btn_j9.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,16 +203,16 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(String... paramss) {
                 try{
-                    if(cont == 2) {
-                        confereJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                    if(CONTADOR == 2) {
+                        VERIFICADOR_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                     }
-                    retornoHttp = ConexaoHttpClient.executaHttpPost(UrlOcorrencia, params);
-                    params.set(6,new BasicNameValuePair("log","3"));
+                    DADOS_HTTP_OCORRENCIA = ConexaoHttpClient.executaHttpPost(URL_OCORRENCIAS, PARAMETROS_OCORRENCIA);
+                    PARAMETROS_OCORRENCIA.set(6, new BasicNameValuePair("log", "3"));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    retornoHttp = "ASC";
+                    DADOS_HTTP_OCORRENCIA = "ASC";
                 }
-                return retornoHttp + confereJS;
+                return DADOS_HTTP_OCORRENCIA + VERIFICADOR_JOTAS;
             }
             @Override
             protected void onPostExecute(String result) {
@@ -223,36 +223,37 @@ public class Ocorrencia_Activity extends Activity {
                 Toast toast = Toast.makeText(Ocorrencia_Activity.this, "Monitorando " + VtrsMonitoradas, Toast.LENGTH_SHORT);
                 toast.show();
 
-                if ((!retornoHttp.equals("0")) && (!retornoHttp.equals("ASC")) && (!retornoHttp.isEmpty())) {
+                if ((!DADOS_HTTP_OCORRENCIA.equals("0")) && (!DADOS_HTTP_OCORRENCIA.equals("ASC")) && (!DADOS_HTTP_OCORRENCIA.isEmpty())) {
 
 
-                    if(cont == 1) {
+                    if(CONTADOR == 1) {
                         //EXECUTA UMA VEZ ###############################################################
                         try {
-                            Globals.setMonitor(retornoHttp);
+                            Globals.setMonitor(DADOS_HTTP_OCORRENCIA);
 
+
+                            DETALHES_OCORRENCIA = DADOS_HTTP_OCORRENCIA.split("\\|");
+                            VTR_FINAL           = DETALHES_OCORRENCIA[0].split(":");
+                            ID_OCORRENCIA       = DETALHES_OCORRENCIA[3].split(":");
+                            ENDERECO_FINAL      = DETALHES_OCORRENCIA[6].split(":");
+                            VTR_OCORRENCIA      = VTR_FINAL[1];
+
+                            tv_tipo_oc  = (TextView) findViewById(R.id.tv_desc_endereco_ocorrencia);
                             tv_endereco = (TextView) findViewById(R.id.tv_endereco_ocorrencia);
-                            tv_tipo_oc = (TextView) findViewById(R.id.tv_desc_endereco_ocorrencia);
 
-                            detalhes_ocorrencia = retornoHttp.split("\\|");
-                            vtr_final = detalhes_ocorrencia[0].split(":");
-                            IO = detalhes_ocorrencia[3].split(":");
-                            tv_tipo_oc.setText(detalhes_ocorrencia[1]);
-                            tv_endereco.setText(detalhes_ocorrencia[6]);
-                            endereco_final = detalhes_ocorrencia[6].split(":");
+                            tv_tipo_oc.setText(DETALHES_OCORRENCIA[1]);
+                            tv_endereco.setText(DETALHES_OCORRENCIA[6]);
 
 
-
-                            VtrOc = vtr_final[1];
-                            Globals.setViaturaOcorrencia(VtrOc);
-                            Globals.setId_Ocorrencia(IO[1]);
+                            Globals.setViaturaOcorrencia(VTR_OCORRENCIA);
+                            Globals.setId_Ocorrencia(ID_OCORRENCIA[1]);
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-                        params.set(8,new BasicNameValuePair("eo","sim"));
-                        params.add(new BasicNameValuePair("vtr_oc", VtrOc));
+                        PARAMETROS_OCORRENCIA.set(8, new BasicNameValuePair("eo", "sim"));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("vtr_oc", VTR_OCORRENCIA));
 
                         findViewById(R.id.btn_detalhes_ocorrencia).setEnabled(true);
                         findViewById(R.id.btn_j9).setEnabled(true);
@@ -261,9 +262,9 @@ public class Ocorrencia_Activity extends Activity {
                         findViewById(R.id.btn_mapa_ocorrencia).setEnabled(true);
                         //#######################################################################
                     }
-                    if ((IO!=null)&&(IO[1]!=null)&&(IO[1].equals(controlador))){
+                    if ((ID_OCORRENCIA !=null)&&(ID_OCORRENCIA[1]!=null)&&(ID_OCORRENCIA[1].equals(CONTROLADOR_ID_OCORRENCIA))){
 
-                        switch (confereJS) {
+                        switch (VERIFICADOR_JOTAS) {
 
                             case "Aguarda-J9":
                                 break;
@@ -313,7 +314,7 @@ public class Ocorrencia_Activity extends Activity {
                             case "inicio":
                                 break;
                             default:
-                                controlador = "DEFAULT";
+                                CONTROLADOR_ID_OCORRENCIA = "DEFAULT";
                                 try {
                                     Toast toast2 = Toast.makeText(Ocorrencia_Activity.this, "Ocorrência encontrada, aguarde...", Toast.LENGTH_LONG);
                                     toast2.show();
@@ -323,7 +324,7 @@ public class Ocorrencia_Activity extends Activity {
                                 break;
                         }
                     }else{
-                        if(cont != 2){
+                        if(CONTADOR != 2){
                             //TOCA ALARME
                             playAlarme();
                             AlertDialog.Builder builder = new AlertDialog.Builder(Ocorrencia_Activity.this);
@@ -338,20 +339,20 @@ public class Ocorrencia_Activity extends Activity {
                             alert.show();
                         }
                         try {
-                            assert IO != null;
-                            controlador = IO[1];
-                            params.add(new BasicNameValuePair("io", IO[1]));
+                            assert ID_OCORRENCIA != null;
+                            CONTROLADOR_ID_OCORRENCIA = ID_OCORRENCIA[1];
+                            PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("io", ID_OCORRENCIA[1]));
                         }catch (Exception e) {
                             e.printStackTrace();
                         }
                         //CONTADOR RECEBE 2 PARA NÃO CAIR NO ALARME DENOVO
-                        cont = 2;
+                        CONTADOR = 2;
                         //################################################
                     }
 
-                } else if ((retornoHttp.equals("0"))) {
+                } else if ((DADOS_HTTP_OCORRENCIA.equals("0"))) {
                     //SE EXISTIA OCORRENCIA E A MESMA FOI ENCERRADA O APP EXECUTA O J12 PARA REINICIAR OS BOTOES
-                    if(cont == 2) {
+                    if(CONTADOR == 2) {
                         try{
                             J12();
                         }catch(Exception e){
@@ -359,26 +360,26 @@ public class Ocorrencia_Activity extends Activity {
                         }
                     }
                     //###########################################################
-                    cont = 1;
+                    CONTADOR = 1;
                     //LIMPA O FORMULARIO DA OCORRENCIA
                     try{
-                        params.remove(10);
-                        params.remove(11);
-                        params.remove(12);
-                        params.remove(13);
-                        params.remove(14);
-                        params.remove(15);
-                        params.remove(16);
-                        params.remove(17);
-                        params.remove(18);
-                        params.remove(19);
-                        params.remove(20);
-                        params.remove(21);
-                        params.remove(22);
-                        params.remove(23);
-                        params.remove(24);
-                        params.remove(25);
-                        params.remove(26);
+                        PARAMETROS_OCORRENCIA.remove(10);
+                        PARAMETROS_OCORRENCIA.remove(11);
+                        PARAMETROS_OCORRENCIA.remove(12);
+                        PARAMETROS_OCORRENCIA.remove(13);
+                        PARAMETROS_OCORRENCIA.remove(14);
+                        PARAMETROS_OCORRENCIA.remove(15);
+                        PARAMETROS_OCORRENCIA.remove(16);
+                        PARAMETROS_OCORRENCIA.remove(17);
+                        PARAMETROS_OCORRENCIA.remove(18);
+                        PARAMETROS_OCORRENCIA.remove(19);
+                        PARAMETROS_OCORRENCIA.remove(20);
+                        PARAMETROS_OCORRENCIA.remove(21);
+                        PARAMETROS_OCORRENCIA.remove(22);
+                        PARAMETROS_OCORRENCIA.remove(23);
+                        PARAMETROS_OCORRENCIA.remove(24);
+                        PARAMETROS_OCORRENCIA.remove(25);
+                        PARAMETROS_OCORRENCIA.remove(26);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -395,8 +396,8 @@ public class Ocorrencia_Activity extends Activity {
 
     //FUNÇOES DOS BOTOES ####################################
     protected void J9() {
-        params.add(new BasicNameValuePair("jota", "j9"));
-        params.add(new BasicNameValuePair("hr_j9", s.format(new Date())));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j9"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j9", formatoData.format(new Date())));
 
         findViewById(R.id.btn_j9).setEnabled(false);
         findViewById(R.id.btn_j10).setEnabled(true);
@@ -406,11 +407,11 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
-                    retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                    RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return retornoJS;
+                return RETORNO_JOTAS;
             }
             @Override
             protected void onPostExecute(String aVoid) {
@@ -424,10 +425,10 @@ public class Ocorrencia_Activity extends Activity {
         LatOcorrencia = Globals.getLatitude();
         LngOcorrencia = Globals.getLongitude();
 
-        params.add(new BasicNameValuePair("jota", "j10"));
-        params.add(new BasicNameValuePair("lat_o", LatOcorrencia));
-        params.add(new BasicNameValuePair("lng_o", LngOcorrencia));
-        params.add(new BasicNameValuePair("hr_j10", s.format(new Date())));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j10"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lat_o", LatOcorrencia));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lng_o", LngOcorrencia));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j10", formatoData.format(new Date())));
 
         //ALTERNA BOTOES NA TELA ####################################
         findViewById(R.id.btn_j9).setEnabled(false);
@@ -439,11 +440,11 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
-                    retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
+                    RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return retornoJS;
+                return RETORNO_JOTAS;
             }
             @Override
             protected void onPostExecute(String aVoid) {
@@ -454,8 +455,8 @@ public class Ocorrencia_Activity extends Activity {
     }
     protected void J9Intermediario() {
         j11 = false;
-        params.add(new BasicNameValuePair("jota", "j9_i"));
-        params.add(new BasicNameValuePair("hr_j9_i", s.format(new Date())));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j9_i"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j9_i", formatoData.format(new Date())));
 
         //ALTERNA BOTOES NA TELA ####################################
         findViewById(R.id.btn_j9).setEnabled(false);
@@ -467,12 +468,12 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
-                    retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
+                    RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                return retornoJS;
+                return RETORNO_JOTAS;
             }
             @Override
             protected void onPostExecute(String aVoid) {
@@ -495,10 +496,10 @@ public class Ocorrencia_Activity extends Activity {
                         String LatLocalIntermediario = Globals.getLatitude();
                         String LngLocalIntermediario = Globals.getLongitude();
 
-                        params.add(new BasicNameValuePair("jota", "j10_i_n"));
-                        params.add(new BasicNameValuePair("lat_i", LatLocalIntermediario));
-                        params.add(new BasicNameValuePair("lng_i", LngLocalIntermediario));
-                        params.add(new BasicNameValuePair("hr_j10_i_n", s.format(new Date())));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j10_i_n"));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lat_i", LatLocalIntermediario));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lng_i", LngLocalIntermediario));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j10_i_n", formatoData.format(new Date())));
 
                         //ALTERNA BOTOES NA TELA ####################################
                         findViewById(R.id.btn_j9).setEnabled(false);
@@ -510,11 +511,11 @@ public class Ocorrencia_Activity extends Activity {
                             @Override
                             protected String doInBackground(Void... unused) {
                                 try {
-                                    retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                                    RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                return retornoJS;
+                                return RETORNO_JOTAS;
                             }
 
                             @Override
@@ -531,25 +532,29 @@ public class Ocorrencia_Activity extends Activity {
                         String LatLocalRecusa = Globals.getLatitude();
                         String LngLocalRecusa = Globals.getLongitude();
 
-                        params.add(new BasicNameValuePair("jota", "j10_i_s"));
-                        params.add(new BasicNameValuePair("lat_r", LatLocalRecusa));
-                        params.add(new BasicNameValuePair("lng_r", LngLocalRecusa));
-                        params.add(new BasicNameValuePair("hr_j10_i_s", s.format(new Date())));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j10_i_s"));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lat_r", LatLocalRecusa));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lng_r", LngLocalRecusa));
+                        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j10_i_s", formatoData.format(new Date())));
 
                         new AsyncTask<Void, Void, String>() {
                             @Override
                             protected String doInBackground(Void... unused) {
                                 try {
-                                    retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                                    RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                return retornoJS;
+                                return RETORNO_JOTAS;
                             }
 
                             @Override
                             protected void onPostExecute(String aVoid) {
                                 super.onPostExecute(aVoid);
+
+                                Intent intent = new Intent(Ocorrencia_Activity.this, ListaHospitaisActivity.class);
+                                startActivity(intent);
+
                                 super.cancel(true);
                             }
                         }.execute();
@@ -575,10 +580,10 @@ public class Ocorrencia_Activity extends Activity {
                             String LatLocalMaca = Globals.getLatitude();
                             String LngLocalMaca = Globals.getLongitude();
 
-                            params.add(new BasicNameValuePair("jota", "j11_s"));
-                            params.add(new BasicNameValuePair("lat_m", LatLocalMaca));
-                            params.add(new BasicNameValuePair("lng_m", LngLocalMaca));
-                            params.add(new BasicNameValuePair("hr_j11_s", s.format(new Date())));
+                            PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j11_s"));
+                            PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lat_m", LatLocalMaca));
+                            PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("lng_m", LngLocalMaca));
+                            PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j11_s", formatoData.format(new Date())));
 
                             new AsyncTask<Void, Void, String>() {
 
@@ -593,12 +598,12 @@ public class Ocorrencia_Activity extends Activity {
                                 @Override
                                 protected String doInBackground(Void... unused) {
                                     try {
-                                        retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS, params);
+                                        RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    return retornoJS;
+                                    return RETORNO_JOTAS;
                                 }
 
                                 @Override
@@ -615,8 +620,8 @@ public class Ocorrencia_Activity extends Activity {
             alert.show();
         }
 
-        params.add(new BasicNameValuePair("jota", "j11_n"));
-        params.add(new BasicNameValuePair("hr_j11_n", s.format(new Date())));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j11_n"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j11_n", formatoData.format(new Date())));
 
         new AsyncTask<Void, Void, String>() {
 
@@ -629,11 +634,11 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
-                    retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
+                    RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return retornoJS;
+                return RETORNO_JOTAS;
             }
             @Override
             protected void onPostExecute(String aVoid) {
@@ -655,9 +660,9 @@ public class Ocorrencia_Activity extends Activity {
         }.execute();
     }
     protected void J12(){
-        cont = 1;
-        params.add(new BasicNameValuePair("jota", "j12"));
-        params.add(new BasicNameValuePair("hr_j12", s.format(new Date())));
+        CONTADOR = 1;
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("jota", "j12"));
+        PARAMETROS_OCORRENCIA.add(new BasicNameValuePair("hr_j12", formatoData.format(new Date())));
 
         try {
             Intent intent = new Intent(Ocorrencia_Activity.this, BackgroundVideoRecorder.class);
@@ -678,7 +683,7 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
-                    retornoJS = ConexaoHttpClient.executaHttpPost(UrlJS,params);
+                    RETORNO_JOTAS = ConexaoHttpClient.executaHttpPost(URL_JOTAS, PARAMETROS_OCORRENCIA);
                     vf = "0";
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -740,7 +745,7 @@ public class Ocorrencia_Activity extends Activity {
     protected void mapaOcorrencia(){
 
             intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("google.navigation:q=" + endereco_final[1]));
+                    Uri.parse("google.navigation:q=" + ENDERECO_FINAL[1]));
             startActivity(intent);
     }
     protected void detalhesOcorrencia(){
@@ -800,8 +805,8 @@ public class Ocorrencia_Activity extends Activity {
     private void encerraMonitoramento(){
 
         try {
-            params.set(5, new BasicNameValuePair("status", "OFF"));
-            params.set(6, new BasicNameValuePair("log", "2"));
+            PARAMETROS_OCORRENCIA.set(5, new BasicNameValuePair("status", "OFF"));
+            PARAMETROS_OCORRENCIA.set(6, new BasicNameValuePair("log", "2"));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -816,18 +821,18 @@ public class Ocorrencia_Activity extends Activity {
             @Override
             protected String doInBackground(Void... unused) {
                 try {
-                    retornoHttp = ConexaoHttpClient.executaHttpPost(UrlOcorrencia,params);
+                    DADOS_HTTP_OCORRENCIA = ConexaoHttpClient.executaHttpPost(URL_OCORRENCIAS, PARAMETROS_OCORRENCIA);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return retornoHttp;
+                return DADOS_HTTP_OCORRENCIA;
             }
             @Override
             protected void onPostExecute(String aVoid) {
                 super.cancel(true);
 
                 myTimer.cancel();
-                params.clear();
+                PARAMETROS_OCORRENCIA.clear();
                 lock.reenableKeyguard();
 
                 try {
